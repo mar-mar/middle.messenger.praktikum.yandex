@@ -1,6 +1,3 @@
----
-id: "root" 
----
 <!DOCTYPE html>
 <html lang="ru">
     <head>
@@ -9,7 +6,6 @@ id: "root"
         <link rel="stylesheet" type="text/css" href="/index.pcss"></link>
     </head>
     <body>
-        {{> common/button/button label="Click me" }}
-        {{> common/input/input label="Click me" }}
+         {{> (lookup . 'template')}}
     </body>
 </html> 
