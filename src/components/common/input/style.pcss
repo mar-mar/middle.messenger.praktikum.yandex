@@ -1,16 +1,13 @@
 @import "static/css/variable.pcss";
+@import "static/css/defineprops.pcss";
 
-.input-wrapper {
+.input {
+    margin-top: 1.5em;
 
     &__input {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        @mixin absolute-strech;
         border: none;
         border-bottom: 2px solid var(--primary-color);
-        border-radius: 2px;
         background: none;
 
         &:hover, &:focus {
@@ -19,26 +16,31 @@
     }
 
     &__body {
+        @mixin absolute-strech__parent;
         height: 2.5em;
         line-height: 2.5em;
-        position: relative;
-        margin: 10px 0;
     }
 
     &__label {
-        position: absolute;
-        left: 0;
-        top: 0;
+        @mixin absolute-strech;
         cursor: text;
         transition: top 200ms ease-in, font-size 200ms ease-in;
         pointer-events: none;
-
         color: var(--grey-font-color);
     }
 
     &__input:focus ~ &__label,
     &__input:not(:placeholder-shown)&__input:not(:focus) ~ &__label {
         top: -2em;
+        font-size: var(--mini-font-size);
+    }
+
+    &__body::after {
+        position: absolute;
+        top: 3em;
+
+        content: attr(data-error);
+        color: var(--red-font-color);
         font-size: var(--mini-font-size);
     }
 }

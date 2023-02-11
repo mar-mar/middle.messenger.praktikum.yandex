@@ -1,0 +1,23 @@
+{{#*inline "className"}}profile-body{{/inline}}
+
+<div class="{{> className}}">
+
+    <div class="{{> className}}__left-col">
+
+        {{> common/input/index label="Почта" inputType="text" }}
+        {{> common/input/index label="Логин" inputType="text" }}
+        {{> common/input/index label="Имя" inputType="text" }}
+        {{> common/input/index label="Фамилия" inputType="text" }}
+        {{> common/input/index label="Имя в чате" inputType="text" }}
+        {{> common/input/index label="Телефон" inputType="text" }}
+        
+        <div class="{{> className}}__pass-cont">
+            {{> common/textButton/index label="Изменить пароль"  }}
+        </div>
+        
+    </div>
+
+    <div class="{{> className}}__right-col">
+        {{> common/avatar/index clickLabel="Поменять аватар" }}
+    </div>
+</div>

@@ -1,5 +1,9 @@
-<div class="textButton-wrapper">
-    <button class="textButton-wrapper__button">
-        <span class="textButton-wrapper__label">{{label}}</span>
+{{#*inline "className"}}text-button{{/inline}}
+
+<div class="{{> className}} {{#if red}}{{> className}}--red{{/if}}">
+    
+    <button onClick="window.location.href='{{pageUrl}}'">
+        <span class="{{> className}}__label">{{label}}</span>
     </button>
+
 </div>

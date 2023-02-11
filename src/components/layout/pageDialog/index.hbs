@@ -1,0 +1,22 @@
+{{#*inline "className"}}page-dialog{{/inline}}
+
+<div class="{{> className}}__wrapper">
+
+    <div class="{{> className}} {{className}}">
+
+        <header><h2 class="{{> className}}__header">{{title}}</h2></header>
+
+        <main class="{{> className}}__body-cont">
+
+            <section class="{{> className}}__body">
+                {{> (lookup . 'templateBody')}}
+            </section>
+            
+            <section class="{{> className}}__buttons">
+                {{> (lookup . 'templateButtons')}}
+            </section>
+            
+        </main>
+    </div>
+
+</div>

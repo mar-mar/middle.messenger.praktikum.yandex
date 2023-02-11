@@ -5,27 +5,25 @@ body, html {
    padding: 0;
    width: 100%;
    height: 100%;
-   font-size: 13px;
+   font-family: Arial;
+   font-size: var(--normal-font-size);
    color: var(--primary-font-color)
+}
+
+button, input {
+    font-family: Arial;
+    font-size: var(--normal-font-size);
+    padding: 0;
+    margin: 0;
 }
 
 button, input[type="submit"], input[type="reset"] {
 	background: none;
 	color: inherit;
 	border: none;
-	padding: 0;
-    margin: 0;
-	font: inherit;
 	cursor: pointer;
-	outline: inherit;
 }
 
-input {
-    font-family: inherit;
-    font-size: inherit;
-    padding: 0;
-    margin: 0;
-}
 
 *, *:before, *:after {
     box-sizing: border-box;
@@ -35,10 +33,15 @@ input {
     outline: none;
 }
 
-h1 {
+h1, h2 {
     display: block;
     font-size: inherit;
     margin: 0;
     padding: 0;
     font-weight: normal;
+    text-align: center;
+}
+
+h2 {
+   font-size: var(--h-font-size);
 }

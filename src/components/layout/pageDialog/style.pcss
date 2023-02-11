@@ -1,0 +1,28 @@
+@import "static/css/variable.pcss";
+@import "static/css/defineprops.pcss";
+
+.page-dialog {
+    @mixin bordershadow;
+    padding: 30px;
+    width: 340px;
+    flex-direction: column;
+    display: flex;
+
+    &__wrapper {
+        @mixin centerwrapper;
+    }
+
+    &__body-cont {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    &__body {
+        flex-grow: 1;
+    }
+
+    &__buttons {
+        text-align: center;
+    }
+}
