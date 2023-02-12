@@ -1,18 +1,13 @@
 @import "static/css/variable.pcss";
-@import "static/css/defineprops.pcss";
+@import "static/css/mixin.pcss";
 
 .input {
     margin-top: 1.5em;
 
     &__input {
         @mixin absolute-strech;
-        border: none;
         border-bottom: 2px solid var(--primary-color);
         background: none;
-
-        &:hover, &:focus {
-            border-color: green;
-        }
     }
 
     &__body {
@@ -23,9 +18,9 @@
 
     &__label {
         @mixin absolute-strech;
-        cursor: text;
-        transition: top 200ms ease-in, font-size 200ms ease-in;
         pointer-events: none;
+
+        transition: top 200ms ease-in, font-size 200ms ease-in;
         color: var(--grey-font-color);
     }
 

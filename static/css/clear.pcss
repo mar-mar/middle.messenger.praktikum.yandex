@@ -5,9 +5,11 @@ body, html {
    padding: 0;
    width: 100%;
    height: 100%;
+   
    font-family: Arial;
    font-size: var(--normal-font-size);
-   color: var(--primary-font-color)
+   color: var(--primary-font-color);
+   background: var(--primary-back-color);
 }
 
 button, input {
@@ -15,12 +17,12 @@ button, input {
     font-size: var(--normal-font-size);
     padding: 0;
     margin: 0;
+    border: none;
 }
 
 button, input[type="submit"], input[type="reset"] {
 	background: none;
 	color: inherit;
-	border: none;
 	cursor: pointer;
 }
 
@@ -43,5 +45,9 @@ h1, h2 {
 }
 
 h2 {
-   font-size: var(--h-font-size);
+   font-size: var(--h2-font-size);
+}
+
+h1 {
+   font-size: var(--h1-font-size);
 }

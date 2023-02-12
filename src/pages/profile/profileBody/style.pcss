@@ -1,0 +1,38 @@
+@import "static/css/variable.pcss";
+
+.profile-body {
+    display: flex;
+    height: 100%;
+    margin-top: var(--primary-offset);
+
+    &__left-col {
+        width: fit-content;
+    }
+
+    &__right-col {
+        flex-grow: 1;
+    }
+
+    &__pass-cont {
+        margin-top: 1.5em;
+    }
+
+    
+    &__settings-cont,  &__avatar-cont, &___pass-cont {
+        @mixin bordergray;
+        padding: var(--primary-offset);
+    }
+    
+
+    &__settings-cont {
+        margin-right: var(--primary-offset);
+    }
+
+    &__save_cont {
+        margin-top: var(--primary-offset);
+    }
+
+    &__logout-cont {
+        margin-top: var(--primary-offset);
+    }
+}

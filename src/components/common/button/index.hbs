@@ -1,4 +1,7 @@
-<button class="button {{#if red}}button--red{{/if}}" 
+{{#*inline "className"}}button{{/inline}}
+
+<button class="{{> className}} {{#if red}}{{> className}}--red{{/if}}" 
+
     onClick="window.location.href='{{pageUrl}}'">
 
     <span class="button__label">

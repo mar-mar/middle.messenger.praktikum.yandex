@@ -153,4 +153,3 @@ function isLength(value) {
           return Object.keys(value).length === 0;
       }
   }
-export { identity };

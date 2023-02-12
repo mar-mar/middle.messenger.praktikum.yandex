@@ -1,0 +1,19 @@
+@import "static/css/mixin.pcss";
+@import "static/css/variable.pcss";
+
+.error-page {
+    @mixin centerwrapper;
+    flex-direction: column;
+
+    &__error-code {
+       
+    }
+
+    &__message {
+        font-size: var(--h2-font-size);
+    }
+
+    &__back {
+        margin-top: var(--primary-offset);
+    }
+}

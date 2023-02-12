@@ -1,5 +1,5 @@
 @import "static/css/variable.pcss";
-@import "static/css/defineprops.pcss";
+@import "static/css/mixin.pcss";
 
 .avatar {
     @mixin absolute-strech__parent;
@@ -14,6 +14,9 @@
     &__label {
         @mixin absolute-strech;
         cursor: pointer;
+        background-image: url("/static/images/emptyAvatar.svg");
+        background-repeat: no-repeat;
+        background-position: center;
     }
 
     &__input {
@@ -26,6 +29,7 @@
         opacity: 0;
         transition: opacity 0.15s ease 0s;
         padding: 45% 0;
+        pointer-events: none;
     }
 
     &:hover > &__hover-label {

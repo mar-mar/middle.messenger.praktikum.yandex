@@ -6,6 +6,8 @@
         <link rel="stylesheet" type="text/css" href="/index.pcss"></link>
     </head>
     <body>
-         {{> (lookup . 'template')}}
+        {{#if @partial-block}}
+            {{> @partial-block }}
+        {{/if}}
     </body>
 </html> 

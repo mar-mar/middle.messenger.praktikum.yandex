@@ -1,0 +1,16 @@
+{{#*inline "className"}}error-page{{/inline}}
+
+<div class="{{> className}}">
+        <div class="{{> className}}__error-code">
+            <h1>{{errorCode}}</h1>
+        </div>
+
+        <div class="{{> className}}__message">
+            {{message}}
+        </div>
+
+        <div class="{{> className}}__back">
+            {{> components/common/textButton/index label="Назад к чатам" pageUrl="/src/pages/index.html" }}
+        </div>
+
+</div>
