@@ -5,15 +5,15 @@
     <div class="{{> className}}__left-col">
 
         <div class="{{> className}}__settings-cont">
-            {{> components/common/input/index label="Имя в чате" inputType="text" name="display_name" }}
-            {{> components/common/input/index label="Логин" inputType="text" name="login" }}
-            {{> components/common/input/index label="Имя" inputType="text" name="first_name" }}
-            {{> components/common/input/index label="Фамилия" inputType="text" name="second_name" }}
-            {{> components/common/input/index label="Почта" inputType="text" name="email" }}
-            {{> components/common/input/index label="Телефон" inputType="text" name="phone" }}
+            {{> components/input/index label="Имя в чате" inputType="text" name="display_name" }}
+            {{> components/input/index label="Логин" inputType="text" name="login" }}
+            {{> components/input/index label="Имя" inputType="text" name="first_name" }}
+            {{> components/input/index label="Фамилия" inputType="text" name="second_name" }}
+            {{> components/input/index label="Почта" inputType="text" name="email" }}
+            {{> components/input/index label="Телефон" inputType="text" name="phone" }}
 
             <div class="{{> className}}__save_cont">
-                {{> components/common/button/index label="Сохранить изменения"  pageUrl="/src/pages/index.html" }}
+                {{> components/button/index label="Сохранить изменения"  pageUrl="/src/pages/index.html" }}
             </div>
         </div>    
 
@@ -23,15 +23,15 @@
     <div class="{{> className}}__right-col">
         
         <div class="{{> className}}__avatar-cont">
-            {{> components/common/avatar/index clickLabel="Изменить аватар" }}
+            {{> pages/profile/avatar/index clickLabel="Изменить аватар" }}
         </div>
 
         <div class="{{> className}}__pass-cont">
-            {{> components/common/textButton/index label="Изменить пароль"  }}
+            {{> components/textButton/index label="Изменить пароль"  }}
         </div>
 
         <div class="{{> className}}__logout-cont">
-            <div>{{> components/common/textButton/index label="Выйти из профиля" pageUrl="/src/pages/login.html"
+            <div>{{> components/textButton/index label="Выйти из профиля" pageUrl="/src/pages/login.html"
                     red=1 }}</div>
         </div>
         

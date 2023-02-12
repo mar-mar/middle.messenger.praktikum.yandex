@@ -1,13 +1,10 @@
 {
   "plugins": {
-    "postcss-url": true,
     "postcss-import": {
       "root": "",
       "path": ""
     },
     "postcss-nested": true,
-    "postcss-simple-vars": false,
-    "postcss-mixins": true
-    
+    "postcss-mixins": true  
     }
 }
