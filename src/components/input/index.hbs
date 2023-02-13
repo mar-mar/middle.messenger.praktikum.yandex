@@ -1,6 +1,9 @@
 {{#*inline "className"}}input{{/inline}}
+{{#*inline "addedClassName" ~}}
+    {{~#unless noMargin}} {{> className}}--margin{{~/unless~}}
+{{~/inline}}
 
-<div class="{{> className}}">
+<div class="{{> className}} {{> addedClassName}}">
 
     <div class="{{> className}}__body" 
         data-error="{{errorMessage}}"> 

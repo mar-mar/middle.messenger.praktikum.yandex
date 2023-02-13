@@ -5,17 +5,9 @@
     height: 100%;
 
     &__lef-pane {
+        @mixin only-border-right;
         width: 250px;
-        display: flex;
-        flex-direction: column;
-
-        border-top-width: 0;
-        border-left-width: 0;
-        border-bottom-width: 0;
-    }
-
-    &__profile {
-        height: 40px;
+        overflow: hidden;
     }
 
     &__chats {
@@ -28,7 +20,7 @@
         flex-direction: column;
 
         &__header {
-           height: 50px;     
+            @mixin only-border-bottom;
         }
 
         &__messages {
@@ -36,16 +28,13 @@
         }
 
         &__input {
-            height: 50px;
-            border-right-width: 0;
-            border-left-width: 0;
-            border-bottom-width: 0;
+            @mixin only-border-top;
         }
     }
 
     &__url-for-check {
        position: fixed;
-       bottom: 10px;
+       top: 10px;
        right: 10px;
     }
 }

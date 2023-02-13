@@ -2,6 +2,20 @@
     "profile": {
         "display_name": "Petya Pupkin", 
         "avatar": "/static/images/avatar.jpg"
-    }
+    },
+
+    "activeChat": {
+        "profile": { 
+            "display_name": "No Petya Pupkin", 
+            "avatar": "/static/images/avatar.jpg"
+        }
+    },
+
+    "chats": [
+        { "display_name": "Вася", "avatar": "/static/images/avatar.jpg", "date": "Вчера" },
+        { "display_name": "Коля", "avatar": "/static/images/avatar.jpg", "date": "Позавчера" },
+        { "display_name": "Дуся", "avatar": "/static/images/avatar.jpg", "date": "22 февраля 2022" },
+        { "display_name": "Кинопоиск", "avatar": "/static/images/avatar.jpg", "date": "22 февраля 2022" }
+    ]
     
 }

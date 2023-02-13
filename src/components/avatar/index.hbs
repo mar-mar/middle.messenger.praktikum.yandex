@@ -1,6 +1,9 @@
 {{#*inline "className"}}avatar{{/inline}}
+{{#*inline "addedClassName" ~}}
+    {{~#if diameter}} {{> className}}--{{diameter}}{{~/if~}} 
+{{~/inline}}
 
-<div class="{{> className}}"
+<div class="{{> className}} {{> addedClassName}}"
     {{#if gotoPageName}} onClick="gotoPage('{{gotoPageName}}')" {{/if}}
     >
      

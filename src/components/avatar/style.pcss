@@ -2,8 +2,19 @@
 
 .avatar {
     @mixin absolute-strech__parent;
-    @mixin avatar;
+    @mixin border-gray;
     
+    &--L {
+        @mixin avatar 80px, 40px;
+    }
+    
+    &--M {
+        @mixin avatar 40px, 20px;
+    }
+
+    &--S {
+        @mixin avatar 30px, 15px;
+    }
 
     &__img {
         @mixin absolute-strech;

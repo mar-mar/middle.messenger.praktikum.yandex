@@ -2,11 +2,8 @@
 @import "src/style/mixin.pcss";
 
 .pane {
-    @mixin center-position-wrapper;
-
-    &--horizontal-center&--vertical-center &__content {
-        @mixin center-position;
-    }
+    display: flex;
+    flex-direction: column;
 
     &--second-back-color {
         background: var(--second-back-color);
@@ -18,5 +15,9 @@
 
     &--with-margin-top{
         margin-top: var(--second-offset);
+    }
+
+    &--h100{
+        height: 100%;
     }
 }

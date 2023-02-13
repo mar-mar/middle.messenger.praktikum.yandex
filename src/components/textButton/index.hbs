@@ -2,7 +2,8 @@
 
 <div class="{{> className}} {{#if red}}{{> className}}--red{{/if}}">
     
-    <button onClick="gotoPage('{{gotoPageName}}')">
+    <button 
+        {{#if gotoPageName}} onClick="gotoPage('{{gotoPageName}}')" {{/if}} >
         
         <span class="{{> className}}__label">{{label}}</span>
         

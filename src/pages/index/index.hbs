@@ -2,6 +2,7 @@
 thisClassName: page-chat
 addeClassNameLeftPane: page-chat__lef-pane
 addeClassNameChatInput: page-chat__chat__input
+addeClassNameChatHeader: page-chat__chat__header
 ---
 
 {{#> layout/page/index }}
@@ -10,27 +11,28 @@ addeClassNameChatInput: page-chat__chat__input
 
         {{#> components/pane/index withBorder=1 secBackColor=1 addeClassName=addeClassNameLeftPane }}
             <section class="{{thisClassName}}__profile">
-               {{> pages/index/components/profile/index item=this.chat.profile }}
+               {{> pages/index/components/profile/index ../this item=this.chat.profile }}
             </section>
 
             <nav class="{{thisClassName}}__chats">
-               {{> pages/index/components/chatList/index }}
+               {{> pages/index/components/chatList/index ../this item=this.chat }}
             </nav>
         {{/components/pane/index }}
 
 
         <section class="{{thisClassName}}__chat">
 
-            <div class="{{thisClassName}}__chat__header">
-               
-            </div>
+            {{#> components/pane/index ../this addeClassName=addeClassNameChatHeader withBorder=1 }}
+                {{> pages/index/components/chatHeader/index ../this item=this.activeChat }}
+            {{/components/pane/index }}
+
 
             <div class="{{thisClassName}}__chat__messages">
                 <section aria-label="Беседа"></section>
             </div>
 
-            {{#> components/pane/index withBorder=1 secBackColor=1 addeClassName=addeClassNameChatInput }}
-
+            {{#> components/pane/index ../this addeClassName=addeClassNameChatInput secBackColor=1 withBorder=1 }}
+                 {{> pages/index/components/messageInput/index ../this item=this.chat }}
             {{/components/pane/index }}
 
         </section>

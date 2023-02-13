@@ -6,12 +6,12 @@
 
 @define-mixin rounded-border-gray {
     @mixin border-gray;
-    border-radius: 12px;
+    border-radius: var(--pane-radius);
 }
 
 
 @define-mixin bordershadow {
-    border-radius: 12px;
+    border-radius: var(--pane-radius);
     background: var(--primary-back);
     box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
 }
@@ -41,10 +41,10 @@
 }
 
 
-@define-mixin avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
+@define-mixin avatar $diameter: 80px, $radius: 40px {
+    width: $(diameter);
+    height: $(diameter);
+    border-radius: $(radius);
     background: var(--avatar-color);
     overflow: hidden;
     text-align: center;    
@@ -53,4 +53,26 @@
 
 @define-mixin input-offet {
     margin-top: 1.5em;
+}
+
+@define-mixin test-var $width {
+    width: $width;
+}
+
+@define-mixin only-border-top {
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 0;
+}
+
+@define-mixin only-border-right {
+    border-top: 0;
+    border-bottom: 0;
+    border-left: 0;
+}
+
+@define-mixin only-border-bottom {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
 }

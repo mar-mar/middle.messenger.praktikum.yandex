@@ -1,0 +1,15 @@
+{{#*inline "className"}}center-pane{{/inline}}
+
+{{#*inline "addedClassName" ~}}
+    {{~#if withMarginTop}} {{> className}}--with-margin-top{{~/if~}}
+    {{~#if addeClassName}} {{addeClassName}}{{~/if~}}   
+{{~/inline}}
+
+
+<div class="{{> className}} {{> addedClassName}}">
+
+    <div class="{{> className}}__content" >
+        {{> @partial-block }}
+    </div>
+
+</div>

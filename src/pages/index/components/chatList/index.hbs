@@ -1,7 +1,6 @@
 {{#*inline "className"}}chat-list{{/inline}}
 
-<div class="{{> className}}">
-
+{{#> components/pane/index addeClassName='chat-list' h100=1 }}
     <div class="{{> className}}__header">
        <div class="{{> className}}__header__label">
             Чаты
@@ -13,6 +12,11 @@
 
     <div class="{{> className}}__list">
 
-    </div>
+        <ul class="people_list">
+        {{#each this.item.chats}}
+            {{> pages/index/components/chatItem/index item=this }}
+        {{/each}}
+        </ul>
 
-</div>
+    </div>
+{{/components/pane/index }}
