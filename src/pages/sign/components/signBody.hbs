@@ -9,7 +9,7 @@
         {{> components/input/index label="Фамилия" inputType="text" name="second_name" value=this.item.second_name }}
         {{> components/input/index label="Телефон" inputType="tel" name="phone" value=this.item.phone }}
         {{> components/input/index label="Пароль" inputType="password" name ="password" value=this.item.password }}
-        {{> components/input/index label="Пароль (еще раз)" inputType="password" value=this.item.password }}
+        {{> components/input/index label="Пароль (еще раз)" inputType="password" name="copy_password" value=this.item.password }}
     {{/inline}}
     
     {{#*inline "inline_buttons"}}
