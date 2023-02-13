@@ -1,8 +1,19 @@
-{{#> pages/page }}
-   {{> layout/pageDialog/index 
-        templateBody="pages/profile/profileBody/index" 
-        templateButtons="pages/profile/profileButtons" 
-        title="Ваш профиль" 
-        className="page-dialog-profile"
-   }}
-{{/pages/page }}
+
+{{#> layout/page/index }}
+
+   {{#> layout/pageDialog/index 
+         title="Ваш профиль" 
+         item=this.profile }}
+
+      {{#*inline "page_dialog_content"}}
+         {{> pages/profile/components/profileBody/index }}
+
+         {{#> components/pane/index horizontalType = "center" verticalType = "center" withMarginTop=1 }}
+            {{> components/textButton/index label="Назад к чатам" gotoPageName="index" }}
+         {{/components/pane/index }}
+         
+      {{/inline}}
+   
+   {{/layout/pageDialog/index}}
+
+{{/layout/page/index}}

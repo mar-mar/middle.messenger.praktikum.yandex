@@ -1,16 +1,25 @@
 {{#*inline "className"}}error-page{{/inline}}
 
-<div class="{{> className}}">
-        <div class="{{> className}}__error-code">
-            <h1>{{errorCode}}</h1>
-        </div>
+<div class="{{> className}}__wrapper">
+    <div class="{{> className}}">
 
-        <div class="{{> className}}__message">
-            {{message}}
-        </div>
+        <header class="{{> className}}__error-code">
+            <h1>{{errorCode}}</h1>
+        </header>
+
+        <main class="{{> className}}__message">
+            <div>
+                {{message}}
+            </div>
+        </main>
 
         <div class="{{> className}}__back">
-            {{> components/textButton/index label="Назад к чатам" pageUrl="/src/pages/index.html" }}
+            
+            {{#> components/pane/index horizontalType = "center" verticalType = "center" withMarginTop=1 }}
+                {{> components/textButton/index label="Назад к чатам" gotoPageName="index" }}
+            {{/components/pane/index }}
+
         </div>
 
+    </div>
 </div>

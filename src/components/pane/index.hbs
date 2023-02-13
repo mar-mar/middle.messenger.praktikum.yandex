@@ -1,0 +1,17 @@
+{{#*inline "className"}}pane{{/inline}}
+
+{{#*inline "addedClassName" ~}}
+    {{~#if horizontalType}} {{> className}}--horizontal-{{horizontalType}}{{~/if~}} 
+    {{~#if verticalType}} {{> className}}--vertical-{{verticalType}}{{~/if~}}
+    {{~#if secBackColor}} {{> className}}--second-back-color{{~/if~}}
+    {{~#if withBorder}} {{> className}}--with-border{{~/if~}}
+    {{~#if withMarginTop}} {{> className}}--with-margin-top{{~/if~}}
+    {{~#if addeClassName}} {{addeClassName}}{{~/if~}}   
+{{~/inline}}
+
+
+<div class="{{> className}} {{> addedClassName}}">
+    <div class="{{> className}}__content">
+        {{> @partial-block }}
+    </div>
+</div>

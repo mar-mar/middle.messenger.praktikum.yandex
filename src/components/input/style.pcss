@@ -1,27 +1,29 @@
-@import "static/css/variable.pcss";
-@import "static/css/mixin.pcss";
+@import "src/style/variable.pcss";
+@import "src/style/mixin.pcss";
 
 .input {
-    margin-top: 1.5em;
+    @mixin input-offet;
 
     &__input {
         @mixin absolute-strech;
-        border-bottom: 2px solid var(--primary-color);
+
+        border-bottom: var(--normal-border-size) solid var(--active-color);
         background: none;
     }
 
     &__body {
         @mixin absolute-strech__parent;
+
         height: 2.5em;
         line-height: 2.5em;
     }
 
     &__label {
         @mixin absolute-strech;
-        pointer-events: none;
 
-        transition: top 200ms ease-in, font-size 200ms ease-in;
+        pointer-events: none;
         color: var(--grey-font-color);
+        transition: top 200ms ease-in, font-size 200ms ease-in;
     }
 
     &__input:focus ~ &__label,

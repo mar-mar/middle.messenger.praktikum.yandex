@@ -2,20 +2,14 @@
 
 <div class="{{> className}}__wrapper">
 
-    <div class="{{> className}} {{className}}">
+    <div class="{{> className}}">
 
-        <header><h2 class="{{> className}}__header">{{title}}</h2></header>
+        <header>
+            <h2 class="{{> className}}__header">{{title}}</h2>
+        </header>
 
-        <main class="{{> className}}__body-cont">
-
-            <section class="{{> className}}__body">
-                {{> (lookup . 'templateBody')}}
-            </section>
-            
-            <section class="{{> className}}__buttons">
-                {{> (lookup . 'templateButtons')}}
-            </section>
-            
+        <main >
+             {{>  page_dialog_content }}
         </main>
     </div>
 

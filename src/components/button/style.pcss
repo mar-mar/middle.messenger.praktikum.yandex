@@ -1,19 +1,19 @@
-@import "static/css/clear.pcss";
-@import "static/css/variable.pcss";
+@import "src/style/variable.pcss";
+@import "src/style/mixin.pcss";
 
 .button {
-    margin-top: 1.5em;
-    
-    color: white;
-    width: 280px;
+    @mixin center-position-wrapper;
+    @mixin input-offet;
 
-    display: inline-flex;
-    align-items: center;
-    background: var(--primary-color);
+    width: 280px;
     height: 3em;
-    border-radius: var(--button-radius);
+    
+    color: var(--font-active-color);
+    background: var(--active-color);
+    border-radius: var(--input-radius);
 
     &__label {
+        @mixin center-position;
         width: 100%;
     }
 

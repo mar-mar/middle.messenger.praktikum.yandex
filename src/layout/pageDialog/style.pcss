@@ -1,28 +1,15 @@
-@import "static/css/variable.pcss";
-@import "static/css/mixin.pcss";
+@import "src/style/variable.pcss";
+@import "src/style/mixin.pcss";
 
 .page-dialog {
+    @mixin center-position;
     @mixin bordershadow;
-    padding: 30px;
-    width: 340px;
-    flex-direction: column;
-    display: flex;
+
+    padding: var(--primary-offset);
 
     &__wrapper {
-        @mixin centerwrapper;
+        @mixin center-position-wrapper;
+        height: 100%;
     }
 
-    &__body-cont {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-    }
-
-    &__body {
-        flex-grow: 1;
-    }
-
-    &__buttons {
-        text-align: center;
-    }
 }

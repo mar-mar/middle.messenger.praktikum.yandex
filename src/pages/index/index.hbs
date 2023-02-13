@@ -1,39 +1,47 @@
 ---
-id: "root" 
+thisClassName: page-chat
+addeClassNameLeftPane: page-chat__lef-pane
+addeClassNameChatInput: page-chat__chat__input
 ---
 
-{{#*inline "className"}}page-chat{{/inline}}
-
-{{#> pages/page }}
-   <div class="{{> className}}">
-
-      <div class="{{> className}}__left-col">
-
-         <div class="{{> className}}__profile">
-         dfgfdg 1
-         </div>
-
-         <div class="{{> className}}__chats">
-         dfgfd 2
-         </div> 
-
-      </div>
+{{#> layout/page/index }}
+    <div class="{{thisClassName}}">
 
 
-      <div class="{{> className}}__chat">
-         <div class="{{> className}}__chat__header">
-         fgdg 3
-         </div>
+        {{#> components/pane/index withBorder=1 secBackColor=1 addeClassName=addeClassNameLeftPane }}
+            <section class="{{thisClassName}}__profile">
+               {{> pages/index/components/profile/index item=this.chat.profile }}
+            </section>
 
-         <div class="{{> className}}__chat__messages">
-         dfgdfg 4 
-         </div>
+            <nav class="{{thisClassName}}__chats">
+               {{> pages/index/components/chatList/index }}
+            </nav>
+        {{/components/pane/index }}
 
-         <div class="{{> className}}__chat__input">
-         dfgfdg 5
-         </div>
-      </div>
 
-   </div>
-{{/pages/page }}
+        <section class="{{thisClassName}}__chat">
 
+            <div class="{{thisClassName}}__chat__header">
+               
+            </div>
+
+            <div class="{{thisClassName}}__chat__messages">
+                <section aria-label="Беседа"></section>
+            </div>
+
+            {{#> components/pane/index withBorder=1 secBackColor=1 addeClassName=addeClassNameChatInput }}
+
+            {{/components/pane/index }}
+
+        </section>
+
+        <div class="{{thisClassName}}__url-for-check">
+            <div><a href="/src/pages/login/index.hbs">Авторизация</a></div>
+            <div><a href="/src/pages/sign/index.hbs">Регистриция</a></div>
+            <div><a href="/src/pages/profile/index.hbs">Профиль</a></div>
+            <div><a href="/src/pages/error404/index.hbs">404 ошибка</a></div>
+            <div><a href="/src/pages/error500/index.hbs">500 ошибка</a></div>
+        </div>
+    </div>
+
+{{/layout/page/index}}

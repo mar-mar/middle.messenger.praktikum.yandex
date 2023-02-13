@@ -1,0 +1,13 @@
+{{#> components/form/index submitPageName="index"}}
+
+    {{#*inline "inline_fields"}}
+        {{> components/input/index label="Логин" inputType="text" name="login" value=this.item.login  }}
+        {{> components/input/index label="Пароль" inputType="password" name="password" value=this.item.password  }}
+    {{/inline}}
+    
+    {{#*inline "inline_buttons"}}
+        {{> components/button/index label="Войти" type="submit" }}
+    {{/inline}}
+
+{{/components/form/index}}
+

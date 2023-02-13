@@ -1,16 +1,21 @@
+@import "src/style/variable.pcss";
+
 .page-chat {
     display: flex;
     height: 100%;
 
-    &__left-col{
+    &__lef-pane {
         width: 250px;
         display: flex;
         flex-direction: column;
-        border-right: 1px solid red;
+
+        border-top-width: 0;
+        border-left-width: 0;
+        border-bottom-width: 0;
     }
 
     &__profile {
-        height: 80px;
+        height: 40px;
     }
 
     &__chats {
@@ -32,9 +37,16 @@
 
         &__input {
             height: 50px;
+            border-right-width: 0;
+            border-left-width: 0;
+            border-bottom-width: 0;
         }
     }
 
-    
+    &__url-for-check {
+       position: fixed;
+       bottom: 10px;
+       right: 10px;
+    }
 }
 

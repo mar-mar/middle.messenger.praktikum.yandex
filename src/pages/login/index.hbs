@@ -1,13 +1,21 @@
----
-id: "root" 
----
 
-{{#> pages/page }}
-   {{> layout/pageDialog/index 
-        templateBody="pages/login/loginBody" 
-        templateButtons="pages/login/loginButtons" 
+{{#> layout/page/index }}
+
+   {{#> layout/pageDialog/index 
         title="Авторизация" 
-        className="page-dialog-login"
-   }}
-{{/pages/page }}
+        item=this.login }}
+
+      {{#*inline "page_dialog_content"}}
+          {{> pages/login/components/loginBody }}
+
+         {{#> components/pane/index horizontalType = "center" verticalType = "center" withMarginTop=1 }}
+            {{> components/textButton/index label="Нет профиля?" gotoPageName="sign" }}
+         {{/components/pane/index }}
+
+      {{/inline}}
+   
+   {{/layout/pageDialog/index}}
+
+{{/layout/page/index}}
+
 

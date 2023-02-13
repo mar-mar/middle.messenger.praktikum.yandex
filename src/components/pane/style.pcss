@@ -1,0 +1,22 @@
+@import "src/style/variable.pcss";
+@import "src/style/mixin.pcss";
+
+.pane {
+    @mixin center-position-wrapper;
+
+    &--horizontal-center&--vertical-center &__content {
+        @mixin center-position;
+    }
+
+    &--second-back-color {
+        background: var(--second-back-color);
+    }
+
+    &--with-border {
+        @mixin border-gray;
+    }
+
+    &--with-margin-top{
+        margin-top: var(--second-offset);
+    }
+}

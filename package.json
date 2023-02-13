@@ -3,23 +3,23 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node server.js",
-    "dev": "parcel index.hbs --no-cache",
-    "build": "parcel build index.hbs --no-cache"
+    "start": "npm run build && node server.js",
+    "dev": "parcel src/pages/index/index.hbs --no-cache",
+    "build": "parcel build src/pages/index/index.hbs --no-cache"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@anikin/parcel-transformer-handlebars": "^1.0.9",
-    "express": "^4.18.2",
-    "parcel": "^2.8.3",
-    "postcss": "^8.4.21",
-    "postcss-import": "^15.1.0",
-    "postcss-mixins": "^9.0.4",
-    "postcss-nested": "^6.0.0"
+    "@anikin/parcel-transformer-handlebars": "1.0.9",
+    "express": "4.18.2",
+    "parcel": "2.8.3",
+    "postcss": "8.4.21",
+    "postcss-import": "15.1.0",
+    "postcss-mixins": "9.0.4",
+    "postcss-nested": "6.0.0"
   },
   "dependencies": {
-    "@fontsource/inter": "^4.5.15"
+    "@fontsource/inter": "4.5.15"
   }
 }

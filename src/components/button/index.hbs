@@ -1,8 +1,9 @@
 {{#*inline "className"}}button{{/inline}}
 
 <button class="{{> className}} {{#if red}}{{> className}}--red{{/if}}" 
-
-    onClick="window.location.href='{{pageUrl}}'">
+    type="{{type}}"
+    {{#if gotoPageName}} onClick="gotoPage('{{gotoPageName}}')" {{/if}}
+    >
 
     <span class="button__label">
         {{label}}

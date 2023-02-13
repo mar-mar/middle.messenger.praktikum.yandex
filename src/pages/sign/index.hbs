@@ -1,11 +1,19 @@
----
-id: "root" 
----
-{{#> pages/page }}
-   {{> layout/pageDialog/index 
-        templateBody="pages/sign/signBody" 
-        templateButtons="pages/sign/signButtons" 
-        title="Регистрация"
-        className="page-dialog-sing"
-   }}
-{{/pages/page }}
+
+{{#> layout/page/index }}
+
+   {{#> layout/pageDialog/index 
+         title="Ваш профиль" 
+         item=this.profile }}
+
+      {{#*inline "page_dialog_content"}}
+         {{> pages/sign/components/signBody }}
+
+         {{#> components/pane/index horizontalType = "center" verticalType = "center" withMarginTop=1 }}
+            {{> components/textButton/index label="Перейти к авторизации" gotoPageName="login" }}
+         {{/components/pane/index }}
+          
+      {{/inline}}
+   
+   {{/layout/pageDialog/index}}
+
+{{/layout/page/index}}

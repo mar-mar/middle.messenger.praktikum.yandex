@@ -1,5 +1,16 @@
 {{#*inline "className"}}avatar{{/inline}}
 
-<div class="{{> className}}">
-    <img src="{{url}}" >
+<div class="{{> className}}"
+    {{#if gotoPageName}} onClick="gotoPage('{{gotoPageName}}')" {{/if}}
+    >
+     
+    {{#if imageUrl}}
+        <img class="{{> className}}__img" src = "{{imageUrl}}"  ></img>
+    {{else}}
+        <div class="{{> className}}__empty-image" ></div>
+    {{/if}}
+
+    {{#if gotoPageName}}
+        <div class="{{> className}}__hover-label">{{clickLabel}}</div>
+    {{/if}}
 </div>

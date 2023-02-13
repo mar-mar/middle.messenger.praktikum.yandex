@@ -1,3 +1,4 @@
 module.exports = {
-    partials: './src'
-  }
+  partials: './src',
+  data: "testData"
+}

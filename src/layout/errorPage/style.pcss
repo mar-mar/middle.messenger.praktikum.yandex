@@ -1,12 +1,13 @@
-@import "static/css/mixin.pcss";
-@import "static/css/variable.pcss";
+@import "src/style/mixin.pcss";
+@import "src/style/variable.pcss";
 
 .error-page {
-    @mixin centerwrapper;
-    flex-direction: column;
+    @mixin center-position;
+    
+    &__wrapper {
+        @mixin center-position-wrapper;
 
-    &__error-code {
-       
+        height: 100%;
     }
 
     &__message {

@@ -1,0 +1,56 @@
+@import "./variable.pcss";
+
+@define-mixin border-gray {
+    border: var(--normal-border-size) solid var(--border-color);
+}
+
+@define-mixin rounded-border-gray {
+    @mixin border-gray;
+    border-radius: 12px;
+}
+
+
+@define-mixin bordershadow {
+    border-radius: 12px;
+    background: var(--primary-back);
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
+}
+
+
+@define-mixin center-position-wrapper {
+    display: flex;
+}
+
+@define-mixin center-position {
+    margin: auto;
+}
+
+
+@define-mixin absolute-strech {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+}
+
+@define-mixin  absolute-strech__parent {
+    position: relative;
+}
+
+
+@define-mixin avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background: var(--avatar-color);
+    overflow: hidden;
+    text-align: center;    
+}
+
+
+@define-mixin input-offet {
+    margin-top: 1.5em;
+}
