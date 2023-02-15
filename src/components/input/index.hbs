@@ -9,10 +9,13 @@
         data-error="{{errorMessage}}"> 
 
         <input  class="{{> className}}__input" 
-            type="{{inputType}}"
+            type="{{#if inputType}}{{inputType}}{{else}}text{{/if}}"
             placeholder=" " autocomplete="off"
-            value="{{value}}" 
-            name="{{name}}">
+
+            value="{{lookup item key}}" 
+
+
+            name="{{key}}">
 
         <label class="{{> className}}__label">
             {{label}}

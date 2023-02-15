@@ -4,7 +4,8 @@
 <div class="{{> className}}">
 
     <div class="{{> className}}__avatar">
-        {{> components/avatar/index imageUrl=this.profile.avatar diameter='S'}}
+        {{> components/avatar/index imageUrl=this.profile.avatar diameter='S' 
+            avatarOwner="{{this.profile.display_name}}" }}
     </div>
 
     <div class="{{> className}}__label">

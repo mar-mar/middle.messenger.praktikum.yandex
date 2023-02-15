@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "start2000": "export PORT=2000 && npm run start",
     "start": "npm run build && node server.js",
-    "dev": "parcel src/pages/index/index.hbs --no-cache",
+    "devNoOpen": "parcel src/pages/index/index.hbs --no-cache",
+    "dev": "parcel src/pages/index/index.hbs --no-cache --open",
     "build": "parcel build src/pages/index/index.hbs --no-cache"
   },
   "keywords": [],

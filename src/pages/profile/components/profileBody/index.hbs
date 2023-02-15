@@ -6,15 +6,15 @@
 
         <div class="{{> className}}__settings-cont">
 
-            {{#> components/form/index submitPageName="index" }}
+            {{#> components/form/index submitPageName="index" item=this.item }}
 
                 {{#*inline "inline_fields"}}
-                    {{> components/input/index label="Имя в чате" inputType="text" name="display_name" value=this.item.display_name }}
-                    {{> components/input/index label="Логин" inputType="text" name="login" value=this.item.login }}
-                    {{> components/input/index label="Имя" inputType="text" name="first_name" value=this.item.first_name }}
-                    {{> components/input/index label="Фамилия" inputType="text" name="second_name" value=this.item.second_name }}
-                    {{> components/input/index label="Почта" inputType="text" name="email" value=this.item.email }}
-                    {{> components/input/index label="Телефон" inputType="tel" name="phone" value=this.item.phone }}
+                    {{> components/input/index label="Имя в чате" key="display_name" }}
+                    {{> components/input/index label="Логин" key="login" }}
+                    {{> components/input/index label="Имя" key="first_name" }}
+                    {{> components/input/index label="Фамилия" key="second_name" }}
+                    {{> components/input/index label="Почта" key="email" }}
+                    {{> components/input/index label="Телефон" key="phone" }}
                 {{/inline}}
                 
                 {{#*inline "inline_buttons"}}

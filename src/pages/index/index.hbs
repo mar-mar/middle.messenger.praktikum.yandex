@@ -6,8 +6,8 @@ addeClassNameChatHeader: page-chat__chat__header
 ---
 
 {{#> layout/page/index }}
+        
     <div class="{{thisClassName}}">
-
 
         {{#> components/pane/index withBorder=1 secBackColor=1 addeClassName=addeClassNameLeftPane }}
             <section class="{{thisClassName}}__profile">
@@ -20,7 +20,7 @@ addeClassNameChatHeader: page-chat__chat__header
         {{/components/pane/index }}
 
 
-        <section class="{{thisClassName}}__chat">
+        <main class="{{thisClassName}}__chat">
 
             {{#> components/pane/index ../this addeClassName=addeClassNameChatHeader withBorder=1 }}
                 {{> pages/index/components/chatHeader/index ../this item=this.activeChat }}
@@ -35,7 +35,7 @@ addeClassNameChatHeader: page-chat__chat__header
                  {{> pages/index/components/messageInput/index ../this item=this.chat }}
             {{/components/pane/index }}
 
-        </section>
+        </main>
 
         <div class="{{thisClassName}}__url-for-check">
             <div><a href="/src/pages/login/index.hbs">Авторизация</a></div>
