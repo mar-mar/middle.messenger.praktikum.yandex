@@ -1,0 +1,49 @@
+{{#*inline "className"}}profile-body{{/inline}}
+
+<div class="{{> className}}">
+
+    <div class="{{> className}}__left-col">
+
+        <div class="{{> className}}__settings-cont">
+
+            {{#> components/form/index submitPageName="index" item=this.item }}
+
+                {{#*inline "inline_fields"}}
+                    {{> components/input/index label="Имя в чате" key="display_name" }}
+                    {{> components/input/index label="Логин" key="login" }}
+                    {{> components/input/index label="Имя" key="first_name" }}
+                    {{> components/input/index label="Фамилия" key="second_name" }}
+                    {{> components/input/index label="Почта" key="email" }}
+                    {{> components/input/index label="Телефон" key="phone" }}
+                {{/inline}}
+                
+                {{#*inline "inline_buttons"}}
+                    {{> components/button/index label="Сохранить изменения" type="submit" }}
+                {{/inline}}
+
+            {{/components/form/index}}
+
+        </div>    
+
+    </div>
+
+
+    <div class="{{> className}}__right-col">
+        
+        <div class="{{> className}}__avatar-cont">
+            {{> components/avatar/index clickLabel="Изменить аватар" gotoPageName="error404"
+                imageUrl=item.avatar diameter='L'
+                avatarOwner=item.display_name }}
+        </div>
+
+        <div class="{{> className}}__pass-cont">
+            {{> components/textButton/index label="Изменить пароль" gotoPageName="error404" }}
+        </div>
+
+        <div class="{{> className}}__logout-cont">
+            <div>{{> components/textButton/index label="Выйти из профиля" gotoPageName="login"
+                    red=1 }}</div>
+        </div>
+        
+    </div>
+</div>

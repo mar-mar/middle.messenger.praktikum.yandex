@@ -1,0 +1,39 @@
+@import "src/style/variable.pcss";
+
+.profile-body {
+    display: flex;
+    height: 100%;
+    margin-top: var(--primary-offset);
+
+    &__left-col {
+        width: fit-content;
+    }
+
+    &__right-col {
+        flex-grow: 1;
+    }
+
+    &__pass-cont {
+        margin-top: 1.5em;
+    }
+
+    &__settings-cont,  &__avatar-cont, &___pass-cont {
+        @mixin rounded-border-gray;
+        padding: var(--primary-offset);
+    }
+    
+
+    &__settings-cont {
+        margin-right: var(--primary-offset);
+    }
+
+    &__save_cont, &__logout-cont {
+        margin-top: var(--primary-offset);
+    }
+
+    &__avatar-cont .avatar {
+        width: 140px;
+        height: 140px;
+        border-radius: 70px;
+    }
+}

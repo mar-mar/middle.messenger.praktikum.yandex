@@ -1,0 +1,15 @@
+@import "src/style/variable.pcss";
+@import "src/style/mixin.pcss";
+
+.page-dialog {
+    @mixin center-position;
+    @mixin bordershadow;
+
+    padding: var(--primary-offset);
+
+    &__wrapper {
+        @mixin center-position-wrapper;
+        height: 100%;
+    }
+
+}

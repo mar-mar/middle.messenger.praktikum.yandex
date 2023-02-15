@@ -1,0 +1,14 @@
+{
+  "plugins": {
+      "postcss-import": {
+        "root": "",
+        "path": ""
+      },
+      "postcss-nested": true,
+      "postcss-mixins": true,
+      "postcss-custom-properties": {
+        "preserve": false
+      },
+      "postcss-simple-vars": true
+    }
+}

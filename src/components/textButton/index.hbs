@@ -1,0 +1,12 @@
+{{#*inline "className"}}text-button{{/inline}}
+
+<div class="{{> className}} {{#if red}}{{> className}}--red{{/if}}">
+    
+    <button 
+        {{#if gotoPageName}} onClick="gotoPage('{{gotoPageName}}')" {{/if}} >
+        
+        <span class="{{> className}}__label">{{label}}</span>
+        
+    </button>
+
+</div>

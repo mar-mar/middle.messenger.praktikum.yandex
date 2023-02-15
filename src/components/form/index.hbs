@@ -1,0 +1,15 @@
+{{#*inline "className"}}form{{/inline}}
+
+<form class="{{> className}}" onSubmit="gotoPage('{{submitPageName}}'); return false;">
+
+    <div>
+        {{>  inline_fields }}
+    </div>
+    
+    {{#unless noButtonCont }}
+    <div class="{{> className}}__button-cont">
+        {{> inline_buttons }}
+    </div>
+    {{/unless}}
+    
+</form> 
