@@ -2,10 +2,11 @@
 
 <div class="{{> className}}">
 
-    {{> components/avatar/index imageUrl=this.item.avatar diameter='M' }} 
+    {{> components/avatar/index imageUrl=item.avatar diameter='M' 
+        avatarOwner=item.display_name }} 
 
     <h2 class="{{> className}}__header">
-        {{this.item.display_name}}
+        {{item.display_name}}
     </h2>
 
 </div>
