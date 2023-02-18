@@ -1,12 +1,8 @@
-(function(root) {
+global.gotoPage = function gotoPage(pageName) {
+    let url = `../${pageName}/index.html`;
+    if (pageName === "index") {
+        url = `${global.location.origin}/index.html`;
+    }
 
-    root.gotoPage = function(pageName) {
-        let url = `../${pageName}/index.html`;
-        if ("index" === pageName) {
-            url = window.location.origin + "/index.html";
-        }
-
-        window.location.href = url;
-    };
-
-})(this);
+    global.location.href = url;
+};
