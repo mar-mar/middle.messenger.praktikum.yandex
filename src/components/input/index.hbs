@@ -1,23 +1,20 @@
-{{#*inline "className"}}input{{/inline}}
+
 {{#*inline "addedClassName" ~}}
-    {{~#unless noMargin}} {{> className}}--margin{{~/unless~}}
+    {{~#unless noMargin}} {{ styles.root }}--margin{{~/unless~}}
 {{~/inline}}
 
-<div class="{{> className}} {{> addedClassName}}">
+<div class="{{ styles.root }} {{> addedClassName}}">
 
-    <div class="{{> className}}__body" 
+    <div class="{{ styles.root }}__body" 
         data-error="{{errorMessage}}"> 
 
-        <input  class="{{> className}}__input" 
+        <input  class="{{ styles.root }}__input" 
             type="{{#if inputType}}{{inputType}}{{else}}text{{/if}}"
             placeholder=" " autocomplete="off"
-
             value="{{lookup item key}}" 
-
-
             name="{{key}}">
 
-        <label class="{{> className}}__label">
+        <label class="{{ styles.root }}__label">
             {{label}}
         </label>
 

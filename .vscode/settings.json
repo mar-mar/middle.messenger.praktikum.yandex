@@ -1,3 +1,6 @@
 {
-    "files.insertFinalNewline": true
+    "files.insertFinalNewline": true,
+    "editor.tabSize": 4,
+    "editor.indentSize": 4,
+    "editor.detectIndentation": false
 }

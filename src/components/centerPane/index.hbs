@@ -1,15 +1,14 @@
-{{#*inline "className"}}center-pane{{/inline}}
 
 {{#*inline "addedClassName" ~}}
-    {{~#if withMarginTop}} {{> className}}--with-margin-top{{~/if~}}
+    {{~#if withMarginTop}} {{ styles.root }}--with-margin-top{{~/if~}}
     {{~#if addeClassName}} {{addeClassName}}{{~/if~}}   
 {{~/inline}}
 
 
-<div class="{{> className}} {{> addedClassName}}">
+<div class="{{ styles.root }} {{> addedClassName}}">
 
-    <div class="{{> className}}__content" >
-        {{> @partial-block }}
+    <div class="{{ styles.root }}__content" >
+        <div data-content></div>
     </div>
 
 </div>

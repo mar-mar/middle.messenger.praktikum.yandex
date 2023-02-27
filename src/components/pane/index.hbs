@@ -1,14 +1,13 @@
-{{#*inline "className"}}pane{{/inline}}
 
 {{#*inline "addedClassName" ~}}
-    {{~#if secBackColor}} {{> className}}--second-back-color{{~/if~}}
-    {{~#if withBorder}} {{> className}}--with-border{{~/if~}}
-    {{~#if withMarginTop}} {{> className}}--with-margin-top{{~/if~}}
-    {{~#if h100}} {{> className}}--h100{{~/if~}}
+    {{~#if secBackColor}} {{ styles.root }}--second-back-color{{~/if~}}
+    {{~#if withBorder}} {{ styles.root }}--with-border{{~/if~}}
+    {{~#if withMarginTop}} {{ styles.root }}--with-margin-top{{~/if~}}
+    {{~#if h100}} {{ styles.root }}--h100{{~/if~}}
     {{~#if addeClassName}} {{addeClassName}}{{~/if~}}   
 {{~/inline}}
 
 
-<div class="{{> className}} {{> addedClassName}}">
-    {{> @partial-block }}
+<div class="{{ styles.root }} {{> addedClassName}}">
+    <div data-content></div>
 </div>

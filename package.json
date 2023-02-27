@@ -7,13 +7,17 @@
     "start": "npm run build && node server.js",
     "devNoOpen": "parcel src/pages/index/index.hbs --no-cache",
     "dev": "parcel src/pages/index/index.hbs --no-cache --open",
-    "build": "parcel build src/pages/index/index.hbs --no-cache"
+    "build": "parcel build src/pages/index/index.hbs --no-cache",
+    "devNew": "parcel src/index.html --no-cache ",
+    "buildNew": "parcel build src/**/*.{ts,hbs} --no-cache",
+    "ooo": "parcel build src/build.ts --no-cache"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@anikin/parcel-transformer-handlebars": "1.0.9",
+    "@anikin/parcel-transformer-handlebars-precompile": "^1.0.1",
+    "@parcel/validator-typescript": "^2.8.3",
     "eslint": "8.34.0",
     "eslint-config-airbnb": "19.0.4",
     "express": "4.18.2",
@@ -24,9 +28,13 @@
     "postcss-mixins": "9.0.4",
     "postcss-nested": "6.0.0",
     "stylelint": "^15.1.0",
+    "stylelint-config-standard": "^30.0.1",
     "typescript": "4.9.5"
   },
   "dependencies": {
-    "@fontsource/inter": "4.5.15"
+    "@fontsource/inter": "4.5.15",
+    "@parcel/resolver-glob": "^2.8.3",
+    "handlebars": "^4.7.7",
+    "nanoid": "^4.0.1"
   }
 }

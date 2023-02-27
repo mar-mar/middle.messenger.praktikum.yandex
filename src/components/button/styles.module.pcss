@@ -1,0 +1,23 @@
+@import url("src/style/variable.pcss");
+@import url("src/style/mixin.pcss");
+
+.root {
+    @mixin center-position-wrapper;
+    @mixin input-offet;
+
+    width: 280px;
+    height: 3em;
+    color: var(--font-active-color);
+    background: var(--active-color);
+    border-radius: var(--input-radius);
+
+    &__label {
+        @mixin center-position;
+
+        width: 100%;
+    }
+
+    &--red {
+        color: var(--red-font-color);
+    }
+}

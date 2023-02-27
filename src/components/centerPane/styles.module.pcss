@@ -1,0 +1,15 @@
+@import url("src/style/variable.pcss");
+@import url("src/style/mixin.pcss");
+
+.root {
+    @mixin center-position-wrapper;
+
+    &__content {
+        @mixin center-position;
+    }
+
+    &--with-margin-top{
+        margin-top: var(--second-offset);
+    }
+
+}

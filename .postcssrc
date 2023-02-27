@@ -1,5 +1,6 @@
 {
   "plugins": {
+      "stylelint": {},
       "postcss-import": {
         "root": "",
         "path": ""

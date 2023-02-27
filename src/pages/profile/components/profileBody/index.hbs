@@ -1,48 +1,47 @@
-{{#*inline "className"}}profile-body{{/inline}}
 
-<div class="{{> className}}">
+<div class="{{ styles.root }}">
 
-    <div class="{{> className}}__left-col">
+    <div class="{{ styles.root }}__left-col">
 
-        <div class="{{> className}}__settings-cont">
+        <div class="{{ styles.root }}__settings-cont">
 
-            {{#> components/form/index submitPageName="index" item=this.item }}
+            {{#components_form submitPageName="index" item=this.item }}
 
-                {{#*inline "inline_fields"}}
-                    {{> components/input/index label="Имя в чате" key="display_name" }}
-                    {{> components/input/index label="Логин" key="login" }}
-                    {{> components/input/index label="Имя" key="first_name" }}
-                    {{> components/input/index label="Фамилия" key="second_name" }}
-                    {{> components/input/index label="Почта" key="email" }}
-                    {{> components/input/index label="Телефон" key="phone" }}
-                {{/inline}}
+                <div>
+                    {{{components_input label="Имя в чате" key="display_name" }}}
+                    {{{components_input label="Логин" key="login" }}}
+                    {{{components_input label="Имя" key="first_name" }}}
+                    {{{components_input label="Фамилия" key="second_name" }}}
+                    {{{components_input label="Почта" key="email" }}}
+                    {{{components_input label="Телефон" key="phone" }}}
+                </div>
                 
-                {{#*inline "inline_buttons"}}
-                    {{> components/button/index label="Сохранить изменения" type="submit" }}
-                {{/inline}}
+                <div>
+                    {{{components_button label="Сохранить изменения" type="submit" }}}
+                </div>
 
-            {{/components/form/index}}
+            {{/components_form}}
 
         </div>    
 
     </div>
 
 
-    <div class="{{> className}}__right-col">
+    <div class="{{ styles.root }}__right-col">
         
-        <div class="{{> className}}__avatar-cont">
-            {{> components/avatar/index clickLabel="Изменить аватар" gotoPageName="error404"
+        <div class="{{ styles.root }}__avatar-cont">
+            {{{components_avatar clickLabel="Изменить аватар" gotoPageName="error404"
                 imageUrl=item.avatar diameter='L'
-                avatarOwner=item.display_name }}
+                avatarOwner=item.display_name }}}
         </div>
 
-        <div class="{{> className}}__pass-cont">
-            {{> components/textButton/index label="Изменить пароль" gotoPageName="error404" }}
+        <div class="{{ styles.root }}__pass-cont">
+            {{{components_textButton label="Изменить пароль" gotoPageName="error404" }}}
         </div>
 
-        <div class="{{> className}}__logout-cont">
-            <div>{{> components/textButton/index label="Выйти из профиля" gotoPageName="login"
-                    red=1 }}</div>
+        <div class="{{ styles.root }}__logout-cont">
+            <div>{{{components_textButton label="Выйти из профиля" gotoPageName="login"
+                    red=1 }}}</div>
         </div>
         
     </div>

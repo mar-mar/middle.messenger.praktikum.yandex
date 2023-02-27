@@ -1,0 +1,21 @@
+
+
+{{#components_form submitPageName="index" item=this.item }}
+
+    <div>
+        {{{components_input label="Почта" key="email" }}}
+        {{{components_input label="Логин" key="login"  }}}
+        {{{components_input label="Имя" key="first_name" }}}
+        {{{components_input label="Фамилия" key="second_name"  }}}
+        {{{components_input label="Телефон" inputType="tel" key="phone" }}}
+        {{{components_input label="Пароль" inputType="password" key ="password" }}}
+        {{{components_input label="Пароль (еще раз)" inputType="password" key="password" }}}
+    </div>
+    
+    <div>
+        {{{components_button label="Создать профиль" type="submit"  }}}
+    </div>
+
+{{/components_form}}
+
+

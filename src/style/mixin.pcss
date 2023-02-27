@@ -1,4 +1,4 @@
-@import "./variable.pcss";
+@import url("./variable.pcss");
 
 @define-mixin border-gray {
     border: var(--normal-border-size) solid var(--border-color);
@@ -6,6 +6,7 @@
 
 @define-mixin rounded-border-gray {
     @mixin border-gray;
+
     border-radius: var(--pane-radius);
 }
 
@@ -13,7 +14,7 @@
 @define-mixin bordershadow {
     border-radius: var(--pane-radius);
     background: var(--primary-back);
-    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 6px rgb(0 0 0 / 40%);
 }
 
 

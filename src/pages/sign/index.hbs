@@ -1,19 +1,13 @@
 
-{{#> layout/page/index }}
+{{#layout_pageDialog 
+    title="Ваш профиль" 
+    item=this.profile }}
 
-   {{#> layout/pageDialog/index 
-         title="Ваш профиль" 
-         item=this.profile }}
+    {{{pages_sign_components_signBody}}}
 
-      {{#*inline "page_dialog_content"}}
-         {{> pages/sign/components/signBody }}
+    {{#components_centerPane horizontalType = "center" verticalType = "center" withMarginTop=1 }}
+    {{{components_textButton label="Перейти к авторизации" gotoPageName="login" }}}
+    {{/components_centerPane }}
+    
 
-         {{#> components/centerPane/index horizontalType = "center" verticalType = "center" withMarginTop=1 }}
-            {{> components/textButton/index label="Перейти к авторизации" gotoPageName="login" }}
-         {{/components/centerPane/index }}
-          
-      {{/inline}}
-   
-   {{/layout/pageDialog/index}}
-
-{{/layout/page/index}}
+{{/layout_pageDialog }}

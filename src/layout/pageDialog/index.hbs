@@ -1,15 +1,14 @@
-{{#*inline "className"}}page-dialog{{/inline}}
 
-<div class="{{> className}}__wrapper">
+<div class="{{ styles.root }}__wrapper">
 
-    <div class="{{> className}}">
+    <div class="{{ styles.root }}">
 
         <header>
-            <h2 class="{{> className}}__header">{{title}}</h2>
+            <h2 class="{{ styles.root }}__header">{{title}}</h2>
         </header>
 
-        <main >
-             {{>  page_dialog_content }}
+        <main>
+            <div data-content></div>
         </main>
     </div>
 

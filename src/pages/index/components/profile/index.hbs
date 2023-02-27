@@ -1,11 +1,10 @@
-{{#*inline "className"}}chat-profile{{/inline}}
 
-<div class="{{> className}}">
+<div class="{{ style.root }}">
 
-    {{> components/avatar/index imageUrl=item.avatar diameter='M' 
-        avatarOwner=item.display_name }} 
+    {{{components_avatar imageUrl=item.avatar diameter='M' 
+        avatarOwner=item.display_name }}}
 
-    <h2 class="{{> className}}__header">
+    <h2 class="{{ style.root }}__header">
         {{item.display_name}}
     </h2>
 

@@ -1,18 +1,16 @@
-{{#*inline "className"}}chat-item{{/inline}}
 
+<li class="{{ style.root }}">
 
-<li class="{{> className}}">
-
-    <div class="{{> className}}__avatar">
-        {{> components/avatar/index imageUrl=item.avatar diameter='S'
-            avatarOwner=item.display_name }}
+    <div class="{{ style.root }}__avatar">
+        {{{components_avatar imageUrl=item.avatar diameter='S'
+            avatarOwner=item.display_name }}}
     </div>
 
-    <div class="{{> className}}__label">
+    <div class="{{ style.root }}__label">
         {{item.display_name}}
     </div>
 
-    <div class="{{> className}}__date">
+    <div class="{{ style.root }}__date">
         {{item.date}}
     </div>
 </li>

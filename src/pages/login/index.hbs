@@ -1,21 +1,13 @@
+{{#layout_pageDialog
+    title="Авторизация"
+    item=this.login }}
 
-{{#> layout/page/index }}
+<div>
+    {{{pages_login_components_loginBody }}}
+    
+    {{#components_centerPane horizontalType = "center" verticalType = "center" withMarginTop=1 }}
+        {{{components_textButton label="Нет профиля?" gotoPageName="sign" }}}
+    {{/components_centerPane}}
 
-   {{#> layout/pageDialog/index 
-        title="Авторизация" 
-        item=this.login }}
-
-      {{#*inline "page_dialog_content"}}
-          {{> pages/login/components/loginBody }}
-
-         {{#> components/centerPane/index horizontalType = "center" verticalType = "center" withMarginTop=1 }}
-            {{> components/textButton/index label="Нет профиля?" gotoPageName="sign" }}
-         {{/components/centerPane/index }}
-
-      {{/inline}}
-   
-   {{/layout/pageDialog/index}}
-
-{{/layout/page/index}}
-
-
+</div>
+{{/layout_pageDialog}}

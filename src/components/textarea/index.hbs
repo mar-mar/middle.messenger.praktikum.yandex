@@ -1,8 +1,7 @@
-{{#*inline "className"}}textarea{{/inline}}
 
-<div class="{{> className}}">
+<div class="{{ styles.root }}">
 
-    <textarea  class="{{> className}}__textarea" 
+    <textarea  class="{{ styles.root }}__textarea" 
             type="{{inputType}}"
             placeholder="{{label}}" autocomplete="off"
             value="{{value}}" 

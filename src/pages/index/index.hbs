@@ -1,49 +1,39 @@
----
-thisClassName: page-chat
-addeClassNameLeftPane: page-chat__lef-pane
-addeClassNameChatInput: page-chat__chat__input
-addeClassNameChatHeader: page-chat__chat__header
----
+<div class="{{ styles.root }}">
 
-{{#> layout/page/index }}
-        
-    <div class="{{thisClassName}}">
+    {{#components_pane withBorder=1 secBackColor=1 addeClassName=styles.[left-pane] }}
+        <section class="{{ styles.root }}__profile">
+            {{{pages_index_components_profile item=this.chat.profile }}}
+        </section>
 
-        {{#> components/pane/index withBorder=1 secBackColor=1 addeClassName=addeClassNameLeftPane }}
-            <section class="{{thisClassName}}__profile">
-               {{> pages/index/components/profile/index ../this item=this.chat.profile }}
-            </section>
-
-            <nav class="{{thisClassName}}__chats">
-               {{> pages/index/components/chatList/index ../this item=this.chat }}
-            </nav>
-        {{/components/pane/index }}
+        <nav class="{{ styles.root }}__chats">
+            {{{pages_index_components_chatList item=this.chat }}}
+        </nav>
+    {{/components_pane }}
 
 
-        <main class="{{thisClassName}}__chat">
+    <main class="{{ styles.root }}__chat">
 
-            {{#> components/pane/index ../this addeClassName=addeClassNameChatHeader withBorder=1 }}
-                {{> pages/index/components/chatHeader/index ../this item=this.activeChat }}
-            {{/components/pane/index }}
+        {{#components_pane addeClassName=styles.[chat-header] withBorder=1 }}
+            {{{pages_index_components_chatHeader item=this.activeChat }}}
+        {{/components_pane }}
 
 
-            <div class="{{thisClassName}}__chat__messages">
-                <section aria-label="Беседа"></section>
-            </div>
-
-            {{#> components/pane/index ../this addeClassName=addeClassNameChatInput secBackColor=1 withBorder=1 }}
-                 {{> pages/index/components/messageInput/index ../this item=this.chat }}
-            {{/components/pane/index }}
-
-        </main>
-
-        <div class="{{thisClassName}}__url-for-check">
-            <div><a href="/src/pages/login/index.hbs">Авторизация</a></div>
-            <div><a href="/src/pages/sign/index.hbs">Регистриция</a></div>
-            <div><a href="/src/pages/profile/index.hbs">Профиль</a></div>
-            <div><a href="/src/pages/error404/index.hbs">404 ошибка</a></div>
-            <div><a href="/src/pages/error500/index.hbs">500 ошибка</a></div>
+        <div class="{{ styles.root }}__chat__messages">
+            <section aria-label="Беседа"></section>
         </div>
-    </div>
 
-{{/layout/page/index}}
+        {{#components_pane addeClassName=styles.[chat-input] secBackColor=1 withBorder=1 }}
+                {{{pages_index_components_messageInput item=this.chat }}}
+        {{/components_pane }}
+
+    </main>
+
+    <div class="{{ styles.root }}__url-for-check">
+        <div>{{{components_textButton label="Авторизация" [event:click]="onClickLogin" }}}</div>
+        <div>{{{components_textButton label="Регистриция" [event:click]='onClickSign' }}}</div>
+        <div>{{{components_textButton label="Профиль" [event:click]='onClickProfile' }}}</div>
+        <div>{{{components_textButton label="404 ошибка" [event:click]='onClickError404' }}}</div>
+        <div>{{{components_textButton label="500 ошибка" [event:click]='onClickError500' }}}</div>
+    </div>
+</div>
+

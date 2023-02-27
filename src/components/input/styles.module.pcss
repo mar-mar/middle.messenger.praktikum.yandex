@@ -1,0 +1,46 @@
+@import url("src/style/variable.pcss");
+@import url("src/style/mixin.pcss");
+
+.root {
+    border: 0; /* Хотя бы одно свойство должно быть */
+
+    &--margin {
+        @mixin input-offet;
+    }
+
+    &__input {
+        @mixin absolute-strech;
+
+        border-bottom: var(--normal-border-size) solid var(--active-color);
+        background: none;
+    }
+
+    &__body {
+        @mixin absolute-strech__parent;
+
+        height: 2.5em;
+        line-height: 2.5em;
+    }
+
+    &__label {
+        @mixin absolute-strech;
+
+        pointer-events: none;
+        color: var(--grey-font-color);
+        transition: top 200ms ease-in, font-size 200ms ease-in;
+    }
+
+    &__input:focus ~ &__label,
+    &__input:not(:placeholder-shown)&__input:not(:focus) ~ &__label {
+        top: -2em;
+        font-size: var(--mini-font-size);
+    }
+
+    &__body::after {
+        position: absolute;
+        top: 3em;
+        content: attr(data-error);
+        color: var(--red-font-color);
+        font-size: var(--mini-font-size);
+    }
+}
