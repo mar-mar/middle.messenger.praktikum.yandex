@@ -36,34 +36,40 @@ Object.entries(ROUTES).forEach(([key, PageClass]) => {
 
 
 
-const register = function registerReq(modules: Record<string, any>, path: string[]): void{
+const register = function registerReq(modules: Record<string, any>, type: string, path: string[]): void{
     Object.entries(modules).forEach(([name, module]) => {
         const currentPath = [...path];
-        
+        currentPath.push(name);
+
         if ((module as any).default) {
-            currentPath.push(name);
+            currentPath.splice(-1, 0, type);
             registerComponent(currentPath.join("_"), (module as any).default);
-            console.info(currentPath.join("_"));
+            //console.info(currentPath.join("_"));
         }
         else {
-            currentPath.splice(-1, 0, name);
-            registerReq(module, currentPath);
+            
+            registerReq(module, type, currentPath);
         }
     });
 }
 
 
-register(componentsModules, ["components"]);
-register(layoutModules, ["layout"]);
-register(pageModules, ["page"]);
+register(componentsModules, "components", []);
+register(layoutModules, "layout", []);
+register(pageModules, "page", []);
 
 window.addEventListener('DOMContentLoaded', async () => {
-   routeUse("index");
+    
+    routeUse("index");
 });
 
+setTimeout(() => {
+    debugger
+    routeUse("error404");
+    routeUse("login");
+}, 50000);
 
 /*
-
 ,
   /*"validators": {
     "*.{ts, tsx}": ["@parcel/validator-typescript"]

@@ -5,9 +5,6 @@ import { _Block } from "./_Block";
 export function registerComponent<T extends _Block>(name: string, 
     constructor: new(options: any) => T): void { // todo options: any ??? как  правильно
 
-    
-        console.info(Handlebars, Handlebars.registerHelper);
-
     Handlebars.registerHelper(name, function (this: any, options: any): string {
 
         const rootTemplateData = options.data.root;

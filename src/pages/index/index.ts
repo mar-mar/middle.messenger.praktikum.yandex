@@ -1,3 +1,4 @@
+//import routeUse from "../../utils/route";
 import routeUse from "../../utils/route";
 import { _Block } from "../../utils/_Block";
 import template from "./index.hbs";
@@ -16,10 +17,12 @@ export default class IndexPage extends _Block {
     }
 
     onClickLogin() {
+        debugger
         routeUse("login");
     }
 
     onClickError404() {
+        debugger
         routeUse("error404");
     }
 
