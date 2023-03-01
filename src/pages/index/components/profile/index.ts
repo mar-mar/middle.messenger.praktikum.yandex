@@ -6,7 +6,7 @@ import styles from './styles.module.pcss';
 
 export default class Profile extends _Block {
     
-    protected render() {
-        return this.compile(template, styles);
+    protected getCompileOptions() {
+        return { template, styles };
     }
 }

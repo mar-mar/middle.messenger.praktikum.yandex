@@ -6,7 +6,7 @@
     {{{pages_login_components_loginBody }}}
     
     {{#components_centerPane horizontalType = "center" verticalType = "center" withMarginTop=1 }}
-        {{{components_textButton label="Нет профиля?" gotoPageName="sign" }}}
+        {{{components_textButton label="Нет профиля?" [event:click]="onClickSign" }}}
     {{/components_centerPane}}
 
 </div>

@@ -1,5 +1,4 @@
 
-
 {{#components_form submitPageName="index" item=this.item }}
 
     <div>
@@ -13,7 +12,7 @@
     </div>
     
     <div>
-        {{{components_button label="Создать профиль" type="submit"  }}}
+        {{{components_button label="Создать профиль" type="submit"  [event:click]="onClickIndex"}}}
     </div>
 
 {{/components_form}}

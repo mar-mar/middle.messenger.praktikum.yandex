@@ -4,8 +4,8 @@ import template from './index.hbs';
 
 export default class Error404Page extends _Block {
 
-    protected render() {
-        return this.compile(template, {});
+    protected getCompileOptions() {
+        return { template };
     }
 
 }

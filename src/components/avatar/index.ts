@@ -5,8 +5,8 @@ import styles from './styles.module.pcss';
 
 export default class Avatar extends _Block {
 
-    protected render() {
-        return this.compile(template, styles);
+    protected getCompileOptions() {
+        return { template, styles };
     }
     
 }

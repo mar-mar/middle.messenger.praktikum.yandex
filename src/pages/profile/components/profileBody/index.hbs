@@ -17,7 +17,7 @@
                 </div>
                 
                 <div>
-                    {{{components_button label="Сохранить изменения" type="submit" }}}
+                    {{{components_button label="Сохранить изменения" type="submit" [event:click]="onClickIndex" }}}
                 </div>
 
             {{/components_form}}
@@ -30,17 +30,17 @@
     <div class="{{ styles.root }}__right-col">
         
         <div class="{{ styles.root }}__avatar-cont">
-            {{{components_avatar clickLabel="Изменить аватар" gotoPageName="error404"
+            {{{components_avatar clickLabel="Изменить аватар" [event:click]="onClickError404"
                 imageUrl=item.avatar diameter='L'
                 avatarOwner=item.display_name }}}
         </div>
 
         <div class="{{ styles.root }}__pass-cont">
-            {{{components_textButton label="Изменить пароль" gotoPageName="error404" }}}
+            {{{components_textButton label="Изменить пароль" [event:click]="onClickError404" }}}
         </div>
 
         <div class="{{ styles.root }}__logout-cont">
-            <div>{{{components_textButton label="Выйти из профиля" gotoPageName="login"
+            <div>{{{components_textButton label="Выйти из профиля" [event:click]="onClickLogin"
                     red=1 }}}</div>
         </div>
         

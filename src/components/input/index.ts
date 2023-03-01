@@ -14,8 +14,8 @@ interface InputProps {
 
 export default class Input extends _Block<InputProps> {
 
-    render() {
-        return this.compile(template, styles);
+    protected getCompileOptions() {
+        return { template, styles };
     }
 
     getValue() {

@@ -6,7 +6,7 @@
     {{{pages_sign_components_signBody}}}
 
     {{#components_centerPane horizontalType = "center" verticalType = "center" withMarginTop=1 }}
-    {{{components_textButton label="Перейти к авторизации" gotoPageName="login" }}}
+    {{{components_textButton label="Перейти к авторизации" [event:click]="onClickLogin" }}}
     {{/components_centerPane }}
     
 

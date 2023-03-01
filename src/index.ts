@@ -24,7 +24,7 @@ import { registerComponent } from "./utils/registerComponents";
 // @ts-ignore
 import componentsModules from "./**/components/**/index.ts";
 // @ts-ignore
-import layoutModules from "./layout/**/index.ts";
+import layoutModules from "./**/layout/**/index.ts";
 // @ts-ignore
 import pageModules from "./page/**/index.ts";
 
@@ -44,7 +44,7 @@ const register = function registerReq(modules: Record<string, any>, type: string
         if ((module as any).default) {
             currentPath.splice(-1, 0, type);
             registerComponent(currentPath.join("_"), (module as any).default);
-            //console.info(currentPath.join("_"));
+            console.info(currentPath.join("_"));
         }
         else {
             
@@ -63,11 +63,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     routeUse("index");
 });
 
-setTimeout(() => {
-    debugger
-    routeUse("error404");
-    routeUse("login");
-}, 50000);
 
 /*
 ,

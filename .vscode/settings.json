@@ -2,5 +2,7 @@
     "files.insertFinalNewline": true,
     "editor.tabSize": 4,
     "editor.indentSize": 4,
-    "editor.detectIndentation": false
+    "editor.detectIndentation": false,
+    "javascript.preferences.quoteStyle": "double",
+    "typescript.preferences.quoteStyle": "double"
 }

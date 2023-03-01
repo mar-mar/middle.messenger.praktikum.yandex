@@ -10,10 +10,9 @@ interface ButtonProps extends Props {
     }
 }
 
-
 export default class TextButton extends _Block<ButtonProps> {
 
-    protected render() {
-        return this.compile(template, styles);
+    protected getCompileOptions() {
+        return { template, styles };
     }
 }

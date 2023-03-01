@@ -1,30 +1,31 @@
 import Handlebars from "handlebars/dist/handlebars.runtime";
-
 import { _Block } from "./_Block";
+import { isFunction } from "./typeCheck";
+import {AnyFunction} from "./types";
 
 export function registerComponent<T extends _Block>(name: string, 
     constructor: new(options: any) => T): void { // todo options: any ??? как  правильно
 
     Handlebars.registerHelper(name, function (this: any, options: any): string {
 
-        const rootTemplateData = options.data.root;
-        const parentComponent = rootTemplateData.component;
+        const templateData = options.data.root;
+        const parentComponent = templateData.component;
+        const events: Record<string, AnyFunction> = {};
+        const props: Record<string, any> = { ...options.hash };
 
-        const hash: Record<string, any> = options.hash;
-        Object.entries(hash).forEach(([key, value]) => {
+        Object.entries(props).forEach(([key, value]) => {
 
-            if (key.startsWith("event:") && (value in parentComponent)) {
+            const handler = parentComponent[value];
+            if (key.startsWith("event:") && isFunction(handler)) {
 
                 const handlerKey = key.replace("event:", "");
-                const handler = (parentComponent as any)[value];
-                rootTemplateData.events[handlerKey] = handler;
+                events[handlerKey] = handler.bind(parentComponent);
+                delete props[key];
             }
         });
 
-        const component = new constructor({ props: options.hash });
-        console.info(constructor, options);
-        rootTemplateData.children[component.id] = component;
-
+        const component = new constructor({ props, events });
+        templateData.children[component.id] = component;
 
         if (options.fn) {
             return `<div data-id='${component.id}'>${options.fn(this)}</div>`;

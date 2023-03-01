@@ -12,7 +12,8 @@
             type="{{#if inputType}}{{inputType}}{{else}}text{{/if}}"
             placeholder=" " autocomplete="off"
             value="{{lookup item key}}" 
-            name="{{key}}">
+            name="{{key}}"
+            data-focused>
 
         <label class="{{ styles.root }}__label">
             {{label}}

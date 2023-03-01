@@ -13,6 +13,7 @@ export enum EVENTS {
 
 type Children = Record<string, _Block[] | _Block>;
 type Events = Record<string, () => void>;
+type CompileOptions = { template?: (context: any) => string, styles?: Record<string, string> };
 
 export type Props = {
     events?: Events;
@@ -24,6 +25,7 @@ export class _Block<
     T extends Props = {}>{
 
     private element: HTMLElement | null = null;
+    private focusElement: HTMLElement | null = null;
     private eventBus: EventBus;
 
     protected props: Props;
@@ -36,7 +38,6 @@ export class _Block<
         this.id = props.id ?? nanoid(6);
         //this.children = options.children || {};
         this.events = options.events || {};
-
         this.eventBus = new EventBus();
 
         this.props = this.makePropsProxy(props, this.eventBus);
@@ -61,8 +62,10 @@ export class _Block<
     // abstract Может переопределять пользователь, необязательно трогать
     protected componentDidUpdate(_oldProps: Props, _newProps: Props): boolean { return true; };
 
+    protected getCompileOptions(): CompileOptions { return {}; };
+
     // abstract Может переопределять пользователь, необязательно трогать
-    protected render(): DocumentFragment | null { return null };
+    //protected render(): DocumentFragment | null { return null };
 
     // constructor
     private registerEvents(eventBus: EventBus): void {
@@ -74,8 +77,7 @@ export class _Block<
 
     // constructor
     private makePropsProxy(props: Props, eventBus: EventBus): Props {
-        // Можно и так передать this
-        // Такой способ больше не применяется с приходом ES6+
+
         props = new Proxy(props, {
             set(target: Props, key: string, value: any): boolean {
                 const oldTarget: any = { ...target };
@@ -127,26 +129,23 @@ export class _Block<
 
     //render
     private onRender(): void {
-        const fragment: DocumentFragment | null = this.render();
-        const newElement = fragment ? fragment.firstElementChild as HTMLElement : null;
-        
-        // todo remove Events
-        // empty(this._element) ?
-        if (this.element && newElement) {
-            this.element.replaceWith(newElement);
-        }
-        //removeChild ? 
-        this.element = newElement;
-
-        this.addEvents();
+        //const fragment: DocumentFragment | null = this.render();
+        //unlickEvents
+        this.compile(this.getCompileOptions());
+        this.linkEvents();
     }
 
     //render
-    private addEvents(): void {
+    private linkEvents(): void {
         if (!this.element) return;
 
         Object.keys(this.events).forEach(eventName => {
-            this.element?.addEventListener(eventName, this.events[eventName]);
+            let element = this.element;
+            if ("blur" === eventName || "focus" === eventName) {
+                element = this.focusElement;
+            }
+            
+            element?.addEventListener(eventName, this.events[eventName]);
         });
     }
 
@@ -175,43 +174,46 @@ export class _Block<
         this.element.style.display = value ? "block" : "none";
     }
 
-    protected compile(template: (context: any) => string, styles: Record<string, string>): DocumentFragment {
-        
-       /* const byId = new Map<string, _Block>();
-            const children: Record<string, string[]> = {};
-            this.forEachChildren((child, childName) => {
-            byId.set(child.id, child);
-           
-            // отличать детей от свойств?
-            children[childName] = children[childName] || [];
-            children[childName].push(`<div data-id="${child.id}"></div>`);
-        });
-*/
+    protected compile({ template, styles } : CompileOptions) {
+    
         const temp = document.createElement('template');
         const children: Children = {};
-        const events: Events = {};
-        temp.innerHTML = template({ styles, ...this.props, children, events, component: this });
 
-        this.children = children;
-        this.events = events;
+        if (template) {
+            temp.innerHTML = template({ styles, ...this.props, children, component: this });
+        }
 
-        this.forEachChildren((child, _childName) => {
-            const stub = temp.content.querySelector(`[data-id="${child.id}"]`);
-            if (!stub) return; // чистить или нет childElement?
+        this.children = {};
+        const newElement = temp.content ? temp.content.firstElementChild as HTMLElement : null;
+        const focusElement = newElement ? newElement.querySelector("[data-focused]") : null;
 
-            const childElement = child.getElement()!;
-            stub.replaceWith(childElement); // меняем заглушку на нормальный dom
-            
-            if (stub.childNodes.length > 0) { // что-то есть внутри
+        if (newElement) {
+            this.children = children;
+
+            this.forEachChildren((child, _childName) => {
+                const stub = newElement.querySelector(`[data-id="${child.id}"]`);
+                if (!stub) return; // чистить или нет childElement?
+    
+                const childElement = child.getElement()!;
+                stub.replaceWith(childElement); // меняем заглушку на нормальный dom
                 
-                const contentCont = temp.content.querySelector(`[data-content]`) ?? stub;
-                contentCont.innerHTML = "";
-                contentCont.replaceWith(...Array.from(stub.childNodes));
-            } 
+                if (stub.childNodes.length > 0) { // что-то есть внутри
+                    
+                    const contentCont = newElement.querySelector(`[data-content]`) ?? stub;
+                    contentCont.innerHTML = "";
+                    contentCont.replaceWith(...Array.from(stub.childNodes));
+                } 
+            });
+        }
 
-        });
-
-        return temp.content;
+        // todo remove Events
+        // empty(this._element) ?
+        if (this.element && newElement) {
+            this.element.replaceWith(newElement);
+        }
+        //removeChild ? 
+        this.focusElement = focusElement ? focusElement as HTMLElement : null;
+        this.element = newElement;
     }
 
     private forEachChildren(callbackfn: (child: _Block, childName: string) => void): void {

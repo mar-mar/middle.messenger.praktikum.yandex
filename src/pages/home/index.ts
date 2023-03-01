@@ -3,7 +3,7 @@ import template from "./home.hbs";
 
 export default class HomePage extends _Block {
     
-    protected render() {
-        return this.compile(template, {});
+    protected getCompileOptions() {
+        return { template };
     }
 }

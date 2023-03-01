@@ -6,27 +6,28 @@ import * as styles from './styles.module.pcss';
 
 
 export default class IndexPage extends _Block {
-    //import  routeUse from "./utils/route";
 
-    protected render() {
-        return this.compile(template, styles);
+    protected getCompileOptions() {
+        return { template, styles };
     }
 
-    onClickProfile() {
-        routeUse("profile");
-    }
-
-    onClickLogin() {
-        debugger
+    onClickLogin(): void {
         routeUse("login");
     }
 
-    onClickError404() {
-        debugger
+    onClickSign(): void {
+        routeUse("sign");
+    }
+
+    onClickProfile(): void {
+        routeUse("profile");
+    }
+
+    onClickError404(): void {
         routeUse("error404");
     }
 
-    onClickError500() {
+    onClickError500(): void {
         routeUse("error500"); 
     }
 }
