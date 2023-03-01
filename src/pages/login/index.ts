@@ -5,10 +5,13 @@ import template from "./index.hbs";
 export default class LoginPage extends _Block {
     
     protected getCompileOptions() {
-        return { template };
+        return { 
+            template,
+            onClickSign: this.onClickSign.bind(this) 
+        };
     }
 
-    onClickSign() {
+    private onClickSign(): void {
         routeUse("sign");
     }
 }

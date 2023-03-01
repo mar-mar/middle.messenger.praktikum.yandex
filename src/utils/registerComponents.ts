@@ -9,22 +9,21 @@ export function registerComponent<T extends _Block>(name: string,
     Handlebars.registerHelper(name, function (this: any, options: any): string {
 
         const templateData = options.data.root;
-        const parentComponent = templateData.component;
         const events: Record<string, AnyFunction> = {};
         const props: Record<string, any> = { ...options.hash };
 
         Object.entries(props).forEach(([key, value]) => {
 
-            const handler = parentComponent[value];
-            if (key.startsWith("event:") && isFunction(handler)) {
+            if (key.startsWith("event:") && isFunction(value)) {
 
                 const handlerKey = key.replace("event:", "");
-                events[handlerKey] = handler.bind(parentComponent);
+                events[handlerKey] = value;
                 delete props[key];
             }
         });
 
-        const component = new constructor({ props, events });
+        props.events = events;
+        const component = new constructor({ props });
         templateData.children[component.id] = component;
 
         if (options.fn) {

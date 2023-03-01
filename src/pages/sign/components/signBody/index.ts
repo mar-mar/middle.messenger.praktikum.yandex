@@ -1,17 +1,17 @@
-
 import routeUse from "../../../../utils/route";
-import { isEvent } from "../../../../utils/typeCheck";
 import { _Block } from '../../../../utils/_Block';
 import template from './index.hbs';
 
 export default class SignBody extends _Block {
 
     protected getCompileOptions() {
-        return { template };
+        return { 
+            template,
+            onClickIndex: this.onClickIndex.bind(this)
+        };
     }
 
-    onClickIndex(evt: any) {
-        if (!isEvent(evt)) return;
+    private onClickIndex(evt: Event): void {
         evt.preventDefault();
 
         routeUse("index");

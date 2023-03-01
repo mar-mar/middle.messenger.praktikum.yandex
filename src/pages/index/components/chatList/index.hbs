@@ -12,7 +12,7 @@
     <div class="{{ styles.root }}__list">
 
         <ul class="people_list">
-        {{#each this.item.chats}}
+        {{#each item}} <!--item.chats-->
             {{{pages_index_components_chatItem item=this }}}
         {{/each}}
         </ul>

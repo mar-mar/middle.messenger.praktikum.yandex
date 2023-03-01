@@ -7,37 +7,32 @@ import template from "./index.hbs";
 export default class LoginBody extends _Block {
 
     protected getCompileOptions() {
-        return { template };
+        return {
+            template,
+            onClickIndex: this.onClickIndex.bind(this),
+            validateForm: this.validateForm.bind(this),
+            validateLogin: this.validateLogin.bind(this),
+            validatePassword: this.validatePassword.bind(this)
+         };
     }
 
-    onClickIndex(evt: any) {
+    private onClickIndex(evt: Event): void {
         if (!isEvent(evt)) return;
         evt.preventDefault();
 
         routeUse("index");
     }
 
-    onFocusLogin() {
+
+    private validateForm() {
 
     }
 
-    onBlurLogin() {
-
+    private validateLogin() {
+        return ERRORS.loginEmpty;
     }
 
-    onFocusPassword() {
-
-    }
-
-    onBlurPassword() {
-
-    }
-
-    validateLogin() {
-        return { message: ERRORS.loginEmpty };
-    }
-
-    validatePassword() {
+    private validatePassword() {
 
     }
 }

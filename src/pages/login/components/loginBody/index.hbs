@@ -1,16 +1,14 @@
-{{#components_form submitPageName="index" item=this.item }}
+{{#components_form submitPageName="index" item=item valiate=validateForm }}
 
     <div>
-        {{{components_input label="Логин" key="login" 
-            [event:focus] = onFocusLogin 
-            [event:blur] = onBlurLogin }}}
-        {{{components_input label="Пароль" inputType="password" key="password" 
-            [event:focus] = onFocusPassword
-            [event:blur] = onBlurPassword }}}
+        {{{components_input label="Логин" key="login" item=item
+            validate=validateLogin }}}
+        {{{components_input label="Пароль" inputType="password" key="password" item=item
+            validate=validatePassword }}}
     </div>
 
     <div>
-        {{{components_button label="Войти" type="submit" [event:click]="onClickIndex" }}}
+        {{{components_button label="Войти" type="submit" [event:click]=onClickIndex }}}
     </div>
 
 {{/components_form}}

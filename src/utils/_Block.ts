@@ -1,47 +1,42 @@
 import { EventBus } from "./EventBus";
 import { nanoid } from 'nanoid';
-//import { Props } from "./Props";
+import { AnyFunctionNoReturn } from "./types";
 
-//namespace _Block {
+
 export enum EVENTS {
     INIT = "init",
     FLOW_CDM = "flow:component-did-mount",
     FLOW_CDU = "flow:component-did-update",
     FLOW_RENDER = "flow:render"
-}
-//}
-
-type Children = Record<string, _Block[] | _Block>;
-type Events = Record<string, () => void>;
-type CompileOptions = { template?: (context: any) => string, styles?: Record<string, string> };
-
-export type Props = {
-    events?: Events;
-    children?: Children;
-    [index: string]: any;
 };
 
-export class _Block<
-    T extends Props = {}>{
+type Children = Record<string, _Block[] | _Block>;
+type Events = Record<string, AnyFunctionNoReturn>;
+export type Props = { events?: Events } & Omit<Record<string, any>, "events" >;
+type CompileOptions<T> = { 
+    template?: Handlebars.TemplateDelegate<any>, 
+    styles?: Record<string, string>, 
+    defaultValues?: Partial<T>
+};
+
+// базовый класс для компонентов
+export class _Block<T extends Props = any> {
 
     private element: HTMLElement | null = null;
-    private focusElement: HTMLElement | null = null;
     private eventBus: EventBus;
 
-    protected props: Props;
-    protected events: Events;
+    private props: T;
     private children: Children = {};
     public readonly id: string;
 
     constructor(options: T) {
-        const props: Props = options.props || {};
+        const props: T = options.props || {};
         this.id = props.id ?? nanoid(6);
-        //this.children = options.children || {};
-        this.events = options.events || {};
+
         this.eventBus = new EventBus();
 
         this.props = this.makePropsProxy(props, this.eventBus);
-        this.registerEvents(this.eventBus);
+        this.registerLifeCycleEvents(this.eventBus);
         this.eventBus.emit(EVENTS.INIT);
     }
 
@@ -53,6 +48,10 @@ export class _Block<
         return this.eventBus;
     }
 
+    protected getProps(): T {
+        return this.props;
+    }
+
     //abstract  
     protected init(): void { };
 
@@ -62,13 +61,13 @@ export class _Block<
     // abstract Может переопределять пользователь, необязательно трогать
     protected componentDidUpdate(_oldProps: Props, _newProps: Props): boolean { return true; };
 
-    protected getCompileOptions(): CompileOptions { return {}; };
+    protected getCompileOptions(): CompileOptions<T> { return {}; };
 
     // abstract Может переопределять пользователь, необязательно трогать
     //protected render(): DocumentFragment | null { return null };
 
     // constructor
-    private registerEvents(eventBus: EventBus): void {
+    private registerLifeCycleEvents(eventBus: EventBus): void {
         eventBus.on(EVENTS.INIT, this.onInit.bind(this));
         eventBus.on(EVENTS.FLOW_CDM, this.onComponentDidMount.bind(this));
         eventBus.on(EVENTS.FLOW_CDU, this.onComponentDidUpdate.bind(this));
@@ -76,19 +75,19 @@ export class _Block<
     }
 
     // constructor
-    private makePropsProxy(props: Props, eventBus: EventBus): Props {
+    private makePropsProxy(props: T, eventBus: EventBus): T {
 
         props = new Proxy(props, {
-            set(target: Props, key: string, value: any): boolean {
+            set(target: T, key: string, value: any): boolean {
                 const oldTarget: any = { ...target };
-                target[key as keyof Props] = value;
+                target[key as keyof T] = value;
 
                 eventBus.emit(EVENTS.FLOW_CDU, oldTarget, target);
 
                 return true;
             },
 
-            get(target: Props, key: string): any {
+            get(target: T, key: string): any {
                 let value = target[key];
                 return (typeof value === 'function') ? value.bind(target) : value;
             },
@@ -121,7 +120,7 @@ export class _Block<
     }
 
     //CDU
-    private onComponentDidUpdate(oldProps: any, newProps: any): void {
+    private onComponentDidUpdate(oldProps: T, newProps: T): void {
         if (this.componentDidUpdate(oldProps, newProps)) {
             this.eventBus.emit(EVENTS.FLOW_RENDER);
         }
@@ -129,37 +128,37 @@ export class _Block<
 
     //render
     private onRender(): void {
-        //const fragment: DocumentFragment | null = this.render();
-        //unlickEvents
+
+        this.toggleDomEvents(false);
         this.compile(this.getCompileOptions());
-        this.linkEvents();
+        this.toggleDomEvents(true);
     }
 
     //render
-    private linkEvents(): void {
+    private toggleDomEvents(value: boolean): void {
         if (!this.element) return;
 
-        Object.keys(this.events).forEach(eventName => {
-            let element = this.element;
-            if ("blur" === eventName || "focus" === eventName) {
-                element = this.focusElement;
+        const events = this.props.events;
+        const element = this.element;
+        if (!this.element || !events) return;
+
+        Object.keys(events).forEach(eventName => {            
+            if (value) {
+                element?.addEventListener(eventName, events[eventName]);
             }
-            
-            element?.addEventListener(eventName, this.events[eventName]);
+            else {
+                element?.removeEventListener(eventName, events[eventName]);
+            }
         });
     }
 
-    /*public setProps(nextProps: Props): void {
+    public setProps(nextProps: Partial<T>): void {
         if (!nextProps) {
             return;
         }
 
         Object.assign(this.props, nextProps);
     }
-
-    public getProps() {
-
-    }*/
 
     public show(): void {
         this.toggleVisible(true);
@@ -174,24 +173,30 @@ export class _Block<
         this.element.style.display = value ? "block" : "none";
     }
 
-    protected compile({ template, styles } : CompileOptions) {
+    protected compile({ template, styles, ...args } : CompileOptions<T>) {
     
         const temp = document.createElement('template');
         const children: Children = {};
 
         if (template) {
-            temp.innerHTML = template({ styles, ...this.props, children, component: this });
+            temp.innerHTML = template({ 
+                ...args, 
+                ...this.props,
+                styles, 
+                children, 
+                item: {},
+                component: this 
+            });
         }
 
         this.children = {};
-        const newElement = temp.content ? temp.content.firstElementChild as HTMLElement : null;
-        const focusElement = newElement ? newElement.querySelector("[data-focused]") : null;
+        
 
-        if (newElement) {
+        if (temp.content.firstElementChild) {
             this.children = children;
 
             this.forEachChildren((child, _childName) => {
-                const stub = newElement.querySelector(`[data-id="${child.id}"]`);
+                const stub = temp.content.querySelector(`[data-id="${child.id}"]`);
                 if (!stub) return; // чистить или нет childElement?
     
                 const childElement = child.getElement()!;
@@ -199,20 +204,19 @@ export class _Block<
                 
                 if (stub.childNodes.length > 0) { // что-то есть внутри
                     
-                    const contentCont = newElement.querySelector(`[data-content]`) ?? stub;
+                    const contentCont = temp.content.querySelector(`[data-content]`) ?? stub;
                     contentCont.innerHTML = "";
                     contentCont.replaceWith(...Array.from(stub.childNodes));
                 } 
             });
         }
 
-        // todo remove Events
-        // empty(this._element) ?
+        const newElement = temp.content ? temp.content.firstElementChild as HTMLElement : null;
+
         if (this.element && newElement) {
             this.element.replaceWith(newElement);
         }
-        //removeChild ? 
-        this.focusElement = focusElement ? focusElement as HTMLElement : null;
+
         this.element = newElement;
     }
 

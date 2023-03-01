@@ -5,19 +5,19 @@
 
         <div class="{{ styles.root }}__settings-cont">
 
-            {{#components_form submitPageName="index" item=this.item }}
+            {{#components_form submitPageName="index" item=item }}
 
                 <div>
-                    {{{components_input label="Имя в чате" key="display_name" }}}
-                    {{{components_input label="Логин" key="login" }}}
-                    {{{components_input label="Имя" key="first_name" }}}
-                    {{{components_input label="Фамилия" key="second_name" }}}
-                    {{{components_input label="Почта" key="email" }}}
-                    {{{components_input label="Телефон" key="phone" }}}
+                    {{{components_input label="Имя в чате" key="display_name" item=item }}}
+                    {{{components_input label="Логин" key="login" item=item }}}
+                    {{{components_input label="Имя" key="first_name" item=item }}}
+                    {{{components_input label="Фамилия" key="second_name" item=item }}}
+                    {{{components_input label="Почта" key="email" item=item }}}
+                    {{{components_input label="Телефон" key="phone" item=item }}}
                 </div>
                 
                 <div>
-                    {{{components_button label="Сохранить изменения" type="submit" [event:click]="onClickIndex" }}}
+                    {{{components_button label="Сохранить изменения" type="submit" [event:click]=onClickIndex }}}
                 </div>
 
             {{/components_form}}
@@ -30,17 +30,17 @@
     <div class="{{ styles.root }}__right-col">
         
         <div class="{{ styles.root }}__avatar-cont">
-            {{{components_avatar clickLabel="Изменить аватар" [event:click]="onClickError404"
+            {{{components_avatar clickLabel="Изменить аватар" [event:click]=onClickError404
                 imageUrl=item.avatar diameter='L'
                 avatarOwner=item.display_name }}}
         </div>
 
         <div class="{{ styles.root }}__pass-cont">
-            {{{components_textButton label="Изменить пароль" [event:click]="onClickError404" }}}
+            {{{components_textButton label="Изменить пароль" [event:click]=onClickError404 }}}
         </div>
 
         <div class="{{ styles.root }}__logout-cont">
-            <div>{{{components_textButton label="Выйти из профиля" [event:click]="onClickLogin"
+            <div>{{{components_textButton label="Выйти из профиля" [event:click]=onClickLogin
                     red=1 }}}</div>
         </div>
         

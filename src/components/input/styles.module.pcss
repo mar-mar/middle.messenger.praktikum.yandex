@@ -8,7 +8,7 @@
         @mixin input-offet;
     }
 
-    &__input {
+    &__simple-input {
         @mixin absolute-strech;
 
         border-bottom: var(--normal-border-size) solid var(--active-color);
@@ -30,13 +30,13 @@
         transition: top 200ms ease-in, font-size 200ms ease-in;
     }
 
-    &__input:focus ~ &__label,
-    &__input:not(:placeholder-shown)&__input:not(:focus) ~ &__label {
+    &__simple-input:focus ~ &__label,
+    &__simple-input:not(:placeholder-shown)&__simple-input:not(:focus) ~ &__label {
         top: -2em;
         font-size: var(--mini-font-size);
     }
 
-    &__body::after {
+    &::after {
         position: absolute;
         top: 3em;
         content: attr(data-error);

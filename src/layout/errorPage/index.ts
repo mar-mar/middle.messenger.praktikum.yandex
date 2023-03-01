@@ -6,10 +6,14 @@ import styles from './styles.module.pcss';
 export default class ErrorPageLayout extends _Block {
 
     protected getCompileOptions() {
-        return { template, styles };
+        return { 
+            template, 
+            styles,
+            onClickIndex: this.onClickIndex.bind(this) 
+        };
     }
 
-    public onClickIndex(): void {
+    private onClickIndex(): void {
         routeUse("index");
     }
 }

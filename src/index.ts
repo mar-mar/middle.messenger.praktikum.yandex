@@ -59,8 +59,9 @@ register(layoutModules, "layout", []);
 register(pageModules, "page", []);
 
 window.addEventListener('DOMContentLoaded', async () => {
+
     
-    routeUse("index");
+    routeUse("login");
 });
 
 

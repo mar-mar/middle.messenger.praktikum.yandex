@@ -1,6 +1,5 @@
 
 import routeUse from "../../../../utils/route";
-import { isEvent } from "../../../../utils/typeCheck";
 import { _Block } from '../../../../utils/_Block';
 import template from './index.hbs';
 import styles from './styles.module.pcss';
@@ -8,21 +7,26 @@ import styles from './styles.module.pcss';
 export default class ProfileBody extends _Block {
 
     protected getCompileOptions() {
-        return { template, styles };
+        return { 
+            template, 
+            styles,
+            onClickIndex: this.onClickIndex.bind(this),
+            onClickError404: this.onClickError404.bind(this),
+            onClickLogin: this.onClickLogin.bind(this)
+        };
     }
 
-    onClickIndex(evt: any) {
-        if (!isEvent(evt)) return;
+    private onClickIndex(evt: Event): void {
         evt.preventDefault();
 
         routeUse("index");
     }
 
-    onClickError404() {
+    private onClickError404(): void {
         routeUse("error404");
     }
 
-    onClickLogin() {
+    private onClickLogin(): void {
         routeUse("login");
     }
 

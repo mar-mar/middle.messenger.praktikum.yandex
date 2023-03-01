@@ -2,11 +2,11 @@
 
     {{#components_pane withBorder=1 secBackColor=1 addeClassName=styles.[left-pane] }}
         <section class="{{ styles.root }}__profile">
-            {{{pages_index_components_profile item=this.chat.profile }}}
+            {{{pages_index_components_profile item=item }}}
         </section>
 
         <nav class="{{ styles.root }}__chats">
-            {{{pages_index_components_chatList item=this.chat }}}
+            {{{pages_index_components_chatList item=item }}}
         </nav>
     {{/components_pane }}
 
@@ -14,7 +14,7 @@
     <main class="{{ styles.root }}__chat">
 
         {{#components_pane addeClassName=styles.[chat-header] withBorder=1 }}
-            {{{pages_index_components_chatHeader item=this.activeChat }}}
+            {{{pages_index_components_chatHeader item=item }}}
         {{/components_pane }}
 
 
@@ -23,17 +23,17 @@
         </div>
 
         {{#components_pane addeClassName=styles.[chat-input] secBackColor=1 withBorder=1 }}
-                {{{pages_index_components_messageInput item=this.chat }}}
+                {{{pages_index_components_messageInput item=item }}}
         {{/components_pane }}
 
     </main>
 
     <div class="{{ styles.root }}__url-for-check">
-        <div>{{{components_textButton label="Авторизация" [event:click]="onClickLogin" }}}</div>
-        <div>{{{components_textButton label="Регистриция" [event:click]='onClickSign' }}}</div>
-        <div>{{{components_textButton label="Профиль" [event:click]='onClickProfile' }}}</div>
-        <div>{{{components_textButton label="404 ошибка" [event:click]='onClickError404' }}}</div>
-        <div>{{{components_textButton label="500 ошибка" [event:click]='onClickError404' }}}</div>
+        <div>{{{components_textButton label="Авторизация" [event:click]=onClickLogin }}}</div>
+        <div>{{{components_textButton label="Регистриция" [event:click]=onClickSign }}}</div>
+        <div>{{{components_textButton label="Профиль" [event:click]=onClickProfile }}}</div>
+        <div>{{{components_textButton label="404 ошибка" [event:click]=onClickError404 }}}</div>
+        <div>{{{components_textButton label="500 ошибка" [event:click]=onClickError404 }}}</div>
     </div>
 </div>
 

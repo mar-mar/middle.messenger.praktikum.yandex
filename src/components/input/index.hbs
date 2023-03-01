@@ -5,15 +5,16 @@
 
 <div class="{{ styles.root }} {{> addedClassName}}">
 
-    <div class="{{ styles.root }}__body" 
-        data-error="{{errorMessage}}"> 
+    <div class="{{ styles.root }}__body" > 
 
-        <input  class="{{ styles.root }}__input" 
-            type="{{#if inputType}}{{inputType}}{{else}}text{{/if}}"
-            placeholder=" " autocomplete="off"
-            value="{{lookup item key}}" 
-            name="{{key}}"
-            data-focused>
+        {{{components_simpleInput 
+            type = type
+            value = value
+            name = key
+            parentClassName = styles.root
+            [event:blur] = onBlurInput
+            [event:focus] = onFocusInput
+        }}}
 
         <label class="{{ styles.root }}__label">
             {{label}}
