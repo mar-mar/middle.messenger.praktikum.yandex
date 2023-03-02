@@ -24,18 +24,12 @@ export function registerComponent<T extends _Block>(name: string,
 
         props.events = events;
         const component = new constructor({ props });
-        templateData.children[component.id] = component;
+        templateData.children.push(component);
 
         if (options.fn) {
-            return `<div data-id='${component.id}'>${options.fn(this)}</div>`;
+            return `<div data-id='${component.getId()}'>${options.fn(this)}</div>`;
         }
 
-        return `<div data-id='${component.id}'></div>`;
+        return `<div data-id='${component.getId()}'></div>`;
     });
 }
-
-/*Handlebars.registerHelper("events", function () {
-    debugger
-    console.info(arguments);
-    return { event: [...arguments] };
-});*/

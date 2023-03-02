@@ -4,8 +4,10 @@ import template from './index.hbs';
 
 
 interface SimpleInputProps {
-    type?: string;
-    key: string;
+    type: string;
+    name: string;
+    value: string;
+    parentClassName?: string;
     events: {
         focus?: () => void;
         blur?: () => void;
@@ -13,9 +15,7 @@ interface SimpleInputProps {
 }
 
 
-export default class Input extends _Block<SimpleInputProps> {
-
-    validate: any = null;
+export default class SimpleInput extends _Block<SimpleInputProps> {
 
     protected getCompileOptions() {
         return { 

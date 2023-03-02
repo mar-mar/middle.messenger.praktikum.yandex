@@ -1,6 +1,7 @@
 import { ERRORS } from "../../../../utils/errors";
 import routeUse from "../../../../utils/route";
 import { isEvent } from "../../../../utils/typeCheck";
+import { passwordLogin, validateLogin } from "../../../../utils/validate";
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
 
@@ -28,11 +29,11 @@ export default class LoginBody extends _Block {
 
     }
 
-    private validateLogin() {
-        return ERRORS.loginEmpty;
+    private validateLogin(value: string): string {
+        return validateLogin(value) ? "" : ERRORS.loginError;
     }
 
-    private validatePassword() {
-
+    private validatePassword(value: string): string {
+        return passwordLogin(value) ? "" : ERRORS.passwordError;
     }
 }

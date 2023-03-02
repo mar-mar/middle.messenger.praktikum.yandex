@@ -19,7 +19,6 @@ const ROUTES: Record<string, typeof _Block> = {
     index: IndexPage
 };
 
-
 import { registerComponent } from "./utils/registerComponents";
 // @ts-ignore
 import componentsModules from "./**/components/**/index.ts";
@@ -28,13 +27,9 @@ import layoutModules from "./**/layout/**/index.ts";
 // @ts-ignore
 import pageModules from "./page/**/index.ts";
 
-
-
 Object.entries(ROUTES).forEach(([key, PageClass]) => {
     routeRegister(key, PageClass);
 });
-
-
 
 const register = function registerReq(modules: Record<string, any>, type: string, path: string[]): void{
     Object.entries(modules).forEach(([name, module]) => {
@@ -53,14 +48,11 @@ const register = function registerReq(modules: Record<string, any>, type: string
     });
 }
 
-
 register(componentsModules, "components", []);
 register(layoutModules, "layout", []);
 register(pageModules, "page", []);
 
 window.addEventListener('DOMContentLoaded', async () => {
-
-    
     routeUse("login");
 });
 

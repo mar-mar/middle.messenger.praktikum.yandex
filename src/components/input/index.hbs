@@ -3,11 +3,12 @@
     {{~#unless noMargin}} {{ styles.root }}--margin{{~/unless~}}
 {{~/inline}}
 
-<div class="{{ styles.root }} {{> addedClassName}}">
+<div class="{{ styles.root }} {{> addedClassName}}" >
 
     <div class="{{ styles.root }}__body" > 
 
         {{{components_simpleInput 
+            attachName = "input"
             type = type
             value = value
             name = key
@@ -21,5 +22,7 @@
         </label>
 
     </div>
+    
+    {{{components_simpleError attachName="error" error=error }}}
 
 </div>

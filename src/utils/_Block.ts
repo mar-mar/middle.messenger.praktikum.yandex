@@ -1,7 +1,7 @@
 import { EventBus } from "./EventBus";
 import { nanoid } from 'nanoid';
 import { AnyFunctionNoReturn } from "./types";
-
+import { isArray } from "./typeCheck";
 
 export enum EVENTS {
     INIT = "init",
@@ -12,7 +12,7 @@ export enum EVENTS {
 
 type Children = Record<string, _Block[] | _Block>;
 type Events = Record<string, AnyFunctionNoReturn>;
-export type Props = { events?: Events } & Omit<Record<string, any>, "events" >;
+export type Props = { events?: Events, attachName?: string } & Omit<Record<string, any>, "events" >;
 type CompileOptions<T> = { 
     template?: Handlebars.TemplateDelegate<any>, 
     styles?: Record<string, string>, 
@@ -23,33 +23,22 @@ type CompileOptions<T> = {
 export class _Block<T extends Props = any> {
 
     private element: HTMLElement | null = null;
-    private eventBus: EventBus;
-
-    private props: T;
     private children: Children = {};
-    public readonly id: string;
+
+    private readonly eventBus: EventBus;
+    private readonly props: T;
+    private readonly id: string;
 
     constructor(options: T) {
         const props: T = options.props || {};
-        this.id = props.id ?? nanoid(6);
-
         this.eventBus = new EventBus();
+
+        this.id = nanoid(6);
+        props.attachName = props.attachName || this.id;
 
         this.props = this.makePropsProxy(props, this.eventBus);
         this.registerLifeCycleEvents(this.eventBus);
         this.eventBus.emit(EVENTS.INIT);
-    }
-
-    public getElement(): HTMLElement | null {
-        return this.element;
-    }
-
-    protected getEventBus(): EventBus {
-        return this.eventBus;
-    }
-
-    protected getProps(): T {
-        return this.props;
     }
 
     //abstract  
@@ -64,7 +53,7 @@ export class _Block<T extends Props = any> {
     protected getCompileOptions(): CompileOptions<T> { return {}; };
 
     // abstract Может переопределять пользователь, необязательно трогать
-    //protected render(): DocumentFragment | null { return null };
+    //protected render(): DocumentFragment | null { return null };    
 
     // constructor
     private registerLifeCycleEvents(eventBus: EventBus): void {
@@ -78,10 +67,14 @@ export class _Block<T extends Props = any> {
     private makePropsProxy(props: T, eventBus: EventBus): T {
 
         props = new Proxy(props, {
+
             set(target: T, key: string, value: any): boolean {
+
+                const oldValue = target[key as keyof T];
+                if (oldValue === value) return true;
+
                 const oldTarget: any = { ...target };
                 target[key as keyof T] = value;
-
                 eventBus.emit(EVENTS.FLOW_CDU, oldTarget, target);
 
                 return true;
@@ -152,22 +145,6 @@ export class _Block<T extends Props = any> {
         });
     }
 
-    public setProps(nextProps: Partial<T>): void {
-        if (!nextProps) {
-            return;
-        }
-
-        Object.assign(this.props, nextProps);
-    }
-
-    public show(): void {
-        this.toggleVisible(true);
-    }
-
-    public hide(): void {
-        this.toggleVisible(false);
-    }
-
     public toggleVisible(value: boolean): void {
         if (this.element === null) return;
         this.element.style.display = value ? "block" : "none";
@@ -176,7 +153,7 @@ export class _Block<T extends Props = any> {
     protected compile({ template, styles, ...args } : CompileOptions<T>) {
     
         const temp = document.createElement('template');
-        const children: Children = {};
+        const children: _Block[] = [];
 
         if (template) {
             temp.innerHTML = template({ 
@@ -184,18 +161,17 @@ export class _Block<T extends Props = any> {
                 ...this.props,
                 styles, 
                 children, 
-                item: {},
-                component: this 
+                item: {}
             });
         }
 
         this.children = {};
-        
 
         if (temp.content.firstElementChild) {
-            this.children = children;
 
-            this.forEachChildren((child, _childName) => {
+            children.forEach(child => {
+                this.addChild(child);
+
                 const stub = temp.content.querySelector(`[data-id="${child.id}"]`);
                 if (!stub) return; // чистить или нет childElement?
     
@@ -220,7 +196,21 @@ export class _Block<T extends Props = any> {
         this.element = newElement;
     }
 
-    private forEachChildren(callbackfn: (child: _Block, childName: string) => void): void {
+    private addChild(child: _Block): void {
+        const attachName = child.getProps().attachName || child.getId();
+        let children = this.children[attachName];
+        if (!children) {
+            this.children[attachName] = child;
+        }
+        else if (isArray(children)) {
+            children.push(child);
+        }
+        else {
+            this.children[attachName] = [children, child];
+        }
+    }
+
+    public forEachChildren(callbackfn: (child: _Block, childName: string) => void): void {
 
         Object.entries(this.children).forEach(([childName, item]) => {
 
@@ -229,6 +219,47 @@ export class _Block<T extends Props = any> {
                 callbackfn(child, childName);
             });
         })
+    }
+
+    public getId(): string {
+        return this.id;
+    }
+
+    public getElement(): HTMLElement | null {
+        return this.element;
+    }
+
+    protected getChildByAttacheName(attacheName: string): _Block[] | _Block | null {
+        return this.children[attacheName];
+    }
+
+    protected getChildByAttacheNameOne(attacheName: string): _Block | null {
+        const children = this.getChildByAttacheName(attacheName);
+        return Array.isArray(children) ? children[0] : children;
+    }
+
+    protected getEventBus(): EventBus {
+        return this.eventBus;
+    }
+
+    public getProps(): T {
+        return this.props;
+    }
+
+    public setProps(nextProps: Partial<T>): void {
+        if (!nextProps) {
+            return;
+        }
+
+        Object.assign(this.props, nextProps);
+    }
+
+    public show(): void {
+        this.toggleVisible(true);
+    }
+
+    public hide(): void {
+        this.toggleVisible(false);
     }
 }
 

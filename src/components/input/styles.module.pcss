@@ -2,7 +2,7 @@
 @import url("src/style/mixin.pcss");
 
 .root {
-    border: 0; /* Хотя бы одно свойство должно быть */
+    position: relative;
 
     &--margin {
         @mixin input-offet;
@@ -36,11 +36,4 @@
         font-size: var(--mini-font-size);
     }
 
-    &::after {
-        position: absolute;
-        top: 3em;
-        content: attr(data-error);
-        color: var(--red-font-color);
-        font-size: var(--mini-font-size);
-    }
 }
