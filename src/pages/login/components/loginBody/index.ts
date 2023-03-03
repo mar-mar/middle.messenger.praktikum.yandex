@@ -1,39 +1,21 @@
-import { ERRORS } from "../../../../utils/errors";
-import routeUse from "../../../../utils/route";
-import { isEvent } from "../../../../utils/typeCheck";
-import { passwordLogin, validateLogin } from "../../../../utils/validate";
+import { validatePassword, validateLogin } from "../../../../utils/validate";
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
+import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
 
-export default class LoginBody extends _Block {
+export default class LoginBody<T extends WithFormProps>  extends _BlockWithForm<T> {
 
     protected getCompileOptions() {
         return {
+            ...super.getCompileOptions(),
             template,
-            onClickIndex: this.onClickIndex.bind(this),
-            validateForm: this.validateForm.bind(this),
-            validateLogin: this.validateLogin.bind(this),
-            validatePassword: this.validatePassword.bind(this)
+            validateLogin,
+            validatePassword
          };
     }
 
-    private onClickIndex(evt: Event): void {
-        if (!isEvent(evt)) return;
-        evt.preventDefault();
-
-        routeUse("index");
-    }
-
-
-    private validateForm() {
-
-    }
-
-    private validateLogin(value: string): string {
-        return validateLogin(value) ? "" : ERRORS.loginError;
-    }
-
-    private validatePassword(value: string): string {
-        return passwordLogin(value) ? "" : ERRORS.passwordError;
+    protected getForm() {
+        const form = this.getChildByAttacheNameOne("form");
+        return this.isForm(form) ? form : null;
     }
 }

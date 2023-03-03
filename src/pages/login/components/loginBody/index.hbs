@@ -1,4 +1,8 @@
-{{#components_form submitPageName="index" item=item valiate=validateForm }}
+<div>
+{{#components_form 
+    attachName="form"
+    item=item 
+    [event:submit]=onSubmit }}
 
     <div>
         {{{components_input label="Логин" key="login" item=item
@@ -8,7 +12,8 @@
     </div>
 
     <div>
-        {{{components_button label="Войти" type="submit" [event:click]=onClickIndex }}}
+        {{{components_button label="Войти" type="submit" }}}
     </div>
 
 {{/components_form}}
+</div>

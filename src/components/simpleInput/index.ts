@@ -3,7 +3,7 @@ import { _Block } from '../../utils/_Block';
 import template from './index.hbs';
 
 
-interface SimpleInputProps {
+type SimpleInputProps = {
     type: string;
     name: string;
     value: string;

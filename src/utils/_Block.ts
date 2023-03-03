@@ -7,30 +7,33 @@ export enum EVENTS {
     INIT = "init",
     FLOW_CDM = "flow:component-did-mount",
     FLOW_CDU = "flow:component-did-update",
-    FLOW_RENDER = "flow:render"
+    FLOW_RENDER = "flow:render",
+    FLOW_CHILDREN_RENDER = "flow:children-render",
 };
 
 type Children = Record<string, _Block[] | _Block>;
 type Events = Record<string, AnyFunctionNoReturn>;
-export type Props = { events?: Events, attachName?: string } & Omit<Record<string, any>, "events" >;
-type CompileOptions<T> = { 
+
+export type CompileOptions = { 
     template?: Handlebars.TemplateDelegate<any>, 
-    styles?: Record<string, string>, 
-    defaultValues?: Partial<T>
+    styles?: Record<string, string>,
+    [index: string]: any 
 };
 
+export type Props<P extends Record<string, unknown> = any> = { events?: Events, attachName?: string } & P;
+
+
 // базовый класс для компонентов
-export class _Block<T extends Props = any> {
+export class _Block<T extends Record<string, unknown> = any> {
 
     private element: HTMLElement | null = null;
     private children: Children = {};
 
     private readonly eventBus: EventBus;
-    private readonly props: T;
+    private readonly props: Props<T>;
     private readonly id: string;
 
-    constructor(options: T) {
-        const props: T = options.props || {};
+    constructor(props: Props<T>) {
         this.eventBus = new EventBus();
 
         this.id = nanoid(6);
@@ -48,9 +51,9 @@ export class _Block<T extends Props = any> {
     protected componentDidMount(/*oldProps*/): void { };
 
     // abstract Может переопределять пользователь, необязательно трогать
-    protected componentDidUpdate(_oldProps: Props, _newProps: Props): boolean { return true; };
+    protected componentDidUpdate(_oldProps: Props<T>, _newProps: Props<T>): boolean { return true; };
 
-    protected getCompileOptions(): CompileOptions<T> { return {}; };
+    protected getCompileOptions(): CompileOptions { return {}; };
 
     // abstract Может переопределять пользователь, необязательно трогать
     //protected render(): DocumentFragment | null { return null };    
@@ -61,6 +64,7 @@ export class _Block<T extends Props = any> {
         eventBus.on(EVENTS.FLOW_CDM, this.onComponentDidMount.bind(this));
         eventBus.on(EVENTS.FLOW_CDU, this.onComponentDidUpdate.bind(this));
         eventBus.on(EVENTS.FLOW_RENDER, this.onRender.bind(this));
+        eventBus.on(EVENTS.FLOW_CHILDREN_RENDER, this.onRenderChildren.bind(this));
     }
 
     // constructor
@@ -113,7 +117,7 @@ export class _Block<T extends Props = any> {
     }
 
     //CDU
-    private onComponentDidUpdate(oldProps: T, newProps: T): void {
+    private onComponentDidUpdate(oldProps: Props<T>, newProps: Props<T>): void {
         if (this.componentDidUpdate(oldProps, newProps)) {
             this.eventBus.emit(EVENTS.FLOW_RENDER);
         }
@@ -123,8 +127,12 @@ export class _Block<T extends Props = any> {
     private onRender(): void {
 
         this.toggleDomEvents(false);
+        this.children = {};
+
         this.compile(this.getCompileOptions());
         this.toggleDomEvents(true);
+
+        this.eventBus.emit(EVENTS.FLOW_CHILDREN_RENDER);
     }
 
     //render
@@ -150,40 +158,16 @@ export class _Block<T extends Props = any> {
         this.element.style.display = value ? "block" : "none";
     }
 
-    protected compile({ template, styles, ...args } : CompileOptions<T>) {
+    protected compile({ template, styles, ...args } : CompileOptions) {
     
         const temp = document.createElement('template');
-        const children: _Block[] = [];
 
         if (template) {
             temp.innerHTML = template({ 
                 ...args, 
                 ...this.props,
                 styles, 
-                children, 
-                item: {}
-            });
-        }
-
-        this.children = {};
-
-        if (temp.content.firstElementChild) {
-
-            children.forEach(child => {
-                this.addChild(child);
-
-                const stub = temp.content.querySelector(`[data-id="${child.id}"]`);
-                if (!stub) return; // чистить или нет childElement?
-    
-                const childElement = child.getElement()!;
-                stub.replaceWith(childElement); // меняем заглушку на нормальный dom
-                
-                if (stub.childNodes.length > 0) { // что-то есть внутри
-                    
-                    const contentCont = temp.content.querySelector(`[data-content]`) ?? stub;
-                    contentCont.innerHTML = "";
-                    contentCont.replaceWith(...Array.from(stub.childNodes));
-                } 
+                addChild: this.addChild.bind(this)
             });
         }
 
@@ -196,7 +180,35 @@ export class _Block<T extends Props = any> {
         this.element = newElement;
     }
 
-    private addChild(child: _Block): void {
+    onRenderChildren() {
+        this.renderChildren();
+
+        this.forEachChildren((child, _) => {
+            child.renderChildren();
+        });
+    }
+
+    renderChildren() {
+        if (!this.element) return;
+
+        this.forEachChildren(child => {
+
+            const stub = this.element!.querySelector(`[data-id="${child.id}"]`);
+            if (!stub) return; // чистить или нет childElement?
+
+            const childElement = child.getElement()!;
+            stub.replaceWith(childElement); // меняем заглушку на нормальный dom
+            
+           if (stub.childNodes.length > 0) { // что-то есть внутри
+                
+                const contentCont = childElement.querySelector(`[data-content]`) ?? stub;
+                contentCont.innerHTML = "";
+                contentCont.replaceWith(...Array.from(stub.childNodes));
+            } 
+        });
+    }
+
+    public addChild(child: _Block): void {
         const attachName = child.getProps().attachName || child.getId();
         let children = this.children[attachName];
         if (!children) {
@@ -242,11 +254,11 @@ export class _Block<T extends Props = any> {
         return this.eventBus;
     }
 
-    public getProps(): T {
+    public getProps(): Props<T> {
         return this.props;
     }
 
-    public setProps(nextProps: Partial<T>): void {
+    public setProps(nextProps: Partial<Props<T>>): void {
         if (!nextProps) {
             return;
         }

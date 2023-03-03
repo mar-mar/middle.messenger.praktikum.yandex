@@ -1,8 +1,12 @@
 import { isFunction, isString } from "./typeCheck";
-import { Props, _Block } from "./_Block";
+import { _Block } from "./_Block";
+
+export type ValidatedBlockProps = {
+    isValid: (value: any) => string;
+};
 
 // базовый класс для компонентов
-export class _ValidatedBlock<T extends Props> extends _Block<T> {
+export class _ValidatedBlock<T extends ValidatedBlockProps> extends _Block<T> {
 
     protected getValue(): any { return null; }
 

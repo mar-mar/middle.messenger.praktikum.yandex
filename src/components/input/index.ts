@@ -5,7 +5,7 @@ import { AnyFunctionNoReturn } from "../../utils/types";
 import { _ValidatedBlock } from "../../utils/_ValidatedBlock";
 import SimpleInput from "../simpleInput";
 
-interface InputProps {
+type InputProps = {
     type?: string;
     key: string;
     label: string;
@@ -16,7 +16,7 @@ interface InputProps {
         blur?: AnyFunctionNoReturn;
         focus?: AnyFunctionNoReturn;
     }
-}
+};
 
 
 export default class Input extends _ValidatedBlock<InputProps> {

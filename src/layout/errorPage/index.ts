@@ -3,7 +3,14 @@ import { _Block } from '../../utils/_Block';
 import template from './index.hbs';
 import styles from './styles.module.pcss';
 
-export default class ErrorPageLayout extends _Block {
+export type ErrorPageLayoutProps = {
+    errorCode?: string,
+    message?: string
+};
+
+
+// базовый класс для компонентов
+export default class ErrorPageLayout<T extends ErrorPageLayoutProps> extends _Block<T> {
 
     protected getCompileOptions() {
         return { 

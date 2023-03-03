@@ -1,8 +1,8 @@
-import { _Block, Props } from '../../utils/_Block';
+import { _Block } from '../../utils/_Block';
 import template from './index.hbs';
 import styles from './styles.module.pcss';
 
-interface ButtonProps extends Props {
+type ButtonProps = {
     type?: string;
     label: string;
     onClick?: () => void;
@@ -10,7 +10,7 @@ interface ButtonProps extends Props {
     events?: {
         click: () => void;
     };
-}
+};
 
 
 export default class Button extends _Block<ButtonProps> {

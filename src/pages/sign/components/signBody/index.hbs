@@ -1,20 +1,21 @@
+<div>
+    {{#components_form submitPageName="index" item=this.item }}
 
-{{#components_form submitPageName="index" item=this.item }}
+        <div>
+            {{{components_input label="Почта" key="email" item=item }}}
+            {{{components_input label="Логин" key="login" item=item }}}
+            {{{components_input label="Имя" key="first_name" item=item }}}
+            {{{components_input label="Фамилия" key="second_name" item=item }}}
+            {{{components_input label="Телефон" inputType="tel" key="phone" item=item }}}
+            {{{components_input label="Пароль" inputType="password" key ="password" item=item }}}
+            {{{components_input label="Пароль (еще раз)" inputType="password" key="password" item=item }}}
+        </div>
+        
+        <div>
+            {{{components_button label="Создать профиль" type="submit"  [event:click]=onClickIndex }}}
+        </div>
 
-    <div>
-        {{{components_input label="Почта" key="email" item=item }}}
-        {{{components_input label="Логин" key="login" item=item }}}
-        {{{components_input label="Имя" key="first_name" item=item }}}
-        {{{components_input label="Фамилия" key="second_name" item=item }}}
-        {{{components_input label="Телефон" inputType="tel" key="phone" item=item }}}
-        {{{components_input label="Пароль" inputType="password" key ="password" item=item }}}
-        {{{components_input label="Пароль (еще раз)" inputType="password" key="password" item=item }}}
-    </div>
-    
-    <div>
-        {{{components_button label="Создать профиль" type="submit"  [event:click]=onClickIndex }}}
-    </div>
-
-{{/components_form}}
+    {{/components_form}}
+</div>
 
 

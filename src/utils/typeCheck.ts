@@ -12,6 +12,10 @@ export function isHTMLInputElement(value: unknown): value is HTMLInputElement  {
     return (value instanceof HTMLInputElement);
 };
 
+export function isHTMLFormElement(value: unknown): value is HTMLFormElement  {
+    return (value instanceof HTMLFormElement);
+};
+
 export function isString(value: unknown): value is string {
     return ((typeof value) === 'string');
 }

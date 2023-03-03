@@ -1,12 +1,14 @@
-{{#layout_pageDialog
-title="Ваш профиль"
-}}
+<div class="{{styles.root}}">
+    {{#layout_pageDialog
+    title="Ваш профиль"
+    }}
 
-{{{pages_profile_components_profileBody item=item}}}
+        {{{pages_profile_components_profileBody item=item}}}
 
-{{#components_centerPane horizontalType="center" verticalType="center" withMarginTop=1 }}
-{{{components_textButton label="Назад к чатам" [event:click]=onClickIndex }}}
-{{/components_centerPane }}
+        {{#components_centerPane horizontalType="center" verticalType="center" withMarginTop=1 }}
+        {{{components_textButton label="Назад к чатам" [event:click]=onClickIndex }}}
+        {{/components_centerPane }}
 
 
-{{/layout_pageDialog}}
+    {{/layout_pageDialog}}
+</div>

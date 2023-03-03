@@ -9,7 +9,7 @@ import ProfilePage from "./pages/profile";
 import SignPage from "./pages/sign";
 import { _Block } from "./utils/_Block";
 
-const ROUTES: Record<string, typeof _Block> = {
+const ROUTES: Record<string, typeof _Block > = {
     home: HomePage,
     error404: Error404Page,
     error500: Error500Page,
@@ -53,7 +53,7 @@ register(layoutModules, "layout", []);
 register(pageModules, "page", []);
 
 window.addEventListener('DOMContentLoaded', async () => {
-    routeUse("login");
+    routeUse("index");
 });
 
 

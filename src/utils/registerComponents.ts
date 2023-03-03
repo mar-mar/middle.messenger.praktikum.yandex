@@ -8,7 +8,7 @@ export function registerComponent<T extends _Block>(name: string,
 
     Handlebars.registerHelper(name, function (this: any, options: any): string {
 
-        const templateData = options.data.root;
+        //const templateData = options.data.root;
         const events: Record<string, AnyFunction> = {};
         const props: Record<string, any> = { ...options.hash };
 
@@ -22,14 +22,22 @@ export function registerComponent<T extends _Block>(name: string,
             }
         });
 
+        const data = options.data;
+        const addChild: (child: _Block) => void = data.root ? data.root.addChild : data.addChilToChild;
         props.events = events;
-        const component = new constructor({ props });
-        templateData.children.push(component);
+        const component = new constructor(props);
+        addChild(component);
+        
 
+        let childsStr = "";
         if (options.fn) {
-            return `<div data-id='${component.getId()}'>${options.fn(this)}</div>`;
+            childsStr = options.fn(this, { data: { addChilToChild: component.addChild.bind(component) }});
         }
+        
+        //if (isArray(parentChildren)) {
+        //    parentChildren.push(component);
+        // }
 
-        return `<div data-id='${component.getId()}'></div>`;
+        return `<div data-id='${component.getId()}'>${childsStr}</div>`;
     });
 }

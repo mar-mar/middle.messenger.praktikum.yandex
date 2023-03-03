@@ -1,14 +1,15 @@
-{{#layout_pageDialog
-title = "Авторизация"
-}}
+<div class="{{styles.root}}">
+    {{#layout_pageDialog
+    title = "Авторизация"
+    }}
 
-<div class="{{styles.root}}" >
-    {{{pages_login_components_loginBody item=item}}}
+        <div class="{{styles.root}}__body" >
+            {{{pages_login_components_loginBody item=item}}}
 
-    {{#components_centerPane horizontalType = "center" verticalType = "center" withMarginTop=1 }}
-    {{{components_textButton label="Нет профиля?" [event:click]=onClickSign }}}
-    {{/components_centerPane}}
+            {{#components_centerPane horizontalType = "center" verticalType = "center" withMarginTop=1 }}
+                <div>{{{components_textButton label="Нет профиля?" [event:click]=onClickSign }}}</div>
+            {{/components_centerPane}}
 
+        </div>
+    {{/layout_pageDialog}}
 </div>
-{{/layout_pageDialog}}
-
