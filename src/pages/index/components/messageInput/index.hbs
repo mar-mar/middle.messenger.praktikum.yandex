@@ -1,5 +1,9 @@
 
-{{#components_form submitPageName="index" noButtonCont=1 }}
+<div>
+{{#components_form
+    attachName="form"
+    item=item 
+    [event:submit]=onSubmit }}
 
     <div class="{{ styles.root }}">
 
@@ -8,7 +12,7 @@
         </div>
 
         <div class="{{ styles.root }}__input-cont">
-            {{{components_textarea label="Сообщение" inputType="text" name="message" }}}
+            {{{components_textarea label="Сообщение" isValid=validateMessage key="message" }}}
         </div>
 
         <div class="{{ styles.root }}__send-cont">
@@ -17,5 +21,5 @@
     </div>
 
 {{/components_form}}
-
+</div>
 

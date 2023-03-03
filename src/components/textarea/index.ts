@@ -1,11 +1,26 @@
-import { _Block } from '../../utils/_Block';
+import { ValidatedBlockProps, _ValidatedBlock } from "../../utils/_ValidatedBlock";
+import SimpleTextArea from "../simpleTextarea";
 import template from './index.hbs';
-import styles from './styles.module.pcss';
 
-export default class TextArea extends _Block {
+
+type TextAreaProps = {
+    key: string;
+    label: string;
+} & ValidatedBlockProps;
+
+export default class TextArea extends _ValidatedBlock<TextAreaProps> {
 
     protected getCompileOptions() {
-        return { template, styles };
+        return { 
+            ...super.getCompileOptions(),
+            template
+        };
     }
 
+    protected getValue(): any {
+        const inputBlock = this.getChildByAttacheNameOne("input");
+        if (!inputBlock) return null;
+
+        return (inputBlock as SimpleTextArea).getValue();
+    }
 }

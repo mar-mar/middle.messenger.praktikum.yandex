@@ -1,8 +1,10 @@
 import { _Block } from "./_Block";
 
-const REGISTERED_ROUTE: Record<string, typeof _Block> = {};
+export const REGISTERED_ROUTE: Record<string, typeof _Block> = {};
  
-export default function routeUse(route: string): void {
+export default function routeUse(route: string, testData?: any): void {
+
+    console.info(testData);
 
     const root = document.querySelector("#app")!;
     const PageClass = REGISTERED_ROUTE[route];

@@ -23,11 +23,6 @@ export default class ProfileBody<T extends WithFormProps> extends _BlockWithForm
         };
     }
 
-    protected getForm() {
-        const form = this.getChildByAttacheNameOne("form");
-        return this.isForm(form) ? form : null;
-    }
-
     private onClickIndex(evt: Event): void {
         evt.preventDefault();
 

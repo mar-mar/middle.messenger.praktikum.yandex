@@ -20,6 +20,12 @@ export type CompileOptions = {
     [index: string]: any 
 };
 
+export type TemplateOptions = { 
+    styles?: Record<string, any>,
+    addChild: (child: _Block) => void,
+    [index: string]: any 
+};
+
 export type Props<P extends Record<string, unknown> = any> = { events?: Events, attachName?: string } & P;
 
 
@@ -44,18 +50,18 @@ export class _Block<T extends Record<string, unknown> = any> {
         this.eventBus.emit(EVENTS.INIT);
     }
 
-    //abstract  
+    //   
     protected init(): void { };
 
-    // abstract Может переопределять пользователь, необязательно трогать
+    // Может переопределять пользователь, необязательно трогать
     protected componentDidMount(/*oldProps*/): void { };
 
-    // abstract Может переопределять пользователь, необязательно трогать
+    // Может переопределять пользователь, необязательно трогать
     protected componentDidUpdate(_oldProps: Props<T>, _newProps: Props<T>): boolean { return true; };
 
     protected getCompileOptions(): CompileOptions { return {}; };
 
-    // abstract Может переопределять пользователь, необязательно трогать
+    // Может переопределять пользователь, необязательно трогать
     //protected render(): DocumentFragment | null { return null };    
 
     // constructor

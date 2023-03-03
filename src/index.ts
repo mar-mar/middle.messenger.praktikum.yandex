@@ -19,13 +19,17 @@ const ROUTES: Record<string, typeof _Block > = {
     index: IndexPage
 };
 
+
 import { registerComponent } from "./utils/registerComponents";
-// @ts-ignore
+// без ts-ignore не работает, ts не понимает такие импорты, это фича от parcel (@parcel/resolver-glob)
+// @ts-ignore 
 import componentsModules from "./**/components/**/index.ts";
 // @ts-ignore
 import layoutModules from "./**/layout/**/index.ts";
 // @ts-ignore
 import pageModules from "./page/**/index.ts";
+// @ts-ignore
+import testData from "./testData/*.json";
 
 Object.entries(ROUTES).forEach(([key, PageClass]) => {
     routeRegister(key, PageClass);
@@ -53,7 +57,7 @@ register(layoutModules, "layout", []);
 register(pageModules, "page", []);
 
 window.addEventListener('DOMContentLoaded', async () => {
-    routeUse("index");
+    routeUse("index", testData);
 });
 
 

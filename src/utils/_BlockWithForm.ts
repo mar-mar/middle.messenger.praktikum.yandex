@@ -33,7 +33,8 @@ export class _BlockWithForm<T extends WithFormProps> extends _Block<T> {
     }
 
     protected getForm(): Form | null {
-        return null;
+        const form = this.getChildByAttacheNameOne("form");
+        return this.isForm(form) ? form : null;
     }
 
     protected isForm(value: unknown): value is Form {

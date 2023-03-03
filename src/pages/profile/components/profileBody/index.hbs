@@ -5,7 +5,7 @@
 
         <div class="{{ styles.root }}__settings-cont">
 
-            {{#components_form submitPageName="index"
+            {{#components_form 
                 attachName="form"
                 [event:submit]=onSubmit item=item }}
 
@@ -18,7 +18,7 @@
                     {{{components_input label="Телефон" key="phone" isValid=validatePhone item=item }}}
                 </div>
                 
-                <div>
+                <div class="{{ styles.root }}__setting-button-cont">
                     {{{components_button label="Сохранить изменения" type="submit" }}}
                 </div>
 

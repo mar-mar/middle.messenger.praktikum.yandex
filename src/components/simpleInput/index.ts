@@ -2,7 +2,6 @@ import { isHTMLInputElement } from "../../utils/typeCheck";
 import { _Block } from '../../utils/_Block';
 import template from './index.hbs';
 
-
 type SimpleInputProps = {
     type: string;
     name: string;
@@ -19,8 +18,7 @@ export default class SimpleInput extends _Block<SimpleInputProps> {
 
     protected getCompileOptions() {
         return { 
-            template, 
-            type: "text"
+            template
         };
     }
 
@@ -29,5 +27,4 @@ export default class SimpleInput extends _Block<SimpleInputProps> {
         return isHTMLInputElement(element) ? element.value : null;
     }
     
-    //validate
 }

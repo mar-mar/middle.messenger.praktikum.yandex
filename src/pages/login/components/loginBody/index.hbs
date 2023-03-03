@@ -1,4 +1,4 @@
-<div>
+<div class="{{ styles.root }}">
 {{#components_form 
     attachName="form"
     item=item 
@@ -7,11 +7,11 @@
     <div>
         {{{components_input label="Логин" key="login" item=item
             isValid=validateLogin }}}
-        {{{components_input label="Пароль" inputType="password" key="password" item=item
+        {{{components_input label="Пароль" type="password" key="password" item=item
             isValid=validatePassword }}}
     </div>
 
-    <div>
+    <div class="{{ styles.root }}__button-cont">
         {{{components_button label="Войти" type="submit" }}}
     </div>
 

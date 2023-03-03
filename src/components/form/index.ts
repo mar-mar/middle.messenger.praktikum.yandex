@@ -3,7 +3,6 @@ import { AnyFunctionNoReturn } from "../../utils/types";
 import { _Block } from '../../utils/_Block';
 import { _ValidatedBlock } from "../../utils/_ValidatedBlock";
 import template from './index.hbs';
-import styles from './styles.module.pcss';
 
 
 export type FormProps = {
@@ -16,8 +15,7 @@ export default class Form extends _Block<FormProps> {
 
     protected getCompileOptions(): any {
         return { 
-            template, 
-            styles 
+            template
         };
     }
 

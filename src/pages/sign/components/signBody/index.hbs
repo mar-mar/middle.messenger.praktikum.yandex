@@ -1,18 +1,20 @@
-<div>
-    {{#components_form submitPageName="index" item=this.item }}
+<div class="{{ styles.root }}">
+    {{#components_form item=this.item 
+        attachName="form"
+        [event:submit]=onSubmit item=item}}
 
         <div>
-            {{{components_input label="Почта" key="email" item=item }}}
-            {{{components_input label="Логин" key="login" item=item }}}
-            {{{components_input label="Имя" key="first_name" item=item }}}
-            {{{components_input label="Фамилия" key="second_name" item=item }}}
-            {{{components_input label="Телефон" inputType="tel" key="phone" item=item }}}
-            {{{components_input label="Пароль" inputType="password" key ="password" item=item }}}
-            {{{components_input label="Пароль (еще раз)" inputType="password" key="password" item=item }}}
+            {{{components_input label="Почта" key="email" isValid=validateEmail item=item }}}
+            {{{components_input label="Логин" key="login" isValid=validateLogin item=item }}}
+            {{{components_input label="Имя" key="first_name" isValid=validateName item=item }}}
+            {{{components_input label="Фамилия" key="second_name" isValid=validateName item=item }}}
+            {{{components_input label="Телефон" isValid=validatePhone key="phone" item=item }}}
+            {{{components_input label="Пароль" type="password" key ="password" isValid=validatePassword item=item }}}
+            {{{components_input label="Пароль (еще раз)" type="password" key="password" isValid=validatePassword item=item }}}
         </div>
         
-        <div>
-            {{{components_button label="Создать профиль" type="submit"  [event:click]=onClickIndex }}}
+        <div class="{{ styles.root }}__button-cont">
+            {{{components_button label="Создать профиль" type="submit"  }}}
         </div>
 
     {{/components_form}}
