@@ -1,14 +1,21 @@
-<div class="{{ styles.root }}__wrapper">
+<div class="{{ styles.root }}">
+    
+    <div class="{{ styles.root }}__underlay">
 
-    <div class="{{ styles.root }}">
+        <div class="{{ styles.root }}__main">
+            <header class="{{ styles.root }}__header">
+                <h3 class="{{ styles.root }}__header__header">{{title}}</h3>
+            </header>
 
-        <header>
-            <h2 class="{{ styles.root }}__header">{{title}}</h2>
-        </header>
+            <div class="{{ styles.root }}__body">
+                <div data-content></div>
+            </div>
 
-        <main>
-            <div data-content></div>
-        </main>
+            {{#layout_centerPane horizontalType = "center" verticalType = "center" withMarginTop=1 }}
+                {{{components_textButton label="Закрыть" [event:click]=onClickHide }}}
+            {{/layout_centerPane}}
+        </div>
+
     </div>
 
 </div>

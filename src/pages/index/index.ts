@@ -6,7 +6,14 @@ import { _Block } from "../../utils/_Block";
 import template from "./index.hbs";
 import * as styles from './styles.module.pcss';
 
-
+enum CHILD_NAMES {
+    Attache = "popupAttache",
+    ChatMenu = "popupChatMenu",
+    Menu = "popupMenu",
+    AddUser = "dialogAddUser",
+    DeleteUser = "dialogDeleteUser",
+    FindChat = "findChatDialogBody"
+}
 
 export default class IndexPage extends _Block {
 
@@ -19,12 +26,14 @@ export default class IndexPage extends _Block {
             onClickProfile: this.onClickProfile.bind(this),
             onClickError404: this.onClickError404.bind(this),
             onClickError500: this.onClickError500.bind(this),
+            openFindChat: this.openFindChat.bind(this),
             attachMenuItems: this.attachMenuItems(),
             chatMenuMenuItems: this.chatMenuMenuItems(),
             menuMenuItems: this.menuMenuItems(),
             openPopupAttache: this.openPopupAttache.bind(this),
             openPopupChatMenu: this.openPopupChatMenu.bind(this),
             openPopupMenu: this.openPopupMenu.bind(this),
+            CHILD_NAMES
         };
     }
 
@@ -48,23 +57,40 @@ export default class IndexPage extends _Block {
         routeUse("error500"); 
     }
 
+    private onClickAddUser() {
+        this.openDialog(CHILD_NAMES.AddUser);
+    }
+
+    private onClickDeleteUser() {
+        this.openDialog(CHILD_NAMES.DeleteUser);
+    }
+
+    private openFindChat() {
+        this.openDialog(CHILD_NAMES.FindChat);
+    }
+    
     private openPopupAttache(evt: Event): void {
         //evt.preventDefault();
-        this.openPopup(evt, "popupAttache");
+        this.openPopup(evt, CHILD_NAMES.Attache);
     }
 
     private openPopupChatMenu(evt: Event): void {
-        this.openPopup(evt, "popupChatMenu");
+        this.openPopup(evt, CHILD_NAMES.ChatMenu);
     }
 
     private openPopupMenu(evt: Event): void {
-        this.openPopup(evt, "popupMenu");
+        this.openPopup(evt, CHILD_NAMES.Menu);
     }
 
     private openPopup(evt: Event, blockName: string) {
         if (!evt.target) return;
         const popup = this.getChildByAttacheNameOne(blockName) as Popup;
         popup?.show(evt.target as Element);
+    }
+
+    private openDialog(blockName: string) {
+        const dialog = this.getChildByAttacheNameOne(blockName) as Popup;
+        dialog.show();
     }
 
     private attachMenuItems(): MenuItemProps[] {
@@ -77,8 +103,8 @@ export default class IndexPage extends _Block {
 
     private chatMenuMenuItems(): MenuItemProps[] {
         return [
-            { label: "Добавить пользователя" },
-            { label: "Удалить пользователя" },
+            { label: "Добавить пользователя", click: this.onClickAddUser.bind(this) },
+            { label: "Удалить пользователя", click: this.onClickDeleteUser.bind(this) },
             { label: "Удалить чат" }
         ];
     }
@@ -86,7 +112,7 @@ export default class IndexPage extends _Block {
     private menuMenuItems(): MenuItemProps[] {
         return [
             { label: "Создать чат" },
-            { label: "Открыть профиль", click: this.onClickProfile }
+            { label: "Открыть профиль", click: this.onClickProfile.bind(this) }
         ];
     }
     

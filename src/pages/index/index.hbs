@@ -7,7 +7,8 @@
         </section>
 
         <nav class="{{ styles.root }}__chats">
-            {{{pages_index_components_chatList item=item  }}}
+            {{{pages_index_components_chatList item=item  
+                openFindChat=openFindChat }}}
         </nav>
     {{/layout_pane }}
 
@@ -39,15 +40,25 @@
         <div>{{{components_textButton label="500 ошибка" [event:click]=onClickError500 }}}</div>
     </div>
 
-    {{#layout_popup attachName="popupAttache" }}
+    {{#layout_popup attachName=CHILD_NAMES.Attache }}
         {{{components_menu memuItems=attachMenuItems }}}
     {{/layout_popup}}
-    {{#layout_popup attachName="popupChatMenu" }}
+    {{#layout_popup attachName=CHILD_NAMES.ChatMenu }}
         {{{components_menu memuItems=chatMenuMenuItems }}}
     {{/layout_popup}}
-    {{#layout_popup attachName="popupMenu" }}
+    {{#layout_popup attachName=CHILD_NAMES.Menu }}
         {{{components_menu memuItems=menuMenuItems }}}
     {{/layout_popup}}
+
+    {{#layout_modalDialog attachName=CHILD_NAMES.AddUser title="Добавить пользователя"  }}
+        {{{pages_index_modules_addUserDialogBody}}}
+    {{/layout_modalDialog}}
+    {{#layout_modalDialog attachName=CHILD_NAMES.DeleteUser title="Удалить пользователя"  }}
+        {{{pages_index_modules_deleteUserDialogBody}}}
+    {{/layout_modalDialog}}
+    {{#layout_modalDialog attachName=CHILD_NAMES.FindChat title="Поиск чата"  }}
+        {{{pages_index_modules_findChatDialogBody}}}
+    {{/layout_modalDialog}}
     
 </div>
 

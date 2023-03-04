@@ -1,0 +1,11 @@
+<div class="{{ styles.root }}">
+{{#components_form 
+    attachName="form"
+    [event:submit]=onSubmit }}
+
+    <div>
+        {{{components_input label="фильтр" name="filter" value=""  }}}
+    </div>
+
+{{/components_form}}
+</div>

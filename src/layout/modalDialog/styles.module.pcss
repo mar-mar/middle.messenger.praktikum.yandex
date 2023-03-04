@@ -2,15 +2,43 @@
 @import url("src/style/mixin.pcss");
 
 .root {
-    @mixin center-position;
-    @mixin bordershadow;
+    @mixin absolute-strech;
+    display: none;
+    
+    &__main {
+        @mixin bordershadow;
+        @mixin center-position;
+    
+        position: relative;
+        width: fit-content;
+        height: fit-content;
+        min-width: 200px;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+    
+        padding: var(--second-offset);
+    }
 
-    padding: var(--primary-offset);
+    &__underlay {
+        @mixin absolute-strech;
+        display: flex;
+        z-index: var(--modal-zindex);
 
-    &__wrapper {
-        @mixin center-position-wrapper;
+        background: var(--modal-underlay-back-color);
+    }
 
-        height: 100%;
+    &__header {
+        margin-bottom: var(--second-offset);
+        font-weight: bold;
+    }
+
+    &__header__header {
+        font-weight: bold;
+    }
+
+    &__body {
+        flex-grow: 1;
     }
 
 }

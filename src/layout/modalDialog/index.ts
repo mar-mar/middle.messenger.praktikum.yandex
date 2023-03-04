@@ -5,7 +5,15 @@ import styles from './styles.module.pcss';
 export default class PageDialogeLayout extends _Block {
 
     protected getCompileOptions() {
-        return { template, styles };
+        return { 
+            template, 
+            styles,
+            onClickHide: this.onClickHide.bind(this)
+        };
+    }
+
+    private onClickHide() {
+        this.hide();
     }
 
 }

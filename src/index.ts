@@ -23,11 +23,11 @@ const ROUTES: Record<string, typeof _Block > = {
 import { registerComponent } from "./utils/registerComponents";
 // без ts-ignore не работает, ts не понимает такие импорты, это фича от parcel (@parcel/resolver-glob)
 // @ts-ignore 
-import componentsModules from "./**/components/**/index.ts";
+import componentsModules from "./**/components/*/index.ts";
 // @ts-ignore
-import layoutModules from "./**/layout/**/index.ts";
+import layoutModules from "./**/layout/*/index.ts";
 // @ts-ignore
-import pageModules from "./page/**/index.ts";
+import modulesModules from "./**/modules/*/index.ts";
 // @ts-ignore
 import testData from ".././testData/*.json";
 
@@ -56,9 +56,10 @@ const register = function registerReq(modules: Record<string, any>, type: string
 
 register(componentsModules, "components", []);
 register(layoutModules, "layout", []);
-register(pageModules, "page", []);
+register(modulesModules, "modules", []);
 
 window.addEventListener('DOMContentLoaded', async () => {
+    //routeUse("sign");
     routeUse("index");
 });
 
