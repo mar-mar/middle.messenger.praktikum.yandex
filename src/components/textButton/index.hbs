@@ -1,10 +1,11 @@
 
 <div class="{{ styles.root }} {{#if red}}{{ styles.root }}--red{{/if}}">
     
-    <button> 
-            
-        <span class="{{ styles.root }}__label">{{label}}</span>
-        
+    <button class="{{ styles.root }}__button"> 
+
+        <div class="{{ styles.root }}__icon {{iconClass}}" title="{{label}}"></div>  
+        {{#unless noLabel}}<div class="{{ styles.root }}__label">{{label}}</div>{{/unless}}
+
     </button>
 
 </div>

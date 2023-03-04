@@ -1,4 +1,5 @@
 //import routeUse from "../../utils/route";
+import Popup from "../../layout/popup";
 import routeUse from "../../utils/route";
 import { _Block } from "../../utils/_Block";
 import template from "./index.hbs";
@@ -16,7 +17,8 @@ export default class IndexPage extends _Block {
             onClickProfile: this.onClickProfile.bind(this),
             onClickError404: this.onClickError404.bind(this),
             onClickError500: this.onClickError500.bind(this),
-            attachMenuItems: this.attachMenuItems()
+            attachMenuItems: this.attachMenuItems(),
+            openPopupAttache: this.openPopupAttache.bind(this)
         };
     }
 
@@ -40,8 +42,12 @@ export default class IndexPage extends _Block {
         routeUse("error500"); 
     }
 
-    openPopupAttache() {
-
+    openPopupAttache(evt: Event) {
+        evt.preventDefault();
+        if (!evt.target) return;
+        
+        const popup = this.getChildByAttacheNameOne("popupAttache") as Popup;
+        popup?.show(evt.target as Element);
     }
 
     attachMenuItems(): { label: string }[] {

@@ -25,7 +25,7 @@ export type TemplateOptions = {
     [index: string]: any 
 };
 
-export type Props<P extends Record<string, unknown> = any> = { events?: Events, attachName?: string, item?: any } & P;
+export type Props<P extends Record<string, unknown> = any> = { events?: Events, attachName?: string, render?: boolean; item?: any } & P;
 
 
 // базовый класс для компонентов
@@ -144,12 +144,6 @@ export class _Block<T extends Record<string, unknown> = any> {
         }
 
         this.toggleDomEvents(true);
-    }
-
-    empty() {
-        this.toggleDomEvents(false);
-        this.children = {};
-        if (this.element) this.element.innerHTML = "";
     }
 
     //render

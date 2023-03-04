@@ -24,7 +24,7 @@
 
         {{#components_pane addeClassName=styles.[chat-input] secBackColor=1 withBorder=1 }}
             {{{pages_index_components_messageInput item=item 
-                openPopup=openPopupAttache }}}
+                openPopupAttache=openPopupAttache }}}
         {{/components_pane }}
 
     </main>
@@ -37,9 +37,9 @@
         <div>{{{components_textButton label="500 ошибка" [event:click]=onClickError500 }}}</div>
     </div>
 
-    {{#layout_popup attachName="popup" }}
-    sdfsdf
-    {{/layout_popup}}
+    {{#layout_popup attachName="popupAttache" }}
     {{{components_menu attachName="attacheMenu" memuItems=attachMenuItems }}}
+    {{/layout_popup}}
+    
 </div>
 

@@ -3,8 +3,6 @@ import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm"
 import template from "./index.hbs";
 import styles from './styles.module.pcss';
 import { validateMessage } from "../../../../utils/validate";
-import { isFunction } from "../../../../utils/typeCheck";
-
 
 
 type MessageInputProps = {
@@ -22,10 +20,4 @@ export default class MessageInput<T extends MessageInputProps>  extends _BlockWi
          };
     }
 
-    protected onClickAttache() {
-        const open = this.getProps().openPopup;
-        if (!isFunction(open)) return;
-        
-        open(this.getElement());
-    }
 }

@@ -25,6 +25,7 @@ export function registerComponent<T extends _Block>(name: string,
         const data = options.data;
         const addChild: (child: _Block) => void = data.addChilToChild ? data.addChilToChild : data.root.addChild;
         props.events = events;
+        props.render = true;
         const component = new constructor(props);
         addChild(component);
         
