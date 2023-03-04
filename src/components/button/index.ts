@@ -16,7 +16,11 @@ type ButtonProps = {
 export default class Button extends _Block<ButtonProps> {
 
     protected getCompileOptions() {
-        return { template, styles };
+        return { 
+            template, 
+            styles,
+            type: "button" 
+        };
     }
 
     protected init() {

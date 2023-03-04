@@ -1,9 +1,9 @@
 
 <div class="{{ styles.root }} {{#if red}}{{ styles.root }}--red{{/if}}">
     
-    <button class="{{ styles.root }}__button"> 
+    <button class="{{ styles.root }}__button" type="{{type}}"> 
 
-        <div class="{{ styles.root }}__icon {{iconClass}}" title="{{label}}"></div>  
+        {{#if iconClass}}<div class="{{ styles.root }}__icon {{iconClass}}" ></div>{{/if}}
         {{#unless noLabel}}<div class="{{ styles.root }}__label">{{label}}</div>{{/unless}}
 
     </button>

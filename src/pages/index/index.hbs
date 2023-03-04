@@ -1,31 +1,33 @@
 <div class="{{ styles.root }}">
 
-    {{#components_pane withBorder=1 secBackColor=1 addeClassName=styles.[left-pane] }}
+    {{#layout_pane withBorder=1 secBackColor=1 addeClassName=styles.[left-pane] }}
         <section class="{{ styles.root }}__profile">
-            {{{pages_index_components_profile item=item }}}
+            {{{pages_index_components_profile item=item 
+                openPopupMenu=openPopupMenu}}}
         </section>
 
         <nav class="{{ styles.root }}__chats">
             {{{pages_index_components_chatList item=item  }}}
         </nav>
-    {{/components_pane }}
+    {{/layout_pane }}
 
 
     <main class="{{ styles.root }}__chat">
 
-        {{#components_pane addeClassName=styles.[chat-header] withBorder=1 }}
-            {{{pages_index_components_chatHeader item=item }}}
-        {{/components_pane }}
+        {{#layout_pane addeClassName=styles.[chat-header] withBorder=1 }}
+            {{{pages_index_components_chatHeader item=item 
+                openPopupChatMenu=openPopupChatMenu }}}
+        {{/layout_pane }}
 
 
         <div class="{{ styles.root }}__chat__messages">
             <section aria-label="Беседа"></section>
         </div>
 
-        {{#components_pane addeClassName=styles.[chat-input] secBackColor=1 withBorder=1 }}
+        {{#layout_pane addeClassName=styles.[chat-input] secBackColor=1 withBorder=1 }}
             {{{pages_index_components_messageInput item=item 
                 openPopupAttache=openPopupAttache }}}
-        {{/components_pane }}
+        {{/layout_pane }}
 
     </main>
 
@@ -38,7 +40,13 @@
     </div>
 
     {{#layout_popup attachName="popupAttache" }}
-    {{{components_menu attachName="attacheMenu" memuItems=attachMenuItems }}}
+        {{{components_menu memuItems=attachMenuItems }}}
+    {{/layout_popup}}
+    {{#layout_popup attachName="popupChatMenu" }}
+        {{{components_menu memuItems=chatMenuMenuItems }}}
+    {{/layout_popup}}
+    {{#layout_popup attachName="popupMenu" }}
+        {{{components_menu memuItems=menuMenuItems }}}
     {{/layout_popup}}
     
 </div>

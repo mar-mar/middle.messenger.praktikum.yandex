@@ -3,9 +3,7 @@ import { _Block } from "./_Block";
 export const REGISTERED_ROUTE: Record<string, typeof _Block> = {};
 export const REGISTERED_TESTDATA: Record<string, any> = {};
  
-export default function routeUse(route: string, testData?: any): void {
-
-    console.info(testData);
+export default function routeUse(route: string): void {
 
     const root = document.querySelector("#app")!;
     const PageClass = REGISTERED_ROUTE[route];

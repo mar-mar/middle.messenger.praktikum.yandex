@@ -18,7 +18,8 @@ export default class Input extends _ValidatedBlock<InputProps> {
         return { 
             ...super.getCompileOptions(),
             template, 
-            styles
+            styles,
+            type: "text"
         };
     }
 

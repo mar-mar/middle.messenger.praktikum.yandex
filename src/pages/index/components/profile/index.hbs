@@ -1,11 +1,14 @@
 
 <div class="{{ styles.root }}">
 
-    {{{components_avatar imageUrl=item.avatar diameter='M' 
+    {{{components_avatar imageUrl=item.profile.avatar diameter='M' 
         avatarOwner=item.profile.display_name }}}
 
     <h2 class="{{ styles.root }}__header">
         {{item.profile.display_name}}
     </h2>
+
+    {{{components_textButton label="Меню" iconClass="menu-icon" noLabel=1 
+        [event:click] = openPopupMenu }}}
 
 </div>

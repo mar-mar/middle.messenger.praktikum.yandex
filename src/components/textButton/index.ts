@@ -5,6 +5,8 @@ import styles from './styles.module.pcss';
 type TextButtonProps = {
     type?: string;
     label: string;
+    noLabel?: 0|1;
+    iconClass?: string;
     events: {
         click: () => void
     }
@@ -13,6 +15,10 @@ type TextButtonProps = {
 export default class TextButton extends _Block<TextButtonProps> {
 
     protected getCompileOptions() {
-        return { template, styles };
+        return { 
+            template, 
+            styles,
+            type: "button" 
+        };
     }
 }

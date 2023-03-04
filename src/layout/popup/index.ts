@@ -10,6 +10,19 @@ type Size = {
 export default class Popup extends _Block {
     private ident: number = 10;
 
+
+    private toggleWatchBodyClick(value: boolean): void {
+        const options = { capture: true, passive: true };
+        document.body.removeEventListener("click", this.onBodyClick, options);
+        if (!value) return;
+
+        document.body.addEventListener("click", this.onBodyClick, options);
+    }
+
+    private onBodyClick = () => {
+        this.hide();
+    }
+
     protected getCompileOptions() {
         return { template, styles };
     }
@@ -23,19 +36,14 @@ export default class Popup extends _Block {
         return { width: thisRect.width, height: thisRect.height };
     }
 
-    _checkRect(contRect: DOMRect, size: Size, top: number, left: number) {
-        const xOk = size.width + left <= (contRect.right - contRect.x);
-        const yOk = size.height + top <= (contRect.bottom - contRect.y);
-        return xOk && yOk;
-    }
-
-    show(parent?: Element) {
+    public show(parent?: Element): void {
         const element = this.getElement();
         if (!parent || !element) return;
         
+        const oldVisibility = element.style.visibility;
         element.style.visibility = "hidden";
-
-        super.show();       
+        super.show();   
+        //
 
         const parentRect = parent.getBoundingClientRect();
         const bodyRect = document.body.getBoundingClientRect();
@@ -44,20 +52,45 @@ export default class Popup extends _Block {
 
         let position = { top: parentRect.top + parentRect.width / 2, left: parentRect.left };
 
-        const maxBottom = parentRect.bottom + ident + size.height;
-        const minTop = parentRect.top - ident - size.height;
+        position.top = this.getPositionByAxis(bodyRect, parentRect, ident, size, true);
+        position.left = this.getPositionByAxis(bodyRect, parentRect, 0, size, false);
 
+        element.style.top = this.toPx(position.top); //  + window.scrollY
+        element.style.left = this.toPx(position.left); // + window.scrollX
+        //
+        element.style.visibility = oldVisibility;
+        this.toggleWatchBodyClick(true);
+    }
 
-        if (maxBottom >= bodyRect.bottom) {
-            position.top = minTop;
+    private getPositionByAxis(bodyRect: DOMRect, parentRect: DOMRect, ident: number, size: Size, axisY: boolean): number {
+        const sizeByAxis = axisY ? size.height : size.width;
+        const bodyBound = this.getBoundByAxis(axisY, bodyRect);
+        const parentBound = this.getBoundByAxis(axisY, parentRect);
+        if (!axisY) {
+            parentBound.reverse(); // когда по X, не учитываем размер родителя, todo может от центра сделать привызку?
         }
-        else if (minTop <= bodyRect.top) {
-            position.top = maxBottom - size.height;
+        const maxBottom = parentBound[0] + ident + sizeByAxis;
+        const minTop = parentBound[1] - ident - sizeByAxis;
+    
+        let result: number = maxBottom - sizeByAxis; 
+        if (maxBottom >= bodyBound[0]) {
+            result = minTop;
+        }
+        else if (minTop <= bodyBound[1]) {
+            result = maxBottom - sizeByAxis;
         }
 
-        element.style.top = this.toPx(position.top);
-        element.style.left = this.toPx(position.left);
-        element.style.visibility = "";
+        return result;
+    }
+
+    private getBoundByAxis(axisY: boolean, rect: DOMRect) {
+        return axisY ? [rect.bottom, rect.top] : [rect.right, rect.left]; 
+    }
+
+
+    public hide(): void {
+        this.toggleWatchBodyClick(false);
+        super.hide();
     }
 
 }

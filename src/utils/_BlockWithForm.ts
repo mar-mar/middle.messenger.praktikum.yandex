@@ -21,7 +21,7 @@ export class _BlockWithForm<T extends WithFormProps> extends _Block<T> {
         evt.preventDefault();
 
         let form = this.getForm();
-        if (!this.isForm(form)) return;
+        if (!form) return;
 
         form.validate();
 

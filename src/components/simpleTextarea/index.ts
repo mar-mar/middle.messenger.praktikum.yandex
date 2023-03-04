@@ -1,9 +1,15 @@
 import { isHTMLTextAreaElement } from "../../utils/typeCheck";
-import { _Block } from '../../utils/_Block';
+import { Props, _Block } from '../../utils/_Block';
 import template from './index.hbs';
 import styles from './styles.module.pcss';
 
-export default class SimpleTextArea extends _Block {
+type SimpleTextAreaProps = {
+    label: string;
+    value?: string;
+    name?: string;
+} & Props;
+
+export default class SimpleTextArea extends _Block<SimpleTextAreaProps> {
 
     protected getCompileOptions() {
         return { 

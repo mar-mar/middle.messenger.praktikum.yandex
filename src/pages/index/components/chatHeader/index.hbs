@@ -10,4 +10,10 @@
         {{item.profile.display_name}}
     </div>
 
+    <div class="{{ styles.root }}__menu">
+        {{{components_textButton label="Меню чата" 
+            iconClass="menu-icon" noLabel=1 
+            [event:click] = openPopupChatMenu
+            }}}
+    </div>
 </div>

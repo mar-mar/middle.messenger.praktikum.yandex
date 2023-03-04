@@ -1,0 +1,16 @@
+@import url("src/style/variable.pcss");
+@import url("src/style/mixin.pcss");
+
+.root {
+    @mixin center-position;
+    @mixin bordershadow;
+
+    padding: var(--primary-offset);
+
+    &__wrapper {
+        @mixin center-position-wrapper;
+
+        height: 100%;
+    }
+
+}

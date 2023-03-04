@@ -2,10 +2,10 @@ import { ValidatedBlockProps, _ValidatedBlock } from "../../utils/_ValidatedBloc
 import SimpleTextArea from "../simpleTextarea";
 import template from './index.hbs';
 
-
 type TextAreaProps = {
-    key: string;
     label: string;
+    value?: string;
+    name?: string;
 } & ValidatedBlockProps;
 
 export default class TextArea extends _ValidatedBlock<TextAreaProps> {
