@@ -7,7 +7,10 @@ export enum EVENTS {
     INIT = "init",
     FLOW_CDM = "flow:component-did-mount",
     FLOW_CDU = "flow:component-did-update",
-    FLOW_RENDER = "flow:render"
+    FLOW_RENDER = "flow:render",
+    HIDE = "hide",
+    SHOW = "show",
+    ECEXUTE = "execute"
 };
 
 type Children = Record<string, _Block[] | _Block>;
@@ -62,13 +65,19 @@ export class _Block<T extends Record<string, unknown> = any> {
 
     // Может переопределять пользователь, необязательно трогать
     //protected render(): DocumentFragment | null { return null };    
+    protected afterHide(): void {};
+    protected afterShow(): void {};
+    protected onExecute(): void {};
 
     // constructor
-    private registerLifeCycleEvents(eventBus: EventBus): void {
+    protected registerLifeCycleEvents(eventBus: EventBus): void {
         eventBus.on(EVENTS.INIT, this.onInit.bind(this));
         eventBus.on(EVENTS.FLOW_CDM, this.onComponentDidMount.bind(this));
         eventBus.on(EVENTS.FLOW_CDU, this.onComponentDidUpdate.bind(this));
         eventBus.on(EVENTS.FLOW_RENDER, this.onRender.bind(this));
+        eventBus.on(EVENTS.HIDE, this.afterHide.bind(this));
+        eventBus.on(EVENTS.SHOW, this.afterShow.bind(this));
+        
     }
 
     // constructor
@@ -269,17 +278,24 @@ export class _Block<T extends Record<string, unknown> = any> {
         Object.assign(this.props, nextProps);
     }
 
-    public show(): void {
-        this.toggleVisible(true);
+    public readonly show = (args?: Record<string, any>) => {
+        this.toggleVisible(true, args);
+        this.eventBus.emit(EVENTS.SHOW);
     }
 
-    public hide(): void {
-        this.toggleVisible(false);
+    public readonly hide = (args?: Record<string, any>) => {
+        this.toggleVisible(false, args);
+        this.eventBus.emit(EVENTS.HIDE);
     }
 
-    public toggleVisible(value: boolean): void {
+    protected toggleVisible(value: boolean, _args?: Record<string, any>): void { 
         if (this.element === null) return;
         this.element.style.display = value ? "block" : "none";
+    }
+
+    protected visibleChild(visible: boolean, childName: string) {
+        const dialog = this.getChildByAttacheNameOne(childName);
+        visible ? dialog?.show() : dialog?.hide();
     }
 }
 

@@ -23,7 +23,7 @@ export function validateName(value: string): string {
 export function validateEmail(value: string): string {
     // латиница, может включать цифры и спецсимволы вроде дефиса, обязательно должна быть «собака» (@) и 
     // точка после неё, но перед точкой обязательно должны быть буквы.
-    return /^[\w!#$%&'*+\/=?^_`{|}~-]+@(?=.*[a-z]\.)\w+\.\w+$/.test(value) ? "" : ERRORS.emailError;
+    return /^[\w!#$%&'*+\/=?^_`{|}~-]+@(?=.*[a-z].*\.)\w+\.\w+$/.test(value) ? "" : ERRORS.emailError;
 }
 
 export function validatePhone(value: string): string {

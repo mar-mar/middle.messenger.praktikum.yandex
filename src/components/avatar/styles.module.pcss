@@ -28,16 +28,21 @@
         background-position: center;
     }
 
-    &__hover-label {
+    &__hover-block {
         @mixin absolute-strech;
+        @mixin center-position-wrapper;
 
         cursor: pointer;
-        padding: 45% 0;
         opacity: 0;
         transition: opacity 0.15s ease 0s;
+        background: var(--hover-color);
     }
 
-    &:hover > &__hover-label {
-        opacity: 1;
+    &__hover-block__label {
+        @mixin center-position;
+    }
+
+    &--clickable:hover > &__hover-block {
+        opacity: 0.8;
     }
 }

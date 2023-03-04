@@ -1,8 +1,7 @@
-import { routeRegister } from "./utils/route";
+import { PAGES, routeRegister } from "./utils/route";
 import  routeUse from "./utils/route";
 import Error404Page from "./pages/error404";
 import Error500Page from "./pages/error500";
-import HomePage from "./pages/home";
 import IndexPage from "./pages/index";
 import LoginPage from "./pages/login";
 import ProfilePage from "./pages/profile";
@@ -10,13 +9,12 @@ import SignPage from "./pages/sign";
 import { _Block } from "./utils/_Block";
 
 const ROUTES: Record<string, typeof _Block > = {
-    home: HomePage,
-    error404: Error404Page,
-    error500: Error500Page,
-    login: LoginPage,
-    profile: ProfilePage,
-    sign: SignPage,
-    index: IndexPage
+    [PAGES.Error404]: Error404Page,
+    [PAGES.Error500]: Error500Page,
+    [PAGES.Login]: LoginPage,
+    [PAGES.Profile]: ProfilePage,
+    [PAGES.Sign]: SignPage,
+    [PAGES.Index]: IndexPage
 };
 
 
@@ -60,7 +58,7 @@ register(modulesModules, "modules", []);
 
 window.addEventListener('DOMContentLoaded', async () => {
     //routeUse("sign");
-    routeUse("index");
+    routeUse(PAGES.Index);
 });
 
 

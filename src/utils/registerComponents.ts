@@ -8,10 +8,10 @@ export function registerComponent<T extends _Block>(name: string,
 
     Handlebars.registerHelper(name, function (this: any, options: Handlebars.HelperOptions): string {
 
-        //const templateData = options.data.root;
         const events: Record<string, AnyFunction> = {};
         const props: Record<string, any> = { ...options.hash };
 
+        // обрабатываем ключи [event:<событие>]
         Object.entries(props).forEach(([key, value]) => {
 
             if (key.startsWith("event:") && isFunction(value)) {
@@ -23,12 +23,13 @@ export function registerComponent<T extends _Block>(name: string,
         });
 
         const data = options.data;
+        // addChild либо в root, либо к компоненту, который на уровень выше
         const addChild: (child: _Block) => void = data.addChilToChild ? data.addChilToChild : data.root.addChild;
         props.events = events;
         props.render = true;
+
         const component = new constructor(props);
-        addChild(component);
-        
+        addChild(component);    
 
         let childsStr = "";
         if (options.fn) {
@@ -36,6 +37,7 @@ export function registerComponent<T extends _Block>(name: string,
             childsStr = options.fn(this, { 
                 data: { 
                     ...data,
+                    // addChilToChild чтобы сохранить вложенность детей из шаблона
                     addChilToChild: component.addChild.bind(component) 
                 }
             });

@@ -3,6 +3,7 @@ import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm"
 import template from "./index.hbs";
 import styles from './styles.module.pcss';
 import { validateMessage } from "../../../../utils/validate";
+import routeUse, { PAGES } from "../../../../utils/route";
 
 
 type MessageInputProps = {
@@ -18,6 +19,10 @@ export default class MessageInput<T extends MessageInputProps>  extends _BlockWi
             styles,
             validateMessage
          };
+    }
+
+    protected execute() {
+        routeUse(PAGES.Index);
     }
 
 }

@@ -3,6 +3,15 @@ import { _Block } from "./_Block";
 export const REGISTERED_ROUTE: Record<string, typeof _Block> = {};
 export const REGISTERED_TESTDATA: Record<string, any> = {};
  
+export enum PAGES {
+    Error404 = "error404",
+    Error500 = "error500",
+    Login = "login",
+    Profile = "profile",
+    Sign = "sign",
+    Index = "index"
+}
+
 export default function routeUse(route: string): void {
 
     const root = document.querySelector("#app")!;

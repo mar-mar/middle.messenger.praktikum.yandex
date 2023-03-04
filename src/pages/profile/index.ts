@@ -1,4 +1,4 @@
-import routeUse from "../../utils/route";
+import routeUse, { PAGES } from "../../utils/route";
 import { _Block } from "../../utils/_Block";
 import template from "./index.hbs";
 import styles from './styles.module.pcss';
@@ -10,14 +10,12 @@ export default class ProfilePage  extends _Block {
         return { 
             template,
             styles,
-            onClickIndex: this.onClickIndex.bind(this)
+            goIndex: ()=> routeUse(PAGES.Index),
+            updatePassword: this.visibleChild.bind(this, true, "updatePassDialogBody"),
+            updateAvatar: this.visibleChild.bind(this, true, "updateAvatarDialogBody"),
+            ecexuteUpdataAvatar: this.visibleChild.bind(this, false, "updateAvatarDialogBody"),
+            ecexuteUpdatePassword: this.visibleChild.bind(this, false, "updatePassDialogBody")
         };
-    }
-
-    private onClickIndex(evt: Event): void {
-        evt.preventDefault();
-
-        routeUse("index");
     }
 
 }

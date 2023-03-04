@@ -36,13 +36,24 @@ export default class Popup extends _Block {
         return { width: thisRect.width, height: thisRect.height };
     }
 
-    public show(parent?: Element): void {
+    protected toggleVisible(value: boolean, args?: { parent?: Element }): void {
+        if (value) {
+            this.showByParent(args?.parent);
+            this.toggleWatchBodyClick(true);
+        }
+        else {
+            this.toggleWatchBodyClick(false);
+            super.toggleVisible(false); 
+        }
+    }
+
+    private showByParent(parent?: Element): void {
         const element = this.getElement();
         if (!parent || !element) return;
         
         const oldVisibility = element.style.visibility;
         element.style.visibility = "hidden";
-        super.show();   
+        super.toggleVisible(true);   
         //
 
         const parentRect = parent.getBoundingClientRect();
@@ -59,7 +70,6 @@ export default class Popup extends _Block {
         element.style.left = this.toPx(position.left); // + window.scrollX
         //
         element.style.visibility = oldVisibility;
-        this.toggleWatchBodyClick(true);
     }
 
     private getPositionByAxis(bodyRect: DOMRect, parentRect: DOMRect, ident: number, size: Size, axisY: boolean): number {
@@ -85,12 +95,6 @@ export default class Popup extends _Block {
 
     private getBoundByAxis(axisY: boolean, rect: DOMRect) {
         return axisY ? [rect.bottom, rect.top] : [rect.right, rect.left]; 
-    }
-
-
-    public hide(): void {
-        this.toggleWatchBodyClick(false);
-        super.hide();
     }
 
 }

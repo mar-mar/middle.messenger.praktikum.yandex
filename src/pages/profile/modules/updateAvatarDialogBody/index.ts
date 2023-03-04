@@ -4,13 +4,16 @@ import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm"
 import styles from './styles.module.pcss';
 
 
-export default class DeleteUserDialogBody<T extends WithFormProps>  extends _BlockWithForm<T> {
+export default class UpdatePasswordDialogBody<T extends  WithFormProps> extends _BlockWithForm<T> {
 
     protected getCompileOptions() {
+        debugger
+        console.info(styles);
         return {
             ...super.getCompileOptions(),
-            template,
-            styles
+            styles,
+            template
          };
     }
+
 }

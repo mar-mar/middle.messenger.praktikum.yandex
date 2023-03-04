@@ -3,6 +3,7 @@
 
 .root {
     @mixin absolute-strech;
+
     display: none;
     
     &__main {
@@ -16,15 +17,14 @@
         min-height: 200px;
         display: flex;
         flex-direction: column;
-    
         padding: var(--second-offset);
     }
 
     &__underlay {
         @mixin absolute-strech;
+
         display: flex;
         z-index: var(--modal-zindex);
-
         background: var(--modal-underlay-back-color);
     }
 

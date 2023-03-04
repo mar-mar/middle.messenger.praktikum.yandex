@@ -1,0 +1,16 @@
+<div class="{{ styles.root }}">
+{{#components_form 
+    attachName="form"
+    [event:submit]=onSubmit }}
+
+    <div>
+        {{{components_input label="Пароль" name="password" }}}
+        {{{components_input label="Повторите пароль" name="password" }}}
+    </div>
+
+    <div class="{{ styles.root }}__button-cont">
+        {{{components_button label="Изменить" type="submit" }}}
+    </div>
+
+{{/components_form}}
+</div>

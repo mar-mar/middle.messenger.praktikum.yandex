@@ -5,10 +5,11 @@
 
         <div class="{{styles.root}}__body" >
            
-            {{{pages_login_components_loginBody item=item}}}
+            {{{pages_login_components_loginBody item=item
+                execute=goIndex }}}
             
             {{#layout_centerPane horizontalType = "center" verticalType = "center" withMarginTop=1 }}
-                {{{components_textButton label="Нет профиля?" [event:click]=onClickSign }}}
+                {{{components_textButton label="Нет профиля?" [event:click]=goSing }}}
             {{/layout_centerPane}}
 
         </div>

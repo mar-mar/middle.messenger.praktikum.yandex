@@ -16,4 +16,5 @@ export default class LoginBody<T extends WithFormProps>  extends _BlockWithForm<
             validatePassword
          };
     }
+
 }

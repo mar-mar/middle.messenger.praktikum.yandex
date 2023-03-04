@@ -1,4 +1,4 @@
-import routeUse from "../../../../utils/route";
+import routeUse, { PAGES } from "../../../../utils/route";
 import { _Block } from '../../../../utils/_Block';
 import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import template from './index.hbs';
@@ -17,25 +17,11 @@ export default class ProfileBody<T extends WithFormProps> extends _BlockWithForm
             validateLogin,
             validateEmail,
             validatePhone,
-            onClickIndex: this.onClickIndex.bind(this),
-            onClickError404: this.onClickError404.bind(this),
-            onClickLogin: this.onClickLogin.bind(this)
+            goLogin: () => { routeUse(PAGES.Login) }
         };
     }
 
-    private onClickIndex(evt: Event): void {
-        evt.preventDefault();
-
-        routeUse("index");
+    protected execute() {
+        routeUse(PAGES.Index);
     }
-
-    private onClickError404(): void {
-        routeUse("error404");
-    }
-
-    private onClickLogin(): void {
-        routeUse("login");
-    }
-
-
 }

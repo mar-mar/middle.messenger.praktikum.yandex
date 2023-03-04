@@ -3,7 +3,7 @@
     {{#layout_pane withBorder=1 secBackColor=1 addeClassName=styles.[left-pane] }}
         <section class="{{ styles.root }}__profile">
             {{{pages_index_components_profile item=item 
-                openPopupMenu=openPopupMenu}}}
+                openPopupMenu=openPopupMenu }}}
         </section>
 
         <nav class="{{ styles.root }}__chats">
@@ -33,11 +33,11 @@
     </main>
 
     <div class="{{ styles.root }}__url-for-check">
-        <div>{{{components_textButton label="Авторизация" [event:click]=onClickLogin }}}</div>
-        <div>{{{components_textButton label="Регистриция" [event:click]=onClickSign }}}</div>
-        <div>{{{components_textButton label="Профиль" [event:click]=onClickProfile }}}</div>
-        <div>{{{components_textButton label="404 ошибка" [event:click]=onClickError404 }}}</div>
-        <div>{{{components_textButton label="500 ошибка" [event:click]=onClickError500 }}}</div>
+        <div>{{{components_textButton label="Авторизация" [event:click]=goLogin }}}</div>
+        <div>{{{components_textButton label="Регистриция" [event:click]=goSign }}}</div>
+        <div>{{{components_textButton label="Профиль" [event:click]=goProfile }}}</div>
+        <div>{{{components_textButton label="404 ошибка" [event:click]=goError404 }}}</div>
+        <div>{{{components_textButton label="500 ошибка" [event:click]=goError500 }}}</div>
     </div>
 
     {{#layout_popup attachName=CHILD_NAMES.Attache }}
@@ -53,12 +53,15 @@
     {{#layout_modalDialog attachName=CHILD_NAMES.AddUser title="Добавить пользователя"  }}
         {{{pages_index_modules_addUserDialogBody}}}
     {{/layout_modalDialog}}
-    {{#layout_modalDialog attachName=CHILD_NAMES.DeleteUser title="Удалить пользователя"  }}
-        {{{pages_index_modules_deleteUserDialogBody}}}
+    {{#layout_modalDialog attachName=CHILD_NAMES.RemoveUser title="Удалить пользователя"  }}
+        {{{pages_index_modules_removeUserDialogBody}}}
     {{/layout_modalDialog}}
     {{#layout_modalDialog attachName=CHILD_NAMES.FindChat title="Поиск чата"  }}
         {{{pages_index_modules_findChatDialogBody}}}
     {{/layout_modalDialog}}
-    
+    {{#layout_modalDialog attachName=CHILD_NAMES.CreateChat title="Создание чата"  }}
+        {{{pages_index_modules_addChatDialogBody}}}
+    {{/layout_modalDialog}}
+
 </div>
 

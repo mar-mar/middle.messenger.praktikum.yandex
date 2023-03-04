@@ -2,18 +2,19 @@ import { _Block } from '../../utils/_Block';
 import template from './index.hbs';
 import styles from './styles.module.pcss';
 
-export default class ModalDialog extends _Block {
+type FileInputProps = {
+    label: string;
+    events: {
+        click: () => void
+    }
+}
+
+export default class FileInput extends _Block<FileInputProps> {
 
     protected getCompileOptions() {
         return { 
             template, 
-            styles,
-            onClickHide: this.onClickHide.bind(this)
+            styles
         };
     }
-
-    private onClickHide() {
-        this.hide();
-    }
-
 }

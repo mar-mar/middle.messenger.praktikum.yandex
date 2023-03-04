@@ -3,12 +3,24 @@
     title="Ваш профиль"
     }}
 
-        {{{pages_profile_components_profileBody item=item}}}
+        {{{pages_profile_components_profileBody item=item 
+            updatePassword=updatePassword updateAvatar=updateAvatar 
+            }}}
 
         {{#layout_centerPane horizontalType="center" verticalType="center" withMarginTop=1 }}
-        {{{components_textButton label="Назад к чатам" [event:click]=onClickIndex }}}
+        {{{components_textButton label="Назад к чатам" [event:click]=goIndex }}}
         {{/layout_centerPane }}
 
-
     {{/layout_pageDialog}}
+
+
+    {{#layout_modalDialog attachName="updatePassDialogBody" title="Изменение пароля"  }}
+        {{{pages_profile_modules_updatePasswordDialogBody 
+            execute=ecexuteUpdatePassword  }}}
+    {{/layout_modalDialog}}
+    
+    {{#layout_modalDialog attachName="updateAvatarDialogBody" title="Загрузка файла для аватара"  }}
+        {{{pages_profile_modules_updateAvatarDialogBody 
+            execute=ecexuteUpdataAvatar }}}
+    {{/layout_modalDialog}}
 </div>

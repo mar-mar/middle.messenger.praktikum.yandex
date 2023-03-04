@@ -1,12 +1,19 @@
 import Form from "../components/form";
+import { EventBus } from "./EventBus";
 import { log } from "./logger";
-import routeUse from "./route";
-import { isEvent } from "./typeCheck";
+import { isEvent, isFunction } from "./typeCheck";
 import { _Block } from "./_Block";
 
 export type WithFormProps = {
     onSubmit: (value: any) => void;
+    execute: (values?: FormValues) => void
 };
+
+enum FORM_EVENTS {
+    ECEXUTE = "execute"
+};
+
+export type FormValues = Record<string, unknown> | null;
 
 export class _BlockWithForm<T extends WithFormProps> extends _Block<T> {
 
@@ -14,6 +21,11 @@ export class _BlockWithForm<T extends WithFormProps> extends _Block<T> {
         return {
             onSubmit: this.onSubmit.bind(this)
          };
+    }
+
+    protected registerLifeCycleEvents(eventBus: EventBus): void {
+        super.registerLifeCycleEvents(eventBus);
+        eventBus.on(FORM_EVENTS.ECEXUTE, this.execute.bind(this));
     }
 
     private onSubmit(evt: Event): void {
@@ -26,9 +38,9 @@ export class _BlockWithForm<T extends WithFormProps> extends _Block<T> {
         form.validate();
 
         if (!form.getError()) {
-
+            const values = form.getValues();
             log(form.getValues());
-            routeUse("index");
+            this.getEventBus().emit(FORM_EVENTS.ECEXUTE, { values });
         }
     }
 
@@ -40,5 +52,12 @@ export class _BlockWithForm<T extends WithFormProps> extends _Block<T> {
     protected isForm(value: unknown): value is Form {
         return (value instanceof Form);
     }
+    
+    //
+    protected execute(_values: FormValues) { 
+        const execute = this.getProps().execute;
+        if (isFunction(execute)) execute();
+    }
+
 }
 

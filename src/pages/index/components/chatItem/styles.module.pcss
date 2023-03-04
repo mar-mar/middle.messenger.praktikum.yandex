@@ -1,9 +1,13 @@
 .root {
+    cursor: pointer;
     display: flex;
     padding: var(--micro-offser);
     align-items: center;
     
-    
+    &:hover {
+        background: var(--hover-color);
+    }
+
     &__label {
         flex-grow: 1;
         margin-left: var(--micro-offser);

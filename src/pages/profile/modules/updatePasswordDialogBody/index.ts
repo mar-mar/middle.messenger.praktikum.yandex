@@ -3,7 +3,7 @@ import template from "./index.hbs";
 import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
 
 
-export default class AddUserDialogBody<T extends WithFormProps>  extends _BlockWithForm<T> {
+export default class UpdatePasswordDialogBody<T extends  WithFormProps> extends _BlockWithForm<T> {
 
     protected getCompileOptions() {
         return {
@@ -11,4 +11,5 @@ export default class AddUserDialogBody<T extends WithFormProps>  extends _BlockW
             template
          };
     }
+
 }
