@@ -4,13 +4,13 @@
         [event:submit]=onSubmit item=item}}
 
         <div>
-            {{{components_input label="Почта" key="email" isValid=validateEmail item=item }}}
-            {{{components_input label="Логин" key="login" isValid=validateLogin item=item }}}
-            {{{components_input label="Имя" key="first_name" isValid=validateName item=item }}}
-            {{{components_input label="Фамилия" key="second_name" isValid=validateName item=item }}}
-            {{{components_input label="Телефон" isValid=validatePhone key="phone" item=item }}}
-            {{{components_input label="Пароль" type="password" key ="password" isValid=validatePassword item=item }}}
-            {{{components_input label="Пароль (еще раз)" type="password" key="password" isValid=validatePassword item=item }}}
+            {{{components_input label="Почта" name="email" isValid=validateEmail value=item.email }}}
+            {{{components_input label="Логин" name="login" isValid=validateLogin value=item.login }}}
+            {{{components_input label="Имя" name="first_name" isValid=validateName value=item.first_name }}}
+            {{{components_input label="Фамилия" name="second_name" isValid=validateName value=item.second_name }}}
+            {{{components_input label="Телефон" isValid=validatePhone name="phone" value=item.phone }}}
+            {{{components_input label="Пароль" type="password" name ="password" isValid=validatePassword value=item.password }}}
+            {{{components_input label="Пароль (еще раз)" type="password" name="password" isValid=validatePassword value=item.password }}}
         </div>
         
         <div class="{{ styles.root }}__button-cont">

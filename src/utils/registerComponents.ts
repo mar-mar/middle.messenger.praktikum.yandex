@@ -31,6 +31,7 @@ export function registerComponent<T extends _Block>(name: string,
 
         let childsStr = "";
         if (options.fn) {
+
             childsStr = options.fn(this, { 
                 data: { 
                     ...data,

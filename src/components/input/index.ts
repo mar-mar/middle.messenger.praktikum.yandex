@@ -6,7 +6,8 @@ import SimpleInput from "../simpleInput";
 
 type InputProps = {
     type?: string;
-    key: string;
+    name: string;
+    value: string;
     label: string;
 } & ValidatedBlockProps;
 

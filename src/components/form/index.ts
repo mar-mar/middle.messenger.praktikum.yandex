@@ -1,4 +1,4 @@
-import { isHTMLFormElement } from "../../utils/typeCheck";
+import { isArray, isHTMLFormElement } from "../../utils/typeCheck";
 import { AnyFunctionNoReturn } from "../../utils/types";
 import { _Block } from '../../utils/_Block';
 import { _ValidatedBlock } from "../../utils/_ValidatedBlock";
@@ -44,15 +44,22 @@ export default class Form extends _Block<FormProps> {
         return errors.join("|");
     }
 
-    public getValues(): Record<string, unknown> | null {
+    public getValues(): Record<string, unknown | unknown[]> | null {
         const element = this.getElement()
         if (!isHTMLFormElement(element)) return null;
 
         const formData = new FormData(element);
         const values: Record<string, unknown> = {};
+
         formData.forEach((value, key) => {
-            values[key] = value;
+            let oldValue = values[key];
+            if (key in values) {
+                if (isArray(oldValue)) oldValue.push(value)
+                else values[key] = [oldValue, value];
+            }
+            else values[key] = value;
         });
+        
         return values;
     }
 

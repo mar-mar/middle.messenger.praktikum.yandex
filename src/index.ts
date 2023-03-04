@@ -29,10 +29,12 @@ import layoutModules from "./**/layout/**/index.ts";
 // @ts-ignore
 import pageModules from "./page/**/index.ts";
 // @ts-ignore
-import testData from "./testData/*.json";
+import testData from ".././testData/*.json";
+
+//const testData = {};
 
 Object.entries(ROUTES).forEach(([key, PageClass]) => {
-    routeRegister(key, PageClass);
+    routeRegister(key, PageClass, testData[key]);
 });
 
 const register = function registerReq(modules: Record<string, any>, type: string, path: string[]): void{

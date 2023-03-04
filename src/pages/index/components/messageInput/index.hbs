@@ -8,11 +8,11 @@
     <div class="{{ styles.root }}">
 
         <div class="{{ styles.root }}__attach-cont">
-            {{{components_textButton label="Прикрепить" type="button" }}}
+            {{{components_textButton label="Прикрепить" type="button" [event:click]=onClickAttache }}}
         </div>
 
         <div class="{{ styles.root }}__input-cont">
-            {{{components_textarea label="Сообщение" isValid=validateMessage key="message" }}}
+            {{{components_textarea label="Сообщение" isValid=validateMessage name="message" }}}
         </div>
 
         <div class="{{ styles.root }}__send-cont">

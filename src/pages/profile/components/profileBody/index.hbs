@@ -10,12 +10,12 @@
                 [event:submit]=onSubmit item=item }}
 
                 <div>
-                    {{{components_input label="Имя в чате" key="display_name" item=item }}}
-                    {{{components_input label="Логин" key="login" isValid=validateLogin item=item }}}
-                    {{{components_input label="Имя" key="first_name" isValid=validateName item=item }}}
-                    {{{components_input label="Фамилия" key="second_name" isValid=validateName item=item }}}
-                    {{{components_input label="Почта" key="email" isValid=validateEmail item=item }}}
-                    {{{components_input label="Телефон" key="phone" isValid=validatePhone item=item }}}
+                    {{{components_input label="Имя в чате" name="display_name" value=item.display_name }}}
+                    {{{components_input label="Логин" name="login" isValid=validateLogin value=item.login }}}
+                    {{{components_input label="Имя" name="first_name" isValid=validateName value=item.first_name }}}
+                    {{{components_input label="Фамилия" name="second_name" isValid=validateName value=item.second_name }}}
+                    {{{components_input label="Почта" name="email" isValid=validateEmail value=item.email }}}
+                    {{{components_input label="Телефон" name="phone" isValid=validatePhone value=item.phone }}}
                 </div>
                 
                 <div class="{{ styles.root }}__setting-button-cont">

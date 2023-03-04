@@ -16,6 +16,7 @@ export default class IndexPage extends _Block {
             onClickProfile: this.onClickProfile.bind(this),
             onClickError404: this.onClickError404.bind(this),
             onClickError500: this.onClickError500.bind(this),
+            attachMenuItems: this.attachMenuItems()
         };
     }
 
@@ -37,5 +38,17 @@ export default class IndexPage extends _Block {
 
     onClickError500(): void {
         routeUse("error500"); 
+    }
+
+    openPopupAttache() {
+
+    }
+
+    attachMenuItems(): { label: string }[] {
+        return [
+            { label: "Фото или Видео" },
+            { label: "Файл" },
+            { label: "Локация" }
+        ];
     }
 }

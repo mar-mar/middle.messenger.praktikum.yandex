@@ -3,8 +3,15 @@ import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm"
 import template from "./index.hbs";
 import styles from './styles.module.pcss';
 import { validateMessage } from "../../../../utils/validate";
+import { isFunction } from "../../../../utils/typeCheck";
 
-export default class MessageInput<T extends WithFormProps>  extends _BlockWithForm<T> {   
+
+
+type MessageInputProps = {
+    openPopup: (element: Element) => void
+} & WithFormProps;
+
+export default class MessageInput<T extends MessageInputProps>  extends _BlockWithForm<T> {   
     
     protected getCompileOptions() {
         return {
@@ -13,5 +20,12 @@ export default class MessageInput<T extends WithFormProps>  extends _BlockWithFo
             styles,
             validateMessage
          };
+    }
+
+    protected onClickAttache() {
+        const open = this.getProps().openPopup;
+        if (!isFunction(open)) return;
+        
+        open(this.getElement());
     }
 }

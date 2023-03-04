@@ -2,10 +2,10 @@
 <div class="{{ styles.root }}">
 
     {{{components_avatar imageUrl=item.avatar diameter='M' 
-        avatarOwner=item.display_name }}}
+        avatarOwner=item.profile.display_name }}}
 
     <h2 class="{{ styles.root }}__header">
-        {{item.display_name}}
+        {{item.profile.display_name}}
     </h2>
 
 </div>

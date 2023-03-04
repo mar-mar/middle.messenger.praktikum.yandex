@@ -7,8 +7,7 @@ export enum EVENTS {
     INIT = "init",
     FLOW_CDM = "flow:component-did-mount",
     FLOW_CDU = "flow:component-did-update",
-    FLOW_RENDER = "flow:render",
-    FLOW_CHILDREN_RENDER = "flow:children-render",
+    FLOW_RENDER = "flow:render"
 };
 
 type Children = Record<string, _Block[] | _Block>;
@@ -26,7 +25,7 @@ export type TemplateOptions = {
     [index: string]: any 
 };
 
-export type Props<P extends Record<string, unknown> = any> = { events?: Events, attachName?: string } & P;
+export type Props<P extends Record<string, unknown> = any> = { events?: Events, attachName?: string, item?: any } & P;
 
 
 // базовый класс для компонентов
@@ -70,7 +69,6 @@ export class _Block<T extends Record<string, unknown> = any> {
         eventBus.on(EVENTS.FLOW_CDM, this.onComponentDidMount.bind(this));
         eventBus.on(EVENTS.FLOW_CDU, this.onComponentDidUpdate.bind(this));
         eventBus.on(EVENTS.FLOW_RENDER, this.onRender.bind(this));
-        eventBus.on(EVENTS.FLOW_CHILDREN_RENDER, this.onRenderChildren.bind(this));
     }
 
     // constructor
@@ -135,10 +133,23 @@ export class _Block<T extends Record<string, unknown> = any> {
         this.toggleDomEvents(false);
         this.children = {};
 
-        this.compile(this.getCompileOptions());
-        this.toggleDomEvents(true);
+        const newElement = this.compile(this.getCompileOptions());
 
-        this.eventBus.emit(EVENTS.FLOW_CHILDREN_RENDER);
+        const oldElement = this.element;
+        this.element = newElement;
+        this.renderDependens();
+
+        if (this.element && oldElement) {
+            oldElement.replaceWith(this.element);
+        }
+
+        this.toggleDomEvents(true);
+    }
+
+    empty() {
+        this.toggleDomEvents(false);
+        this.children = {};
+        if (this.element) this.element.innerHTML = "";
     }
 
     //render
@@ -159,11 +170,6 @@ export class _Block<T extends Record<string, unknown> = any> {
         });
     }
 
-    public toggleVisible(value: boolean): void {
-        if (this.element === null) return;
-        this.element.style.display = value ? "block" : "none";
-    }
-
     protected compile({ template, styles, ...args } : CompileOptions) {
     
         const temp = document.createElement('template');
@@ -178,23 +184,20 @@ export class _Block<T extends Record<string, unknown> = any> {
         }
 
         const newElement = temp.content ? temp.content.firstElementChild as HTMLElement : null;
-
-        if (this.element && newElement) {
-            this.element.replaceWith(newElement);
-        }
-
-        this.element = newElement;
+        return newElement;
     }
 
-    onRenderChildren() {
+    //render
+    public renderDependens() {
         this.renderChildren();
 
         this.forEachChildren((child, _) => {
-            child.renderChildren();
+            child.renderDependens();
         });
     }
-
-    renderChildren() {
+    
+    //render
+    private renderChildren() {
         if (!this.element) return;
 
         this.forEachChildren(child => {
@@ -278,6 +281,11 @@ export class _Block<T extends Record<string, unknown> = any> {
 
     public hide(): void {
         this.toggleVisible(false);
+    }
+
+    public toggleVisible(value: boolean): void {
+        if (this.element === null) return;
+        this.element.style.display = value ? "block" : "none";
     }
 }
 

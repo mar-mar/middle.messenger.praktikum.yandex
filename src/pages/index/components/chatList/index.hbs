@@ -1,6 +1,6 @@
 
 <div>
-{{#components_pane addeClassName=styles.root h100=1 }}
+{{#components_pane addeClassName=styles.root }}
     <div class="{{ styles.root }}__header">
        <div class="{{ styles.root }}__header__label">
             Чаты
@@ -13,8 +13,8 @@
     <div class="{{ styles.root }}__list">
 
         <ul class="people_list">
-        {{#each item}} <!--item.chats-->
-            {{{pages_index_components_chatItem item=this }}}
+        {{#each item.chats }} <!--item.chats-->
+            {{{pages_index_components_chatItem item=this}}}
         {{/each}}
         </ul>
 

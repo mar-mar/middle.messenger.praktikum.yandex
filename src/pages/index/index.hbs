@@ -6,7 +6,7 @@
         </section>
 
         <nav class="{{ styles.root }}__chats">
-            {{{pages_index_components_chatList item=item }}}
+            {{{pages_index_components_chatList item=item  }}}
         </nav>
     {{/components_pane }}
 
@@ -23,7 +23,8 @@
         </div>
 
         {{#components_pane addeClassName=styles.[chat-input] secBackColor=1 withBorder=1 }}
-                {{{pages_index_components_messageInput item=item }}}
+            {{{pages_index_components_messageInput item=item 
+                openPopup=openPopupAttache }}}
         {{/components_pane }}
 
     </main>
@@ -35,5 +36,10 @@
         <div>{{{components_textButton label="404 ошибка" [event:click]=onClickError404 }}}</div>
         <div>{{{components_textButton label="500 ошибка" [event:click]=onClickError500 }}}</div>
     </div>
+
+    {{#layout_popup attachName="popup" }}
+    sdfsdf
+    {{/layout_popup}}
+    {{{components_menu attachName="attacheMenu" memuItems=attachMenuItems }}}
 </div>
 
