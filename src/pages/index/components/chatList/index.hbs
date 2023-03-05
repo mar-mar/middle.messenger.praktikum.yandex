@@ -1,8 +1,8 @@
 
-<div>
-{{#layout_pane addeClassName=styles.root }}
-    <div class="{{ styles.root }}__header">
-       <div class="{{ styles.root }}__header__label">
+<div class="{{styles.root}}">
+
+    <div class="{{ styles.root__header }}">
+       <div class="{{ styles.root__header__label }}">
             Чаты
        </div> 
        <div>
@@ -10,14 +10,14 @@
         </div>
     </div>
 
-    <div class="{{ styles.root }}__list">
+    <div class="{{ styles.root__list }}">
 
-        <ul class="people_list">
+        <ul >
         {{#each item.chats }} <!--item.chats-->
             {{{pages_index_components_chatItem item=this}}}
         {{/each}}
         </ul>
 
     </div>
-{{/layout_pane }}
+
 </div>

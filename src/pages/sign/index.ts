@@ -1,5 +1,5 @@
 
-import routeUse from "../../utils/route";
+import routeUse, { PAGES } from "../../utils/route";
 import { _Block } from '../../utils/_Block';
 import template from './index.hbs';
 import styles from './styles.module.pcss';
@@ -10,11 +10,8 @@ export default class SignPage extends _Block {
         return { 
             template,
             styles,
-            onClickLogin: this.onClickLogin.bind(this)
+            goIndex: () => routeUse(PAGES.Index),
+            goLogin: () => routeUse(PAGES.Login)
         };
-    }
-
-    private onClickLogin(): void {
-        routeUse("login");
     }
 }

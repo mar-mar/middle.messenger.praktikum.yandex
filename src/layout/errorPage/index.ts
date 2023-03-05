@@ -1,4 +1,4 @@
-import routeUse from '../../utils/route';
+import routeUse, { PAGES } from '../../utils/route';
 import { _Block } from '../../utils/_Block';
 import template from './index.hbs';
 import styles from './styles.module.pcss';
@@ -9,18 +9,14 @@ export type ErrorPageLayoutProps = {
 };
 
 
-// базовый класс для компонентов
-export default class ErrorPageLayout<T extends ErrorPageLayoutProps> extends _Block<T> {
+export default class ErrorPageLayout<T extends ErrorPageLayoutProps = any> extends _Block<T> {
 
     protected getCompileOptions() {
         return { 
             template, 
             styles,
-            onClickIndex: this.onClickIndex.bind(this) 
+            goIndex: () => routeUse(PAGES.Index),
         };
     }
 
-    private onClickIndex(): void {
-        routeUse("index");
-    }
 }

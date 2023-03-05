@@ -1,31 +1,31 @@
 <div class="{{ styles.root }}">
 
-    {{#layout_pane withBorder=1 secBackColor=1 addeClassName=styles.[left-pane] }}
-        <section class="{{ styles.root }}__profile">
+    {{#layout_pane secBackColor=1 addeClassName=styles.[left-pane] }}
+        <section class="{{ styles.root__profile }}">
             {{{pages_index_components_profile item=item 
                 openPopupMenu=openPopupMenu }}}
         </section>
 
-        <nav class="{{ styles.root }}__chats">
+        <nav class="{{ styles.root__chats }}">
             {{{pages_index_components_chatList item=item  
                 openFindChat=openFindChat }}}
         </nav>
     {{/layout_pane }}
 
 
-    <main class="{{ styles.root }}__chat">
+    <main class="{{ styles.root__chat }}">
 
-        {{#layout_pane addeClassName=styles.[chat-header] withBorder=1 }}
+        {{#layout_pane addeClassName=styles.[chat-header] }}
             {{{pages_index_components_chatHeader item=item 
                 openPopupChatMenu=openPopupChatMenu }}}
         {{/layout_pane }}
 
 
-        <div class="{{ styles.root }}__chat__messages">
+        <div class="{{ styles.root__chat__messages }}">
             <section aria-label="Беседа"></section>
         </div>
 
-        {{#layout_pane addeClassName=styles.[chat-input] secBackColor=1 withBorder=1 }}
+        {{#layout_pane addeClassName=styles.[chat-input] secBackColor=1 }}
             {{{pages_index_components_messageInput item=item 
                 openPopupAttache=openPopupAttache }}}
         {{/layout_pane }}

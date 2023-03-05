@@ -6,20 +6,24 @@ import { _Block } from "./_Block";
 
 export type WithFormProps = {
     onSubmit: (value: any) => void;
-    execute: (values?: FormValues) => void
+    execute?: (values?: FormValues) => void
 };
 
 enum FORM_EVENTS {
     ECEXUTE = "execute"
 };
 
+const FORM_ATTACHE_NAME: string = "form";
+
 export type FormValues = Record<string, unknown> | null;
 
-export class _BlockWithForm<T extends WithFormProps> extends _Block<T> {
+
+export class _BlockWithForm<T extends WithFormProps = any> extends _Block<T> {
 
     protected getCompileOptions() {
         return {
-            onSubmit: this.onSubmit.bind(this)
+            onSubmit: this.onSubmit.bind(this),
+            FORM_ATTACHE_NAME
          };
     }
 
@@ -45,7 +49,7 @@ export class _BlockWithForm<T extends WithFormProps> extends _Block<T> {
     }
 
     protected getForm(): Form | null {
-        const form = this.getChildByAttacheNameOne("form");
+        const form = this.getChildByAttacheNameOne(FORM_ATTACHE_NAME);
         return this.isForm(form) ? form : null;
     }
 

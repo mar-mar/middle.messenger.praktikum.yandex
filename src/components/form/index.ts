@@ -1,5 +1,4 @@
 import { isArray, isHTMLFormElement } from "../../utils/typeCheck";
-import { AnyFunctionNoReturn } from "../../utils/types";
 import { _Block } from '../../utils/_Block';
 import { _ValidatedBlock } from "../../utils/_ValidatedBlock";
 import template from './index.hbs';
@@ -7,7 +6,7 @@ import template from './index.hbs';
 
 export type FormProps = {
     events?: {
-        submit?: AnyFunctionNoReturn;
+        submit?: EventHandler;
     }
 }
 

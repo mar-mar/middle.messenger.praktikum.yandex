@@ -1,14 +1,9 @@
 import { isFunction, isString } from "./typeCheck";
-import { AnyFunctionNoReturn } from "./types";
 import { _Block } from "./_Block";
 
 export type ValidatedBlockProps = {
     isValid: (value: any) => string;
     error?: string;
-    events?: {
-        blur?: AnyFunctionNoReturn;
-        focus?: AnyFunctionNoReturn;
-    }
 };
 
 // базовый класс для компонентов
@@ -24,7 +19,7 @@ export class _ValidatedBlock<T extends ValidatedBlockProps> extends _Block<T> {
     protected getValue(): any { return null; }
 
     protected onBlurInput(): void {
-        
+                
         this.validate();
     }
 

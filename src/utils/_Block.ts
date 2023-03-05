@@ -1,6 +1,5 @@
 import { EventBus } from "./EventBus";
 import { nanoid } from 'nanoid';
-import { AnyFunctionNoReturn } from "./types";
 import { isArray } from "./typeCheck";
 
 export enum EVENTS {
@@ -9,8 +8,7 @@ export enum EVENTS {
     FLOW_CDU = "flow:component-did-update",
     FLOW_RENDER = "flow:render",
     HIDE = "hide",
-    SHOW = "show",
-    ECEXUTE = "execute"
+    SHOW = "show"
 };
 
 type Children = Record<string, _Block[] | _Block>;
@@ -77,7 +75,6 @@ export class _Block<T extends Record<string, unknown> = any> {
         eventBus.on(EVENTS.FLOW_RENDER, this.onRender.bind(this));
         eventBus.on(EVENTS.HIDE, this.afterHide.bind(this));
         eventBus.on(EVENTS.SHOW, this.afterShow.bind(this));
-        
     }
 
     // constructor

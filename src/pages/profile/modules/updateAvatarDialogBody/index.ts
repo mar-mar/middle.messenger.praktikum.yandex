@@ -7,8 +7,7 @@ import styles from './styles.module.pcss';
 export default class UpdatePasswordDialogBody<T extends  WithFormProps> extends _BlockWithForm<T> {
 
     protected getCompileOptions() {
-        debugger
-        console.info(styles);
+        
         return {
             ...super.getCompileOptions(),
             styles,

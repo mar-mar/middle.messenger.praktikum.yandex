@@ -1,5 +1,5 @@
 import { isHTMLTextAreaElement } from "../../utils/typeCheck";
-import { Props, _Block } from '../../utils/_Block';
+import { _Block } from '../../utils/_Block';
 import template from './index.hbs';
 import styles from './styles.module.pcss';
 
@@ -7,7 +7,11 @@ type SimpleTextAreaProps = {
     label: string;
     value?: string;
     name?: string;
-} & Props;
+    events?: {
+        focus?: () => void;
+        blur?: () => void;
+    };
+};
 
 export default class SimpleTextArea extends _Block<SimpleTextAreaProps> {
 

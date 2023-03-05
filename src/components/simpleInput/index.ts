@@ -5,9 +5,9 @@ import template from './index.hbs';
 type SimpleInputProps = {
     type: string;
     name: string;
-    value: string;
+    value?: string;
     parentClassName?: string;
-    events: {
+    events?: {
         focus?: () => void;
         blur?: () => void;
     };

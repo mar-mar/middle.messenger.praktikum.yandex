@@ -1,5 +1,3 @@
-import { AnyFunctionNoReturn } from "./types";
-
 
 export class EventBus {
     private listeners: Record<string, AnyFunctionNoReturn[]> = {};

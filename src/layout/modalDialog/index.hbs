@@ -1,18 +1,18 @@
 <div class="{{ styles.root }}">
     
-    <div class="{{ styles.root }}__underlay">
+    <div class="{{ styles.root__underlay}}">
 
-        <div class="{{ styles.root }}__main">
-            <header class="{{ styles.root }}__header">
-                <h3 class="{{ styles.root }}__header__header">{{title}}</h3>
+        <div class="{{ styles.root__main }}">
+            <header class="{{ styles.root__header }}">
+                <h3 class="{{ styles.root__header__header }}">{{title}}</h3>
             </header>
 
-            <div class="{{ styles.root }}__body">
+            <div class="{{ styles.root__body }}">
                 <div data-content></div>
             </div>
 
-            {{#layout_centerPane horizontalType = "center" verticalType = "center" withMarginTop=1 }}
-                {{{components_textButton label="Закрыть" [event:click]=onClickHide }}}
+            {{#layout_centerPane }}
+                {{{components_textButton label="Закрыть" [event:click]=hide }}}
             {{/layout_centerPane}}
         </div>
 

@@ -4,8 +4,7 @@ import styles from './styles.module.pcss';
 
 type PaneLayoutProps = {
     secBackColor?: 0|1;
-    withBorder?: 0|1;
-    withMarginTop?: 0|1;
+    noBorder?: 0|1;
     addeClassName?: string;
 } & Props;
 

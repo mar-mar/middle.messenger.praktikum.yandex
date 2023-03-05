@@ -10,7 +10,8 @@ export default class ProfilePage  extends _Block {
         return { 
             template,
             styles,
-            goIndex: ()=> routeUse(PAGES.Index),
+            goIndex: () => routeUse(PAGES.Index),
+            logoff: () => routeUse(PAGES.Login),
             updatePassword: this.visibleChild.bind(this, true, "updatePassDialogBody"),
             updateAvatar: this.visibleChild.bind(this, true, "updateAvatarDialogBody"),
             ecexuteUpdataAvatar: this.visibleChild.bind(this, false, "updateAvatarDialogBody"),

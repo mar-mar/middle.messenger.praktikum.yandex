@@ -1,11 +1,11 @@
 
 {{#*inline "addedClassName" ~}}
-    {{~#unless noMargin}} {{ styles.root }}--margin{{~/unless~}}
+    {{~#unless noMargin}} {{ styles.root--margin }} {{~/unless~}}
 {{~/inline}}
 
 <div class="{{ styles.root }} {{> addedClassName}}" >
 
-    <div class="{{ styles.root }}__body" > 
+    <div class="{{ styles.root__body}}" > 
 
         {{{components_simpleInput 
             attachName = "input"
@@ -17,7 +17,7 @@
             [event:focus] = onFocusInput
         }}}
 
-        <label class="{{ styles.root }}__label">
+        <label class="{{ styles.root__label}}">
             {{label}}
         </label>
 

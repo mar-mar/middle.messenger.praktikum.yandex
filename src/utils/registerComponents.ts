@@ -1,10 +1,42 @@
 import Handlebars from "handlebars/dist/handlebars.runtime";
 import { _Block } from "./_Block";
 import { isFunction } from "./typeCheck";
-import {AnyFunction} from "./types";
 
-export function registerComponent<T extends _Block>(name: string, 
-    constructor: new(options: any) => T): void { // todo options: any ??? как  правильно
+
+// без ts-ignore не работает, ts не понимает такие импорты, это фича от parcel (@parcel/resolver-glob)
+// @ts-ignore 
+import componentsModules from "../**/components/*/index.ts";
+// @ts-ignore
+import layoutModules from "../**/layout/*/index.ts";
+// @ts-ignore
+import modulesModules from "../**/modules/*/index.ts";
+
+
+export default function execute() {
+    registerComponents(componentsModules, "components", []);
+    registerComponents(layoutModules, "layout", []);
+    registerComponents(modulesModules, "modules", []);
+}
+
+function registerComponents(modules: Record<string, any>, type: string, path: string[]): void{
+    Object.entries(modules).forEach(([name, module]) => {
+        const currentPath = [...path];
+        currentPath.push(name);
+
+        if ((module as any).default) {
+            currentPath.splice(-1, 0, type);
+            handleharRegisterHelper(currentPath.join("_"), (module as any).default);
+            console.info(currentPath.join("_"));
+        }
+        else {
+            
+            registerComponents(module, type, currentPath);
+        }
+    });
+}
+
+function handleharRegisterHelper<T extends _Block>(name: string, 
+    constructor: new(options: any) => T): void { 
 
     Handlebars.registerHelper(name, function (this: any, options: Handlebars.HelperOptions): string {
 

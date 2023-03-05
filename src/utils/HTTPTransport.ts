@@ -72,7 +72,7 @@ export default class HTTPTransport {
             xhr.onerror = reject;
             xhr.onabort = reject;
 
-            if (withData) xhr.send(data);
+            if (withData) xhr.send(JSON.stringify(data));
             else xhr.send();
         })
     };

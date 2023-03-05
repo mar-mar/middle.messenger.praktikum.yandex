@@ -1,5 +1,4 @@
 //import routeUse from "../../utils/route";
-import { MenuItemProps } from "../../components/menuItem";
 import Popup from "../../layout/popup";
 import routeUse, { PAGES } from "../../utils/route";
 import { _Block } from "../../utils/_Block";
@@ -57,7 +56,7 @@ export default class IndexPage extends _Block {
         dialog?.show();
     }
 
-    private attachMenuItems(): MenuItemProps[] {
+    private attachMenuItems(): MenuItemTemplateProps[] {
         return [
             { label: "Фото или Видео"},
             { label: "Файл" },
@@ -65,7 +64,7 @@ export default class IndexPage extends _Block {
         ];
     }
 
-    private chatMenuMenuItems(): MenuItemProps[] {
+    private chatMenuMenuItems(): MenuItemTemplateProps[] {
         return [
             { label: "Добавить пользователя", click: this.openDialog.bind(this, CHILD_NAMES.AddUser) },
             { label: "Удалить пользователя", click: this.openDialog.bind(this, CHILD_NAMES.RemoveUser) },
@@ -73,7 +72,7 @@ export default class IndexPage extends _Block {
         ];
     }
 
-    private menuMenuItems(): MenuItemProps[] {
+    private menuMenuItems(): MenuItemTemplateProps[] {
         return [
             { label: "Создать чат", click: this.openDialog.bind(this, CHILD_NAMES.CreateChat) },
             { label: "Открыть профиль", click: this.go.bind(this, PAGES.Profile) }

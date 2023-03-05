@@ -4,11 +4,12 @@ import styles from './styles.module.pcss';
 
 type TextButtonProps = {
     type?: string;
-    label: string;
+    label?: string;
     noLabel?: 0|1;
+    red?: 0|1;
     iconClass?: string;
-    events: {
-        click: () => void
+    events?: {
+        click?: EventHandler
     }
 }
 

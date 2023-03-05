@@ -2,18 +2,18 @@ import { _Block } from '../../utils/_Block';
 import template from './index.hbs';
 import styles from './styles.module.pcss';
 
-export default class ModalDialog extends _Block {
+type ModalDialogProps = {
+    title: string;
+};
+
+export default class ModalDialog extends _Block<ModalDialogProps> {
 
     protected getCompileOptions() {
         return { 
             template, 
             styles,
-            onClickHide: this.onClickHide.bind(this)
+            hide: this.hide.bind(this)
         };
-    }
-
-    private onClickHide() {
-        this.hide();
     }
 
 }

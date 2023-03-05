@@ -4,8 +4,8 @@ import styles from './styles.module.pcss';
 
 type FileInputProps = {
     label: string;
-    events: {
-        click: () => void
+    events?: {
+        click?: EventHandler
     }
 }
 

@@ -1,4 +1,3 @@
-import routeUse from "../../../../utils/route";
 import { _Block } from '../../../../utils/_Block';
 import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import template from './index.hbs';
@@ -17,15 +16,8 @@ export default class SignBody<T extends WithFormProps> extends _BlockWithForm<T>
             validateLogin,
             validateEmail,
             validatePhone,
-            validatePassword,
-            onClickIndex: this.onClickIndex.bind(this)
+            validatePassword
         };
-    }
-
-    private onClickIndex(evt: Event): void {
-        evt.preventDefault();
-
-        routeUse("index");
     }
 
 }

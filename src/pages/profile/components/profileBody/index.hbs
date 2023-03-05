@@ -1,12 +1,12 @@
 
 <div class="{{ styles.root }}">
 
-    <div class="{{ styles.root }}__left-col">
+    <div class="{{ styles.root__left-col }}">
 
-        <div class="{{ styles.root }}__settings-cont">
+        <div class="{{ styles.root__settings-cont }}">
 
             {{#components_form 
-                attachName="form"
+                attachName=FORM_ATTACHE_NAME
                 [event:submit]=onSubmit item=item }}
 
                 <div>
@@ -29,21 +29,30 @@
     </div>
 
 
-    <div class="{{ styles.root }}__right-col">
+    <div class="{{ styles.root__right-col }}">
         
-        <div class="{{ styles.root }}__avatar-cont">
-            {{{components_avatar clickLabel="Изменить аватар" [event:click]=updateAvatar
+        <div class="{{ styles.root__avatar-cont }}">
+
+            {{{components_avatar clickLabel="Изменить аватар" 
+                [event:click]=updateAvatar
+
                 clickLabel="Изменить аватар"
-                imageUrl=item.avatar diameter='L'
+                imageUrl=item.avatar 
+                diameter='L'
                 avatarOwner=item.display_name }}}
         </div>
 
-        <div class="{{ styles.root }}__pass-cont">
-            {{{components_textButton label="Изменить пароль" [event:click]=updatePassword }}}
+        <div class="{{ styles.root__pass-cont }}">
+
+            {{{components_textButton label="Изменить пароль" 
+                [event:click]=updatePassword }}}
         </div>
 
-        <div class="{{ styles.root }}__logout-cont">
-            <div>{{{components_textButton label="Выйти из профиля" [event:click]=goLogin
+        <div class="{{ styles.root__logout-cont }}">
+            <div>{{{components_textButton 
+                    [event:click]=logoff
+
+                    label="Выйти из профиля" 
                     red=1 }}}</div>
         </div>
         

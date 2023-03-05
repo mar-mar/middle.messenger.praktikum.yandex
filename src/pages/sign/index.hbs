@@ -2,10 +2,11 @@
     {{#layout_pageDialog 
         title="Ваш профиль" }}
 
-        {{{pages_sign_components_signBody item=item}}}
+        {{{pages_sign_components_signBody item=item 
+            execute = goIndex }}}
 
-        {{#layout_centerPane horizontalType = "center" verticalType = "center" withMarginTop=1 }}
-        {{{components_textButton label="Перейти к авторизации" [event:click]=onClickLogin }}}
+        {{#layout_centerPane  }}
+        {{{components_textButton label="Перейти к авторизации" [event:click]=goLogin }}}
         {{/layout_centerPane }}
         
 

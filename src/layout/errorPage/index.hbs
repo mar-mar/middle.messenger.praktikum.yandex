@@ -1,21 +1,21 @@
 
-<div class="{{ styles.[error-page] }}__wrapper">
-    <div class="{{ styles.[error-page] }}">
+<div class="{{ styles.root__wrapper }}">
+    <div class="{{ styles.root }}">
 
-        <header class="{{ styles.[error-page] }}__error-code">
+        <header class="{{ styles.root__error-code }}">
             <h1>{{errorCode}}</h1>
         </header>
 
-        <main class="{{ styles.[error-page] }}__message">
+        <main class="{{ styles.root__message }}">
             <div>
                 {{message}}
             </div>
         </main>
 
-        <div class="{{ styles.[error-page] }}__back">
+        <div class="{{ styles.root__back }}">
 
-            {{#layout_centerPane horizontalType = "center" verticalType = "center" withMarginTop=1 }}
-                {{{components_textButton label="Назад к чатам" [event:click]=onClickIndex }}}
+            {{#layout_centerPane }}
+                {{{components_textButton label="Назад к чатам" [event:click]=goIndex }}}
             {{/layout_centerPane }}
 
         </div>

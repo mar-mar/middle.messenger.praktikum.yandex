@@ -2,7 +2,11 @@ import { _Block } from '../../utils/_Block';
 import template from './index.hbs';
 import styles from './styles.module.pcss';
 
-export default class PageDialogeLayout extends _Block {
+type PageDialogeProps = {
+    title: string;
+};
+
+export default class PageDialogeLayout extends _Block<PageDialogeProps> {
 
     protected getCompileOptions() {
         return { template, styles };
