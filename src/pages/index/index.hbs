@@ -29,7 +29,7 @@
 
         {{#layout_pane addeClassName=styles.[chat-input] secBackColor=1 }}
             {{{pages_index_components_messageInput item=item 
-                openPopupAttache=openPopupAttache }}}
+                openPopupAttache=openPopupAttache execute=ecexuteSendMessage }}}
         {{/layout_pane }}
 
     </main>
@@ -53,16 +53,16 @@
     {{/layout_popup}}
 
     {{#layout_modalDialog attachName=CHILD_NAMES.AddUser title="Добавить пользователя"  }}
-        {{{pages_index_modules_addUserDialogBody}}}
+        {{{pages_index_modules_addUserDialogBody execute=ecexuteAddUser }}}
     {{/layout_modalDialog}}
     {{#layout_modalDialog attachName=CHILD_NAMES.RemoveUser title="Удалить пользователя"  }}
-        {{{pages_index_modules_removeUserDialogBody}}}
+        {{{pages_index_modules_removeUserDialogBody execute=ecexuteRemoveUser }}}
     {{/layout_modalDialog}}
     {{#layout_modalDialog attachName=CHILD_NAMES.FindChat title="Поиск чата"  }}
-        {{{pages_index_modules_findChatDialogBody}}}
+        {{{pages_index_modules_findChatDialogBody execute=ecexuteFindChat }}}
     {{/layout_modalDialog}}
     {{#layout_modalDialog attachName=CHILD_NAMES.CreateChat title="Создание чата"  }}
-        {{{pages_index_modules_addChatDialogBody}}}
+        {{{pages_index_modules_addChatDialogBody execute=executeCreateChat }}}
     {{/layout_modalDialog}}
 
 </div>

@@ -26,7 +26,6 @@ function registerComponents(modules: Record<string, any>, type: string, path: st
         if ((module as any).default) {
             currentPath.splice(-1, 0, type);
             handleharRegisterHelper(currentPath.join("_"), (module as any).default);
-            console.info(currentPath.join("_"));
         }
         else {
             

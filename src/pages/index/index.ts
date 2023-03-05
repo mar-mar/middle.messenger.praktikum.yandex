@@ -26,8 +26,7 @@ export default class IndexPage extends _Block {
             goProfile: this.go.bind(this, PAGES.Profile),
             goError404: this.go.bind(this, PAGES.Error404),
             goError500: this.go.bind(this, PAGES.Error500),
-            openFindChat: this.visibleChild .bind(this, true, CHILD_NAMES.FindChat),
-            openCreateChat: this.visibleChild.bind(this, true, CHILD_NAMES.CreateChat),
+            
 
             attachMenuItems: this.attachMenuItems(),
             chatMenuMenuItems: this.chatMenuMenuItems(),
@@ -35,6 +34,15 @@ export default class IndexPage extends _Block {
             openPopupAttache: this.openPopup.bind(this, CHILD_NAMES.Attache),
             openPopupChatMenu: this.openPopup.bind(this, CHILD_NAMES.ChatMenu),
             openPopupMenu: this.openPopup.bind(this, CHILD_NAMES.Menu),
+
+            openFindChat: this.visibleChild .bind(this, true, CHILD_NAMES.FindChat),
+            openCreateChat: this.visibleChild.bind(this, true, CHILD_NAMES.CreateChat),
+            ecexuteAddUser: this.visibleChild .bind(this, false, CHILD_NAMES.AddUser),
+            ecexuteRemoveUser: this.visibleChild .bind(this, false, CHILD_NAMES.RemoveUser),
+            ecexuteFindChat: this.visibleChild .bind(this, false, CHILD_NAMES.FindChat),
+            executeCreateChat: this.visibleChild .bind(this, false, CHILD_NAMES.CreateChat),
+            ecexuteSendMessage: this.go.bind(this, PAGES.Index),
+
             CHILD_NAMES
         };
     }
