@@ -13,10 +13,10 @@ export default class Popup extends _Block {
 
     private toggleWatchBodyClick(value: boolean): void {
         const options = { capture: true, passive: true };
-        document.body.removeEventListener("click", this.onBodyClick, options);
+        document.removeEventListener("click", this.onBodyClick, options);
         if (!value) return;
 
-        document.body.addEventListener("click", this.onBodyClick, options);
+        document.addEventListener("click", this.onBodyClick, options);
     }
 
     private onBodyClick = () => {
@@ -66,8 +66,8 @@ export default class Popup extends _Block {
         position.top = this.getPositionByAxis(bodyRect, parentRect, ident, size, true);
         position.left = this.getPositionByAxis(bodyRect, parentRect, 0, size, false);
 
-        element.style.top = this.toPx(position.top); //  + window.scrollY
-        element.style.left = this.toPx(position.left); // + window.scrollX
+        element.style.top = this.toPx(position.top + window.scrollY); 
+        element.style.left = this.toPx(position.left + window.scrollX); 
         //
         element.style.visibility = oldVisibility;
     }
