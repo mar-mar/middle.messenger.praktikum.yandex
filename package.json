@@ -18,7 +18,7 @@
   "devDependencies": {
     "@anikin/parcel-transformer-handlebars-precompile": "1.0.1",
     "@parcel/config-default": "2.8.3",
-    "@parcel/resolver-glob": "^2.8.3",
+    "@parcel/resolver-glob": "2.8.3",
     "@parcel/transformer-posthtml": "2.8.3",
     "@parcel/validator-typescript": "2.8.3",
     "eslint": "8.34.0",

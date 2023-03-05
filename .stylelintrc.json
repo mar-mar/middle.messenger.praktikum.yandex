@@ -1,9 +1,8 @@
 {
-    "extends": "stylelint-config-standard",
+    "extends": "stylelint-config-standard",   
     "plugins": [
-		"stylelint-order"
-	],
-    
+        "stylelint-order"
+      ],
     "rules": {
         "at-rule-no-unknown": [
             true,
@@ -11,12 +10,26 @@
                 "ignoreAtRules": ["mixin", "define-mixin"]
             }
         ],
-        "rule-empty-line-before": [
-			"always-multi-line",
-			{
-				"except": ["first-nested"],
-				"ignore": ["after-comment"]
-			}
-		]
+
+        "order/order": [
+            [
+                "custom-properties",
+                {
+                    "type": "at-rule",
+                    "name": "mixin"
+                },
+                "at-rules",
+                "declarations",
+                "at-variables",           
+                "dollar-variables",
+                "rules"
+            ],
+            {
+                "unspecified": "bottom"
+            }
+        ],
+        "order/properties-order": [[], {"unspecified": "bottom"}],
+        "order/properties-alphabetical-order": true
     }
+
 }

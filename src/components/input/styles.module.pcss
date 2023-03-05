@@ -11,8 +11,8 @@
     &__simple-input {
         @mixin absolute-strech;
 
-        border-bottom: var(--normal-border-size) solid var(--active-color);
         background: none;
+        border-bottom: var(--normal-border-size) solid var(--active-color);
     }
 
     &__body {
@@ -25,15 +25,15 @@
     &__label {
         @mixin absolute-strech;
 
-        pointer-events: none;
         color: var(--grey-font-color);
+        pointer-events: none;
         transition: top 200ms ease-in, font-size 200ms ease-in;
     }
 
     &__simple-input:focus ~ &__label,
     &__simple-input:not(:placeholder-shown)&__simple-input:not(:focus) ~ &__label {
-        top: -2em;
         font-size: var(--mini-font-size);
+        top: -2em;
     }
 
 }

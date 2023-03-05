@@ -3,7 +3,7 @@
 .root {
     @mixin absolute-strech__parent;
     @mixin border-gray;
-    
+
     &--L {
         @mixin avatar 80px, 40px;
     }
@@ -24,18 +24,18 @@
         @mixin absolute-strech;
 
         background-image: url("/static/images/emptyAvatar.svg");
-        background-repeat: no-repeat;
         background-position: center;
+        background-repeat: no-repeat;
     }
 
     &__hover-block {
         @mixin absolute-strech;
         @mixin center-position-wrapper;
 
+        background: var(--hover-color);
         cursor: pointer;
         opacity: 0;
         transition: opacity 0.15s ease 0s;
-        background: var(--hover-color);
     }
 
     &__hover-block__label {

@@ -17,8 +17,8 @@
 
 
 @define-mixin bordershadow {
-    border-radius: var(--pane-radius);
     background: var(--primary-back-color);
+    border-radius: var(--pane-radius);
     box-shadow: 0 0 6px rgb(0 0 0 / 40%);
     overflow: hidden;
 }
@@ -34,13 +34,13 @@
 
 
 @define-mixin absolute-strech {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    left: 0;
-    top: 0;
     bottom: 0;
+    height: 100%;
+    left: 0;
+    position: absolute;
     right: 0;
+    top: 0;
+    width: 100%;
 }
 
 @define-mixin  absolute-strech__parent {
@@ -48,17 +48,17 @@
 }
 
 @define-mixin wh100 {
-    width: 100%;
     height: 100%;
+    width: 100%;
 }
 
 @define-mixin avatar $diameter: 80px, $radius: 40px {
-    width: $(diameter);
-    height: $(diameter);
-    border-radius: $(radius);
     background: var(--avatar-color);
+    border-radius: $(radius);
+    height: $(diameter);
     overflow: hidden;
-    text-align: center;    
+    text-align: center;
+    width: $(diameter);    
 }
 
 
@@ -77,33 +77,33 @@
 }
 
 @define-mixin only-border-right {
-    border-top: 0;
     border-bottom: 0;
     border-left: 0;
+    border-top: 0;
 }
 
 @define-mixin only-border-bottom {
-    border-top: 0;
     border-left: 0;
     border-right: 0;
+    border-top: 0;
 }
 
 @define-mixin icon-l {
-    min-width: 32px;
     height: 32px;
+    min-width: 32px;
 }
 
 @define-mixin icon-m {
-    min-width: 28px;
     height: 28px;
+    min-width: 28px;
 }
 
 @define-mixin icon-s {
-    min-width: 22px;
     height: 22px;
+    min-width: 22px;
 }
 
 @define-mixin icon-xs {
-    min-width: 16px;
     height: 16px;
+    min-width: 16px;
 }

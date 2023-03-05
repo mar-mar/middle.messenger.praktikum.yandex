@@ -5,32 +5,32 @@
     @mixin absolute-strech;
 
     display: none;
-    
+
     &__main {
         @mixin bordershadow;
         @mixin center-position;
-    
-        position: relative;
-        width: fit-content;
-        height: fit-content;
-        min-width: 200px;
-        min-height: 200px;
+
         display: flex;
         flex-direction: column;
+        height: fit-content;
+        min-height: 200px;
+        min-width: 200px;
         padding: var(--second-offset);
+        position: relative;
+        width: fit-content;
     }
 
     &__underlay {
         @mixin absolute-strech;
 
+        background: var(--modal-underlay-back-color);
         display: flex;
         z-index: var(--modal-zindex);
-        background: var(--modal-underlay-back-color);
     }
 
     &__header {
-        margin-bottom: var(--second-offset);
         font-weight: bold;
+        margin-bottom: var(--second-offset);
     }
 
     &__header__header {
