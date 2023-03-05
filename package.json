@@ -8,7 +8,7 @@
   "scripts": {
     "start": "export PORT=3000 && npm run build && node server.js",
     "dev": "parcel src/index.html --no-cache --open",
-    "build": "parcel src/index.html --no-cache ",
+    "build": "parcel build src/index.html --no-cache ",
     "lint": "stylelint **/*.pcss --fix"
   },
   "keywords": [],

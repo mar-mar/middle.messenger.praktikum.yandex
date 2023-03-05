@@ -1,6 +1,6 @@
 import { Props, _Block } from '../../utils/_Block';
 import template from './index.hbs';
-import styles from './styles.module.pcss';
+import * as styles from "./styles.module.pcss";
 
 type PaneLayoutProps = {
     secBackColor?: 0|1;

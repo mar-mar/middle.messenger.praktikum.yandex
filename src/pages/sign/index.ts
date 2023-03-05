@@ -2,7 +2,7 @@
 import routeUse, { PAGES } from "../../utils/route";
 import { _Block } from '../../utils/_Block';
 import template from './index.hbs';
-import styles from './styles.module.pcss';
+import * as styles from "./styles.module.pcss";
 
 export default class SignPage extends _Block {
 
