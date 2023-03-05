@@ -1,16 +1,16 @@
 
 <div class="{{ styles.root }}">
 
-    <div class="{{ styles.root }}__avatar">
+    <div class="{{ styles.root__avatar }}">
         {{{components_avatar imageUrl=item.profile.avatar diameter='S' 
             avatarOwner=item.profile.display_name }}}
     </div>
 
-    <div class="{{ styles.root }}__label">
+    <div class="{{ styles.root__label }}">
         {{item.profile.display_name}}
     </div>
 
-    <div class="{{ styles.root }}__menu">
+    <div class="{{ styles.root__menu }}">
         {{{components_textButton label="Меню чата" 
             iconClass="menu-icon" noLabel=1 
             [event:click] = openPopupChatMenu

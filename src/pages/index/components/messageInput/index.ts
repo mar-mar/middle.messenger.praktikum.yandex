@@ -7,10 +7,10 @@ import routeUse, { PAGES } from "../../../../utils/route";
 
 
 type MessageInputProps = {
-    openPopup: (element: Element) => void
+    openPopupAttache: FunctionNoArgsNoReturn
 } & WithFormProps;
 
-export default class MessageInput<T extends MessageInputProps>  extends _BlockWithForm<T> {   
+export default class MessageInput  extends _BlockWithForm<MessageInputProps> {   
     
     protected getCompileOptions() {
         return {

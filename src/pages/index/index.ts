@@ -26,8 +26,8 @@ export default class IndexPage extends _Block {
             goProfile: this.go.bind(this, PAGES.Profile),
             goError404: this.go.bind(this, PAGES.Error404),
             goError500: this.go.bind(this, PAGES.Error500),
-            openFindChat: this.openDialog.bind(this, CHILD_NAMES.FindChat),
-            openCreateChat: this.openDialog.bind(this, CHILD_NAMES.CreateChat),
+            openFindChat: this.visibleChild .bind(this, true, CHILD_NAMES.FindChat),
+            openCreateChat: this.visibleChild.bind(this, true, CHILD_NAMES.CreateChat),
 
             attachMenuItems: this.attachMenuItems(),
             chatMenuMenuItems: this.chatMenuMenuItems(),
@@ -51,11 +51,6 @@ export default class IndexPage extends _Block {
         (popup as Popup).show({ parent: evt.target as Element });
     }
 
-    private openDialog(blockName: string) {
-        const dialog = this.getChildByAttacheNameOne(blockName);
-        dialog?.show();
-    }
-
     private attachMenuItems(): MenuItemTemplateProps[] {
         return [
             { label: "Фото или Видео"},
@@ -66,15 +61,15 @@ export default class IndexPage extends _Block {
 
     private chatMenuMenuItems(): MenuItemTemplateProps[] {
         return [
-            { label: "Добавить пользователя", click: this.openDialog.bind(this, CHILD_NAMES.AddUser) },
-            { label: "Удалить пользователя", click: this.openDialog.bind(this, CHILD_NAMES.RemoveUser) },
+            { label: "Добавить пользователя", click: this.visibleChild.bind(this, true, CHILD_NAMES.AddUser) },
+            { label: "Удалить пользователя", click: this.visibleChild.bind(this, true, CHILD_NAMES.RemoveUser) },
             { label: "Удалить чат" }
         ];
     }
 
     private menuMenuItems(): MenuItemTemplateProps[] {
         return [
-            { label: "Создать чат", click: this.openDialog.bind(this, CHILD_NAMES.CreateChat) },
+            { label: "Создать чат", click: this.visibleChild.bind(this, true, CHILD_NAMES.CreateChat) },
             { label: "Открыть профиль", click: this.go.bind(this, PAGES.Profile) }
         ];
     }

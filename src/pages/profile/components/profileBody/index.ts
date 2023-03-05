@@ -5,13 +5,13 @@ import styles from './styles.module.pcss';
 import { validateName, validateLogin, validateEmail, validatePhone } from '../../../../utils/validate';
 
 
-type Props = {
+type ProfileBodyProps = {
     logoff: AnyFunctionNoReturn;
     updatePassword: AnyFunctionNoReturn;
     updateAvatar: AnyFunctionNoReturn;
-} & WithFormProps
+} & WithFormProps;
 
-export default class ProfileBody extends _BlockWithForm<Props> {
+export default class ProfileBody extends _BlockWithForm<ProfileBodyProps> {
     
     protected getCompileOptions() {
         return { 

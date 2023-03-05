@@ -3,8 +3,11 @@ import template from "./index.hbs";
 import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import styles from './styles.module.pcss';
 
+type UpdatePasswordDialogBodyProps = {
+    fileName?: string;
+} & WithFormProps;
 
-export default class UpdatePasswordDialogBody<T extends  WithFormProps> extends _BlockWithForm<T> {
+export default class UpdatePasswordDialogBody extends _BlockWithForm<UpdatePasswordDialogBodyProps> {
 
     protected getCompileOptions() {
         

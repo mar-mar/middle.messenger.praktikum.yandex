@@ -16,19 +16,20 @@
 
         &__messages {
             flex-grow: 1;
+            overflow: auto;
         }
     }
 
     &__url-for-check {
         position: fixed;
-        top: 100px;
-        right: 10px;
+        bottom: 10px;
+        left: 10px;
     }
 
     & .left-pane {
         @mixin only-border-right;
 
-        width: 250px;
+        min-width: 250px;
         overflow: hidden;
     }
 

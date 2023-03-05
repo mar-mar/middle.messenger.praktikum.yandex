@@ -4,7 +4,10 @@ import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
 import styles from './styles.module.pcss';
 
-export default class ChatList extends _Block {
+type ChatListProps = {
+    openFindChat?: FunctionNoArgsNoReturn;
+}
+export default class ChatList extends _Block<ChatListProps> {
     
     protected getCompileOptions() {
         return { template, styles };

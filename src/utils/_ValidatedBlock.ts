@@ -38,7 +38,7 @@ export class _ValidatedBlock<T extends ValidatedBlockProps> extends _Block<T> {
         errorBlock?.setProps({ error: isString(error) ? error : "" });
     }
 
-    public getError() {
+    public getError(): string {
         const errorBlock = this.getChildByAttacheNameOne("error");
         return errorBlock?.getProps().error; 
     }

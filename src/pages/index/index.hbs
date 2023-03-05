@@ -22,7 +22,9 @@
 
 
         <div class="{{ styles.root__chat__messages }}">
-            <section aria-label="Беседа"></section>
+            <section aria-label="Беседа">
+                {{{pages_index_components_chatMessages item=item }}}
+            </section>
         </div>
 
         {{#layout_pane addeClassName=styles.[chat-input] secBackColor=1 }}

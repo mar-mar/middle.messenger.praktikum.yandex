@@ -7,15 +7,17 @@
 
     <div class="{{ styles.root }}">
 
-        <div class="{{ styles.root }}__attach-cont">
-            {{{components_textButton label="Прикрепить" type="button" [event:click]=openPopupAttache iconClass="attache-icon" noLabel=1 }}}
+        <div class="{{ styles.root__attach-cont }}">
+            
+            {{{components_textButton label="Прикрепить" type="button" [event:click]=openPopupAttache 
+                iconClass="attache-icon" noLabel=1 }}}
         </div>
 
-        <div class="{{ styles.root }}__input-cont">
+        <div class="{{ styles.root__input-cont }}">
             {{{components_textarea label="Сообщение" isValid=validateMessage name="message" }}}
         </div>
 
-        <div class="{{ styles.root }}__send-cont">
+        <div class="{{ styles.root__send-cont }}">
             {{{components_textButton label="Отправить" type="submit" iconClass="send-icon" noLabel=1 }}}
         </div>
     </div>

@@ -5,16 +5,26 @@
         "path": ""
       },
       
-      "postcss-sorting": true,
+      "postcss-sorting": {
+        "order": [
+            "custom-properties",
+            "dollar-variables",
+            "declarations",
+            "at-rules",
+            "rules"
+        ],
+
+        "properties-order": "alphabetical",
+
+        "unspecified-properties-position": "bottom"
+      },
+
       "postcss-nested": true,
       "postcss-mixins": true,
       "postcss-custom-properties": {
         "preserve": false
       },
       "postcss-simple-vars": true,
-      
-      "postcss-reporter": true,
-      "postcss-safe-parser": false,
-      "stylelint": true
+      "postcss-safe-parser": false
     }
 }
