@@ -6,8 +6,7 @@
     "main": false
   },
   "scripts": {
-    "start2000": "export PORT=2000 && npm run start",
-    "start": "npm run build && node server.js",
+    "start": "export PORT=3000 && npm run build && node server.js",
     "dev": "parcel src/index.html --no-cache --open",
     "build": "parcel src/index.html --no-cache ",
     "lint": "stylelint **/*.pcss --fix"
