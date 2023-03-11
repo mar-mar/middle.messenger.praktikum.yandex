@@ -1,19 +1,14 @@
+<div class="{{styles.root}}">
+    {{#layout_pageDialog 
+        title="Ваш профиль" }}
 
-{{#> layout/page/index }}
+        {{{pages_sign_components_signBody item=item 
+            execute = goIndex }}}
 
-   {{#> layout/pageDialog/index 
-         title="Ваш профиль" 
-         item=this.profile }}
+        {{#layout_centerPane  }}
+        {{{components_textButton label="Перейти к авторизации" [event:click]=goLogin }}}
+        {{/layout_centerPane }}
+        
 
-      {{#*inline "page_dialog_content"}}
-         {{> pages/sign/components/signBody }}
-
-         {{#> components/centerPane/index horizontalType = "center" verticalType = "center" withMarginTop=1 }}
-            {{> components/textButton/index label="Перейти к авторизации" gotoPageName="login" }}
-         {{/components/centerPane/index }}
-          
-      {{/inline}}
-   
-   {{/layout/pageDialog/index}}
-
-{{/layout/page/index}}
+    {{/layout_pageDialog }}
+</div>

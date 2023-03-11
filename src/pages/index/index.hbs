@@ -1,49 +1,69 @@
----
-thisClassName: page-chat
-addeClassNameLeftPane: page-chat__lef-pane
-addeClassNameChatInput: page-chat__chat__input
-addeClassNameChatHeader: page-chat__chat__header
----
+<div class="{{ styles.root }}">
 
-{{#> layout/page/index }}
-        
-    <div class="{{thisClassName}}">
+    {{#layout_pane secBackColor=1 addeClassName=styles.[left-pane] }}
+        <section class="{{ styles.root__profile }}">
+            {{{pages_index_components_profile item=item 
+                openPopupMenu=openPopupMenu }}}
+        </section>
 
-        {{#> components/pane/index withBorder=1 secBackColor=1 addeClassName=addeClassNameLeftPane }}
-            <section class="{{thisClassName}}__profile">
-               {{> pages/index/components/profile/index ../this item=this.chat.profile }}
+        <nav class="{{ styles.root__chats }}">
+            {{{pages_index_components_chatList item=item  
+                openFindChat=openFindChat }}}
+        </nav>
+    {{/layout_pane }}
+
+
+    <main class="{{ styles.root__chat }}">
+
+        {{#layout_pane addeClassName=styles.[chat-header] }}
+            {{{pages_index_components_chatHeader item=item 
+                openPopupChatMenu=openPopupChatMenu }}}
+        {{/layout_pane }}
+
+
+        <div class="{{ styles.root__chat__messages }}">
+            <section aria-label="Беседа">
+                {{{pages_index_components_chatMessages item=item }}}
             </section>
-
-            <nav class="{{thisClassName}}__chats">
-               {{> pages/index/components/chatList/index ../this item=this.chat }}
-            </nav>
-        {{/components/pane/index }}
-
-
-        <main class="{{thisClassName}}__chat">
-
-            {{#> components/pane/index ../this addeClassName=addeClassNameChatHeader withBorder=1 }}
-                {{> pages/index/components/chatHeader/index ../this item=this.activeChat }}
-            {{/components/pane/index }}
-
-
-            <div class="{{thisClassName}}__chat__messages">
-                <section aria-label="Беседа"></section>
-            </div>
-
-            {{#> components/pane/index ../this addeClassName=addeClassNameChatInput secBackColor=1 withBorder=1 }}
-                 {{> pages/index/components/messageInput/index ../this item=this.chat }}
-            {{/components/pane/index }}
-
-        </main>
-
-        <div class="{{thisClassName}}__url-for-check">
-            <div><a href="/src/pages/login/index.hbs">Авторизация</a></div>
-            <div><a href="/src/pages/sign/index.hbs">Регистриция</a></div>
-            <div><a href="/src/pages/profile/index.hbs">Профиль</a></div>
-            <div><a href="/src/pages/error404/index.hbs">404 ошибка</a></div>
-            <div><a href="/src/pages/error500/index.hbs">500 ошибка</a></div>
         </div>
+
+        {{#layout_pane addeClassName=styles.[chat-input] secBackColor=1 }}
+            {{{pages_index_components_messageInput item=item 
+                openPopupAttache=openPopupAttache execute=ecexuteSendMessage }}}
+        {{/layout_pane }}
+
+    </main>
+
+    <div class="{{ styles.root }}__url-for-check">
+        <div>{{{components_textButton label="Авторизация" [event:click]=goLogin }}}</div>
+        <div>{{{components_textButton label="Регистриция" [event:click]=goSign }}}</div>
+        <div>{{{components_textButton label="Профиль" [event:click]=goProfile }}}</div>
+        <div>{{{components_textButton label="404 ошибка" [event:click]=goError404 }}}</div>
+        <div>{{{components_textButton label="500 ошибка" [event:click]=goError500 }}}</div>
     </div>
 
-{{/layout/page/index}}
+    {{#layout_popup attachName=CHILD_NAMES.Attache }}
+        {{{components_menu memuItems=attachMenuItems }}}
+    {{/layout_popup}}
+    {{#layout_popup attachName=CHILD_NAMES.ChatMenu }}
+        {{{components_menu memuItems=chatMenuMenuItems }}}
+    {{/layout_popup}}
+    {{#layout_popup attachName=CHILD_NAMES.Menu }}
+        {{{components_menu memuItems=menuMenuItems }}}
+    {{/layout_popup}}
+
+    {{#layout_modalDialog attachName=CHILD_NAMES.AddUser title="Добавить пользователя"  }}
+        {{{pages_index_modules_addUserDialogBody execute=ecexuteAddUser }}}
+    {{/layout_modalDialog}}
+    {{#layout_modalDialog attachName=CHILD_NAMES.RemoveUser title="Удалить пользователя"  }}
+        {{{pages_index_modules_removeUserDialogBody execute=ecexuteRemoveUser }}}
+    {{/layout_modalDialog}}
+    {{#layout_modalDialog attachName=CHILD_NAMES.FindChat title="Поиск чата"  }}
+        {{{pages_index_modules_findChatDialogBody execute=ecexuteFindChat }}}
+    {{/layout_modalDialog}}
+    {{#layout_modalDialog attachName=CHILD_NAMES.CreateChat title="Создание чата"  }}
+        {{{pages_index_modules_addChatDialogBody execute=executeCreateChat }}}
+    {{/layout_modalDialog}}
+
+</div>
+

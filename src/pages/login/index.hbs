@@ -1,21 +1,17 @@
+<div class="{{styles.root}}">
+    {{#layout_pageDialog
+    title = "Авторизация"
+    }}
 
-{{#> layout/page/index }}
+        <div class="{{styles.root__body}}" >
+           
+            {{{pages_login_components_loginBody item=item
+                execute=goIndex }}}
+            
+            {{#layout_centerPane }}
+                {{{components_textButton label="Нет профиля?" [event:click]=goSing }}}
+            {{/layout_centerPane}}
 
-   {{#> layout/pageDialog/index 
-        title="Авторизация" 
-        item=this.login }}
-
-      {{#*inline "page_dialog_content"}}
-          {{> pages/login/components/loginBody }}
-
-         {{#> components/centerPane/index horizontalType = "center" verticalType = "center" withMarginTop=1 }}
-            {{> components/textButton/index label="Нет профиля?" gotoPageName="sign" }}
-         {{/components/centerPane/index }}
-
-      {{/inline}}
-   
-   {{/layout/pageDialog/index}}
-
-{{/layout/page/index}}
-
-
+        </div>
+    {{/layout_pageDialog}}
+</div>

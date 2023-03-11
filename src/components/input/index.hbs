@@ -1,26 +1,28 @@
-{{#*inline "className"}}input{{/inline}}
+
 {{#*inline "addedClassName" ~}}
-    {{~#unless noMargin}} {{> className}}--margin{{~/unless~}}
+    {{~#unless noMargin}} {{ styles.root--margin }} {{~/unless~}}
 {{~/inline}}
 
-<div class="{{> className}} {{> addedClassName}}">
+<div class="{{ styles.root }} {{> addedClassName}}" >
 
-    <div class="{{> className}}__body" 
-        data-error="{{errorMessage}}"> 
+    <div class="{{ styles.root__body}}" > 
 
-        <input  class="{{> className}}__input" 
-            type="{{#if inputType}}{{inputType}}{{else}}text{{/if}}"
-            placeholder=" " autocomplete="off"
+        {{{components_simpleInput 
+            attachName = "input"
+            type = type
+            value = value
+            name = name
+            parentClassName = styles.root
+            [event:blur] = onBlurInput
+            [event:focus] = onFocusInput
+        }}}
 
-            value="{{lookup item key}}" 
-
-
-            name="{{key}}">
-
-        <label class="{{> className}}__label">
+        <label class="{{ styles.root__label}}">
             {{label}}
         </label>
 
     </div>
+    
+    {{{components_simpleError attachName="error" error=error }}}
 
 </div>

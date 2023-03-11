@@ -1,0 +1,14 @@
+
+{{#*inline "addedClassName" ~}}
+    {{~#unless noMarginTop}} {{ styles.root--with-margin-top }} {{~/unless~}}
+    {{~#if addeClassName}} {{addeClassName}}{{~/if~}}   
+{{~/inline}}
+
+
+<div class="{{ styles.root }} {{> addedClassName}}">
+
+    <div class="{{ styles.root__content}}" >
+        <div data-content></div>
+    </div>
+
+</div>

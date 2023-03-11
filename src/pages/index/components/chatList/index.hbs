@@ -1,22 +1,23 @@
-{{#*inline "className"}}chat-list{{/inline}}
 
-{{#> components/pane/index addeClassName='chat-list' h100=1 }}
-    <div class="{{> className}}__header">
-       <div class="{{> className}}__header__label">
+<div class="{{styles.root}}">
+
+    <div class="{{ styles.root__header }}">
+       <div class="{{ styles.root__header__label }}">
             Чаты
        </div> 
        <div>
-            {{> components/textButton/index label="Найти чат" type="button" }}
+            {{{components_textButton label="Найти чат" [event:click]=openFindChat }}}
         </div>
     </div>
 
-    <div class="{{> className}}__list">
+    <div class="{{ styles.root__list }}">
 
-        <ul class="people_list">
-        {{#each this.item.chats}}
-            {{> pages/index/components/chatItem/index item=this }}
+        <ul >
+        {{#each item.chats }} <!--item.chats-->
+            {{{pages_index_components_chatItem item=this}}}
         {{/each}}
         </ul>
 
     </div>
-{{/components/pane/index }}
+
+</div>

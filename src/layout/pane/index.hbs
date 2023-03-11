@@ -1,0 +1,11 @@
+
+{{#*inline "addedClassName" ~}}
+    {{~#if secBackColor}} {{ styles.root }}--second-back-color{{~/if~}}
+    {{~#unless noBorder}} {{ styles.root--with-border }} {{~/unless~}}
+    {{~#if addeClassName}} {{addeClassName}}{{~/if~}}   
+{{~/inline}}
+
+
+<div class="{{ styles.root }} {{> addedClassName}}">
+    <div data-content></div>
+</div>

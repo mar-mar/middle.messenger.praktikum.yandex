@@ -1,0 +1,21 @@
+<div class="{{ styles.root }}">
+    
+    <div class="{{ styles.root__underlay}}">
+
+        <div class="{{ styles.root__main }}">
+            <header class="{{ styles.root__header }}">
+                <h3 class="{{ styles.root__header__header }}">{{title}}</h3>
+            </header>
+
+            <div class="{{ styles.root__body }}">
+                <div data-content></div>
+            </div>
+
+            {{#layout_centerPane }}
+                {{{components_textButton label="Закрыть" [event:click]=hide }}}
+            {{/layout_centerPane}}
+        </div>
+
+    </div>
+
+</div>

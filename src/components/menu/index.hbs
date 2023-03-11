@@ -1,0 +1,5 @@
+<div class="{{ styles.root }}">
+    {{#each this.memuItems }} <!--item.chats-->
+        {{{ components_menuItem label=this.label [event:click] = click }}}
+    {{/each}}
+</div>

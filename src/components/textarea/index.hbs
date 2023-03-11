@@ -1,12 +1,14 @@
-{{#*inline "className"}}textarea{{/inline}}
+<div >
 
-<div class="{{> className}}">
-
-    <textarea  class="{{> className}}__textarea" 
-            type="{{inputType}}"
-            placeholder="{{label}}" autocomplete="off"
-            value="{{value}}" 
-            name="{{name}}"
-             ></textarea>
+    {{{components_simpleTextarea
+        attachName = "input"
+        label = label
+        value = value
+        name = name
+        [event:blur] = onBlurInput
+        [event:focus] = onFocusInput
+    }}}
+    
+    {{{components_simpleError attachName="error" error=error }}}
 
 </div>

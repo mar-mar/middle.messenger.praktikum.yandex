@@ -1,0 +1,15 @@
+@import url("src/style/variable.pcss");
+@import url("src/style/mixin.pcss");
+
+.root {
+    display: flex;
+    flex-direction: column;
+
+    &--second-back-color {
+        background: var(--second-back-color);
+    }
+
+    &--with-border {
+        @mixin border-gray;
+    }
+}

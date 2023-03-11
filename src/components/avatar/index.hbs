@@ -1,21 +1,22 @@
-{{#*inline "className"}}avatar{{/inline}}
+
 {{#*inline "addedClassName" ~}}
-    {{~#if diameter}} {{> className}}--{{diameter}}{{~/if~}} 
+    {{~#if diameter}} {{ styles.root }}--{{diameter}} {{~/if~}} 
+    {{~#if clickLabel}} {{ styles.root--clickable}} {{~/if~}} 
 {{~/inline}}
 
-<div class="{{> className}} {{> addedClassName}}"
-    {{#if gotoPageName}} onClick="gotoPage('{{gotoPageName}}')" {{/if}}
-    >
+<div class="{{ styles.root }} {{> addedClassName}}" >
      
     {{#if imageUrl}}
-        <img class="{{> className}}__img" src = "{{imageUrl}}"  
+        <img class="{{ styles.root__img }}" src = "{{imageUrl}}"  
             alt="Аватарка {{avatarOwner}}"></img>
     {{else}}
-        <div class="{{> className}}__empty-image" 
+        <div class="{{ styles.root__empty-image }}" 
             role="img" aria-label="Аватарка {{avatarOwner}}"></div>
     {{/if}} 
 
-    {{#if gotoPageName}}
-        <div class="{{> className}}__hover-label">{{clickLabel}}</div>
+    {{#if clickLabel}}
+        <div class="{{ styles.root__hover-block }}">
+            <div class="{{ styles.root__hover-block__label }}">{{clickLabel}}</div>
+        </div>
     {{/if}}
 </div>

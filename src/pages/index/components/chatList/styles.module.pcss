@@ -1,0 +1,19 @@
+.root {
+    display: block;
+
+    &__header {
+        display: flex;
+        flex-direction: row;
+        padding: var(--micro-offset); 
+    }
+    
+    &__header__label{
+        color: var(--grey-font-color);
+        flex-grow: 1;
+    }
+
+    &__list {
+        border-top: var(--normal-border-size) solid var(--border-color);
+        flex-grow: 1;
+    }
+}

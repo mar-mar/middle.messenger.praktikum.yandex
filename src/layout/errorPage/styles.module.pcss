@@ -1,0 +1,20 @@
+@import url("src/style/mixin.pcss");
+@import url("src/style/variable.pcss");
+
+.root {
+    @mixin center-position;
+
+    &__wrapper {
+        @mixin center-position-wrapper;
+
+        height: 100%;
+    }
+
+    &__message {
+        font-size: var(--h2-font-size);
+    }
+
+    &__back {
+        margin-top: var(--primary-offset);
+    }
+}

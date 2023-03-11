@@ -4,11 +4,15 @@
         "root": "",
         "path": ""
       },
+      
+      "postcss-sorting": true,
+
       "postcss-nested": true,
       "postcss-mixins": true,
       "postcss-custom-properties": {
         "preserve": false
       },
-      "postcss-simple-vars": true
+      "postcss-simple-vars": true,
+      "postcss-safe-parser": false
     }
 }

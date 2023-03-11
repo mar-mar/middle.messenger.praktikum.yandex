@@ -1,19 +1,29 @@
+<div class="{{styles.root}}">
+    {{#layout_pageDialog
+    title="Ваш профиль"
+    }}
 
-{{#> layout/page/index }}
+        {{{pages_profile_components_profileBody item=item 
+            updatePassword=updatePassword 
+            updateAvatar=updateAvatar 
+            logoff=logoff
+            execute=goIndex
+            }}}
 
-   {{#> layout/pageDialog/index 
-         title="Ваш профиль" 
-         item=this.profile }}
+        {{#layout_centerPane }}
+        {{{components_textButton label="Назад к чатам" [event:click]=goIndex }}}
+        {{/layout_centerPane }}
 
-      {{#*inline "page_dialog_content"}}
-         {{> pages/profile/components/profileBody/index }}
+    {{/layout_pageDialog}}
 
-         {{#> components/centerPane/index horizontalType = "center" verticalType = "center" withMarginTop=1 }}
-            {{> components/textButton/index label="Назад к чатам" gotoPageName="index" }}
-         {{/components/centerPane/index }}
-         
-      {{/inline}}
-   
-   {{/layout/pageDialog/index}}
 
-{{/layout/page/index}}
+    {{#layout_modalDialog attachName="updatePassDialogBody" title="Изменение пароля"  }}
+        {{{pages_profile_modules_updatePasswordDialogBody 
+            execute=ecexuteUpdatePassword  }}}
+    {{/layout_modalDialog}}
+
+    {{#layout_modalDialog attachName="updateAvatarDialogBody" title="Загрузка файла для аватара"  }}
+        {{{pages_profile_modules_updateAvatarDialogBody 
+            execute=ecexuteUpdataAvatar }}}
+    {{/layout_modalDialog}}
+</div>

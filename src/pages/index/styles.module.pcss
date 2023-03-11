@@ -1,0 +1,46 @@
+@import url("src/style/variable.pcss");
+@import url("src/style/mixin.pcss");
+
+.root {
+    display: flex;
+    height: 100%;
+
+    &__chats {
+        flex-grow: 1;
+    }
+
+    &__chat {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+
+        &__messages {
+            flex-grow: 1;
+            overflow: auto;
+        }
+    }
+
+    &__url-for-check {
+        bottom: 10px;
+        left: 10px;
+        position: fixed;
+    }
+
+    & .left-pane {
+        @mixin only-border-right;
+
+        min-width: 250px;
+        overflow: hidden;
+    }
+
+    & .chat-header {
+        @mixin only-border-bottom;
+    }
+
+    & .chat-input {
+        @mixin only-border-top;
+    }
+
+}
+
+

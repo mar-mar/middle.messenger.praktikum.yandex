@@ -1,12 +1,14 @@
-{{#*inline "className"}}chat-profile{{/inline}}
 
-<div class="{{> className}}">
+<div class="{{ styles.root }}">
 
-    {{> components/avatar/index imageUrl=item.avatar diameter='M' 
-        avatarOwner=item.display_name }} 
+    {{{components_avatar imageUrl=item.profile.avatar diameter='M' 
+        avatarOwner=item.profile.display_name }}}
 
-    <h2 class="{{> className}}__header">
-        {{item.display_name}}
+    <h2 class="{{ styles.root }}__header">
+        {{item.profile.display_name}}
     </h2>
+
+    {{{components_textButton label="Меню" iconClass="menu-icon" noLabel=1 
+        [event:click] = openPopupMenu }}}
 
 </div>

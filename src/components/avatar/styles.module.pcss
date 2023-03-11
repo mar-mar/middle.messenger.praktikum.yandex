@@ -1,0 +1,48 @@
+@import url("src/style/mixin.pcss");
+
+.root {
+    @mixin absolute-strech__parent;
+    @mixin border-gray;
+
+    &--L {
+        @mixin avatar 80px, 40px;
+    }
+    
+    &--M {
+        @mixin avatar 40px, 20px;
+    }
+
+    &--S {
+        @mixin avatar 30px, 15px;
+    }
+
+    &__img {
+        @mixin absolute-strech;
+    }
+
+    &__empty-image {
+        @mixin absolute-strech;
+
+        background-image: url("/static/images/emptyAvatar.svg");
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    &__hover-block {
+        @mixin absolute-strech;
+        @mixin center-position-wrapper;
+
+        background: var(--hover-color);
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.15s ease 0s;
+    }
+
+    &__hover-block__label {
+        @mixin center-position;
+    }
+
+    &--clickable:hover > &__hover-block {
+        opacity: 0.8;
+    }
+}

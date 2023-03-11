@@ -1,0 +1,44 @@
+@import url("src/style/variable.pcss");
+@import url("src/style/mixin.pcss");
+
+.root {
+    @mixin absolute-strech;
+
+    display: none;
+
+    &__main {
+        @mixin bordershadow;
+        @mixin center-position;
+
+        display: flex;
+        flex-direction: column;
+        height: fit-content;
+        min-height: 200px;
+        min-width: 200px;
+        padding: var(--second-offset);
+        position: relative;
+        width: fit-content;
+    }
+
+    &__underlay {
+        @mixin absolute-strech;
+
+        background: var(--modal-underlay-back-color);
+        display: flex;
+        z-index: var(--modal-zindex);
+    }
+
+    &__header {
+        font-weight: bold;
+        margin-bottom: var(--second-offset);
+    }
+
+    &__header__header {
+        font-weight: bold;
+    }
+
+    &__body {
+        flex-grow: 1;
+    }
+
+}

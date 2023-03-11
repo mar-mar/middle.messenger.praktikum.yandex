@@ -1,0 +1,39 @@
+@import url("src/style/variable.pcss");
+@import url("src/style/mixin.pcss");
+
+.root {
+    position: relative;
+
+    &--margin {
+        @mixin input-offet;
+    }
+
+    &__simple-input {
+        @mixin absolute-strech;
+
+        background: none;
+        border-bottom: var(--normal-border-size) solid var(--active-color);
+    }
+
+    &__body {
+        @mixin absolute-strech__parent;
+
+        height: 2.5em;
+        line-height: 2.5em;
+    }
+
+    &__label {
+        @mixin absolute-strech;
+
+        color: var(--grey-font-color);
+        pointer-events: none;
+        transition: top 200ms ease-in, font-size 200ms ease-in;
+    }
+
+    &__simple-input:focus ~ &__label,
+    &__simple-input:not(:placeholder-shown)&__simple-input:not(:focus) ~ &__label {
+        font-size: var(--mini-font-size);
+        top: -2em;
+    }
+
+}

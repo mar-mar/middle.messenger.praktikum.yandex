@@ -1,24 +1,27 @@
-{{#*inline "className"}}chat-mes-input{{/inline}}
 
-{{#> components/form/index submitPageName="index" noButtonCont=1 }}
+<div>
+{{#components_form
+    attachName=FORM_ATTACHE_NAME
+    item=item 
+    [event:submit]=onSubmit }}
 
-    {{#*inline "inline_fields"}}
-        <div class="{{> className}}">
+    <div class="{{ styles.root }}">
 
-            <div class="{{> className}}__attach-cont">
-                {{> components/textButton/index label="Прикрепить" type="button" }}
-            </div>
-
-            <div class="{{> className}}__input-cont">
-                {{> components/textarea/index label="Сообщение" inputType="text" name="message" }}
-            </div>
-
-            <div class="{{> className}}__send-cont">
-                {{> components/textButton/index label="Отправить" type="submit" }}
-            </div>
+        <div class="{{ styles.root__attach-cont }}">
+            
+            {{{components_textButton label="Прикрепить" type="button" [event:click]=openPopupAttache 
+                iconClass="attache-icon" noLabel=1 }}}
         </div>
-    {{/inline}}
 
-{{/components/form/index}}
+        <div class="{{ styles.root__input-cont }}">
+            {{{components_textarea label="Сообщение" isValid=validateMessage name="message" }}}
+        </div>
 
+        <div class="{{ styles.root__send-cont }}">
+            {{{components_textButton label="Отправить" type="submit" iconClass="send-icon" noLabel=1 }}}
+        </div>
+    </div>
+
+{{/components_form}}
+</div>
 

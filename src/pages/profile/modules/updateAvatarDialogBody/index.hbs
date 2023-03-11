@@ -1,0 +1,24 @@
+<div class="{{ styles.root }}">
+{{#components_form 
+    attachName=FORM_ATTACHE_NAME
+    [event:submit]=onSubmit }}
+
+    <div>
+        {{#layout_centerPane }}
+            <div class="{{ styles.root__file-name }}" >
+                {{#if fileName}} {{fileName}} {{else}} файл не выбран {{/if}}
+            </div>
+        {{/layout_centerPane}}
+
+        {{#layout_centerPane }}
+            {{{components_fileInput label="Выбрать файл на комьютере" name="file" }}}
+        {{/layout_centerPane}}
+        
+    </div>
+
+    <div class="{{ styles.root__button-cont }}">
+        {{{components_button label="Изменить" type="submit" }}}
+    </div>
+
+{{/components_form}}
+</div>
