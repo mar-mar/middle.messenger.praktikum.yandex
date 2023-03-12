@@ -10,7 +10,9 @@ import { _Block } from "./utils/_Block";
 // без ts-ignore не работает, ts не понимает такие импорты, это фича от parcel (@parcel/resolver-glob)
 // @ts-ignore
 import testData from ".././testData/*.json";
-import Router, { PAGES_PATHS } from "./utils/Router";
+import { PAGES_PATHS } from "./utils/Router";
+import RouterController from "./controllers/RouterController";
+import IndexController from "./controllers/IndexController";
 
 /*const ROUTES: Record<string, typeof _Block > = {
     [PAGES_PATHS.Error404]: Error404Page,
@@ -31,7 +33,7 @@ registerComponents();
 
 
 window.addEventListener('DOMContentLoaded', async () => {
-    Router
+    RouterController
     .use(PAGES_PATHS.Error404, Error404Page)
     .use(PAGES_PATHS.Error500, Error500Page)
     .use(PAGES_PATHS.Login, LoginPage)
@@ -39,6 +41,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     .use(PAGES_PATHS.Sign, SignPage)
     .use(PAGES_PATHS.Index, IndexPage);
 
-    Router.start();
+    IndexController.start();
 });
 

@@ -26,11 +26,12 @@ export type TemplateOptions = {
     [index: string]: any 
 };
 
-export type Props<P extends Record<string, unknown> = any> = { events?: Events, attachName?: string, render?: boolean; item?: any } & P;
+export type Props<P extends Record<string, any> = any> = { events?: Events, attachName?: string, render?: boolean; item?: any } & P;
+// export type Props<P extends Record<string, any> = any> = { events?: Events, attachName?: string, render?: boolean; item?: any } & P;
 
 
 // базовый класс для компонентов
-export class _Block<T extends Record<string, unknown> = any> {
+export class _Block<T extends Record<string, any> = any> {
 
     private element: HTMLElement | null = null;
     private children: Children = {};
@@ -57,7 +58,7 @@ export class _Block<T extends Record<string, unknown> = any> {
     protected componentDidMount(/*oldProps*/): void { };
 
     // Может переопределять пользователь, необязательно трогать
-    protected componentDidUpdate(_oldProps: Props<T>, _newProps: Props<T>): boolean { return true; };
+    protected componentDidUpdate(_oldProps: Partial<T>, _newProps: Partial<T>): boolean { return true; };
 
     protected getCompileOptions(): CompileOptions { return {}; };
 
@@ -127,7 +128,7 @@ export class _Block<T extends Record<string, unknown> = any> {
     }
 
     //CDU
-    private onComponentDidUpdate(oldProps: Props<T>, newProps: Props<T>): void {
+    private onComponentDidUpdate(oldProps: Partial<T>, newProps: Partial<T>): void {
         if (this.componentDidUpdate(oldProps, newProps)) {
             this.eventBus.emit(EVENTS.FLOW_RENDER);
         }
@@ -267,7 +268,7 @@ export class _Block<T extends Record<string, unknown> = any> {
         return this.props;
     }
 
-    public setProps(nextProps: Partial<Props<T>>): void {
+    public setProps(nextProps: Partial<T>): void {
         if (!nextProps) {
             return;
         }

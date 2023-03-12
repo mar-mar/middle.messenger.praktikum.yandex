@@ -16,39 +16,47 @@ type Options = {
 }
 
 export default class HTTPTransport {
+    static API_URL = 'https://ya-praktikum.tech/api/v2/'; //config
     private static defaultTimeout = 5000;
     private static defaultMethod = METHODS.GET;
- 
-    public get(url: string, options: Options = {}): Promise<XMLHttpRequest> {
+    protected endpoint: string;
 
-        return this.request(url, { ...options, method: METHODS.GET });
+    constructor(endpoint: string) {
+        this.endpoint = `${HTTPTransport.API_URL}${endpoint}`;
     }
 
-    public put(url: string, options: Options = {}): Promise<XMLHttpRequest> {
+    public get<R>(url: string, options: Options = {}): Promise<R> {
 
-        return this.request(url, { ...options, method: METHODS.PUT });
+        return this.request<R>(url, { ...options, method: METHODS.GET });
     }
 
-    public post(url: string, options: Options = {}): Promise<XMLHttpRequest> {
+    public put<R>(url: string, options: Options = {}): Promise<R> {
 
-        return this.request(url, { ...options, method: METHODS.POST });
+        return this.request<R>(url, { ...options, method: METHODS.PUT });
     }
 
-    public delete(url: string, options: Options = {}): Promise<XMLHttpRequest> {
+    public post<R>(url: string, options: Options = {}): Promise<R> {
 
-        return this.request(url, { ...options, method: METHODS.DELETE });
+        return this.request<R>(url, { ...options, method: METHODS.POST });
+    }
+
+    public delete<R>(url: string, options: Options = {}): Promise<R> {
+
+        return this.request<R>(url, { ...options, method: METHODS.DELETE });
     }
 
 
-    private request(url: string, options: Options): Promise<XMLHttpRequest>  {
-        return this._requestReq(0, options.retries, url, options);
+    private request<R>(url: string, options: Options): Promise<R> {
+        return this._requestReq<R>(0, options.retries, url, options);
     }
 
-    private _request(url: string, options: Options): Promise<XMLHttpRequest>  {
+    private _request<R>(url: string, options: Options): Promise<R> {
         let data = options.data;
         const headers = options.headers || {};
         const method = options.method || HTTPTransport.defaultMethod;
         const timeout = options.timeout || HTTPTransport.defaultTimeout;
+
+        url = this.endpoint + url;
 
         return new Promise((resolve, reject) => {
 
@@ -67,30 +75,42 @@ export default class HTTPTransport {
             });
             xhr.timeout = timeout;
 
-            xhr.onloadend = () => resolve(xhr);
-            xhr.ontimeout = reject;
-            xhr.onerror = reject;
-            xhr.onabort = reject;
+            // обработчики
+            xhr.onreadystatechange = () => {
 
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status < 400) {
+                        resolve(xhr.response);
+                    } else {
+                        reject(xhr.response);
+                    }
+                }
+            };
+
+            xhr.onabort = () => reject({ reason: 'abort' });
+            xhr.onerror = () => reject({ reason: 'network error' });
+            xhr.ontimeout = () => reject({ reason: 'timeout' });
+
+            // отправка
             if (withData) xhr.send(JSON.stringify(data));
             else xhr.send();
         })
     };
 
-    private async _requestReq(
-        retryNumber: number, 
-        retries: number = 1, 
-        ...args: [url: string, options: Options]): Promise<XMLHttpRequest> {
+    private async _requestReq<R>(
+        retryNumber: number,
+        retries: number = 1,
+        ...args: [url: string, options: Options]): Promise<R> {
 
         let result;
 
         try {
-            result = await this._request(...args);
+            result = await this._request<R>(...args);
         }
         catch (exp) {
             retryNumber++;
             if (retryNumber > retries) throw new Error("Не удалось загрузить. " + exp);
-            result = await this._requestReq(retryNumber, retries, ...args);
+            result = await this._requestReq<R>(retryNumber, retries, ...args);
         }
 
         return result;
@@ -101,7 +121,7 @@ export default class HTTPTransport {
         let result = "";
         let symb = "?";
         Object.entries(data).forEach(([key, value]) => {
-    
+
             result += `${symb}${key}=${value
                 }`;
             symb = "&";

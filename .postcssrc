@@ -2,9 +2,10 @@
   "plugins": {
       "postcss-import": {
         "root": "",
-        "path": ""
+        "path": "",
+        "skipDuplicates": true
       },
-      
+      "postcss-discard-duplicates": true,
       "postcss-sorting": true,
 
       "postcss-nested": true,

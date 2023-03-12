@@ -1,4 +1,5 @@
-import Router, { PAGES_PATHS } from "./Router";
+import RouterController from "../controllers/RouterController";
+import { PAGES_PATHS } from "./Router";
 import { _Block } from "./_Block";
 
 export const REGISTERED_ROUTE: Record<string, typeof _Block> = {};
@@ -10,8 +11,7 @@ export {PAGES_PATHS as PAGES};
 
 
 export default function routeUse(route: string): void {
-
-    Router.go(route);
+    RouterController.go(route);
 //const root = document.querySelector("#app")!;
    // const PageClass = REGISTERED_ROUTE[route];
     //const page = new PageClass({ item: REGISTERED_TESTDATA[route] });

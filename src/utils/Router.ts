@@ -99,14 +99,15 @@ class Router {
     }
  
     // то же по сути инициализация
-    public start() {
+    public start(pathname: string) {
         window.onpopstate = (event: PopStateEvent) => {
             const target = event.currentTarget as Window;
 
             this.onChangeRoute(target.location.pathname);
         }
 
-        this.onChangeRoute(window.location.pathname);
+        //window.location.pathname
+        this.onChangeRoute(pathname);
     }
 
     private onChangeRoute(pathname: string) {
