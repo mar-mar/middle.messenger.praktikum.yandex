@@ -15,7 +15,7 @@ enum FORM_EVENTS {
 
 const FORM_ATTACHE_NAME: string = "form";
 
-export type FormValues = Record<string, unknown> | null;
+export type FormValues = Record<string, any> | null;
 
 
 export class _BlockWithForm<T extends WithFormProps = any> extends _Block<T> {
@@ -44,7 +44,7 @@ export class _BlockWithForm<T extends WithFormProps = any> extends _Block<T> {
         if (!form.getError()) {
             const values = form.getValues();
             log(form.getValues());
-            this.getEventBus().emit(FORM_EVENTS.ECEXUTE, { values });
+            this.getEventBus().emit(FORM_EVENTS.ECEXUTE, values);
         }
     }
 
@@ -58,9 +58,9 @@ export class _BlockWithForm<T extends WithFormProps = any> extends _Block<T> {
     }
     
     //
-    protected execute(_values: FormValues) { 
+    protected execute(values: FormValues): void { 
         const execute = this.getProps().execute;
-        if (isFunction(execute)) execute();
+        if (isFunction(execute)) execute(values);
     }
 
 }

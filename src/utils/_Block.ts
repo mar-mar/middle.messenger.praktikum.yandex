@@ -255,7 +255,7 @@ export class _Block<T extends Record<string, any> = any> {
         return this.children[attacheName];
     }
 
-    protected getChildByAttacheNameOne(attacheName: string): _Block | null {
+    public getChildByAttacheNameOne(attacheName: string): _Block | null {
         const children = this.getChildByAttacheName(attacheName);
         return Array.isArray(children) ? children[0] : children;
     }

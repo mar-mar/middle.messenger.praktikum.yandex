@@ -2,8 +2,12 @@
 import router, { PAGES_PATHS } from '../utils/Router';
 import API, { AuthAPI, SigninData, SignupData } from "../api/AuthAPI";
 import store from "../utils/Store";
-//import MessagesController from './MessagesController';
+import { errorLog } from "../utils/logger";
 
+//import MessagesController from './MessagesController';
+//test-20230312-mar1 12345678D
+//test-20230312-mar2 12345678D
+//withCredentials
 export class AuthController {
     private readonly api: AuthAPI;
 
@@ -13,6 +17,8 @@ export class AuthController {
 
     // вход
     async signin(data: SigninData) {
+        debugger;
+
         try {
             await this.api.signin(data);
 
@@ -20,7 +26,8 @@ export class AuthController {
 
             router.go(PAGES_PATHS.Profile);
         } catch (e: any) {
-            console.error(e);
+            errorLog(e);
+            throw e;
         }
     }
 
@@ -33,7 +40,7 @@ export class AuthController {
 
             router.go(PAGES_PATHS.Profile);
         } catch (e: any) {
-            console.error(e.message);
+            errorLog(e);
         }
     }
 
@@ -51,7 +58,7 @@ export class AuthController {
 
             router.go(PAGES_PATHS.Index);
         } catch (e: any) {
-            console.error(e.message);
+            errorLog(e);
         }
     }
 }

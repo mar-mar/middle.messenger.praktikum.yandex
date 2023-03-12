@@ -7,6 +7,11 @@ export enum METHODS {
     DELETE = 'DELETE'
 };
 
+export enum CONTENT_TYPE {
+    JSON = 'json',
+    FORMDATA = 'formdata'
+};
+
 type Options = {
     headers?: Record<string, string>;
     timeout?: number;
@@ -16,13 +21,13 @@ type Options = {
 }
 
 export default class HTTPTransport {
-    static API_URL = 'https://ya-praktikum.tech/api/v2/'; //config
+    static API_URL = 'https://ya-praktikum.tech/api/v2'; //config
     private static defaultTimeout = 5000;
     private static defaultMethod = METHODS.GET;
     protected endpoint: string;
 
-    constructor(endpoint: string) {
-        this.endpoint = `${HTTPTransport.API_URL}${endpoint}`;
+    constructor(endpoint: string, protected readonly contentType: CONTENT_TYPE = CONTENT_TYPE.JSON) {
+        this.endpoint = `${HTTPTransport.API_URL}/${endpoint}/`;
     }
 
     public get<R>(url: string, options: Options = {}): Promise<R> {
@@ -47,7 +52,7 @@ export default class HTTPTransport {
 
 
     private request<R>(url: string, options: Options): Promise<R> {
-        return this._requestReq<R>(0, options.retries, url, options);
+        return this._requestReq<R>(1, options.retries, url, options);
     }
 
     private _request<R>(url: string, options: Options): Promise<R> {
@@ -92,8 +97,7 @@ export default class HTTPTransport {
             xhr.ontimeout = () => reject({ reason: 'timeout' });
 
             // отправка
-            if (withData) xhr.send(JSON.stringify(data));
-            else xhr.send();
+            this.send(xhr, withData ? data : null)
         })
     };
 
@@ -108,8 +112,9 @@ export default class HTTPTransport {
             result = await this._request<R>(...args);
         }
         catch (exp) {
-            retryNumber++;
-            if (retryNumber > retries) throw new Error("Не удалось загрузить. " + exp);
+            if (retryNumber >= retries) throw new Error("Не удалось загрузить. " + exp);
+
+            retryNumber += 1;
             result = await this._requestReq<R>(retryNumber, retries, ...args);
         }
 
@@ -127,6 +132,21 @@ export default class HTTPTransport {
             symb = "&";
         });
         return result;
+    }
+
+    private send(xhr: XMLHttpRequest, data: any): void {
+        if (!data) {
+            xhr.send();
+            return;
+        } 
+
+        if (CONTENT_TYPE.JSON === this.contentType) {
+            xhr.setRequestHeader('content-type', 'application/json');
+            xhr.send(JSON.stringify(data));
+        }
+        else {
+            xhr.send(data);
+        }
     }
 }
 
