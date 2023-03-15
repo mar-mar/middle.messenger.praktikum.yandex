@@ -24,9 +24,13 @@ export default class HTTPTransport {
     static API_URL = 'https://ya-praktikum.tech/api/v2'; //config
     private static defaultTimeout = 5000;
     private static defaultMethod = METHODS.GET;
+    private static withCredentials = true;
     protected endpoint: string;
 
-    constructor(endpoint: string, protected readonly contentType: CONTENT_TYPE = CONTENT_TYPE.JSON) {
+    constructor(endpoint: string, 
+        protected readonly contentType: CONTENT_TYPE = CONTENT_TYPE.JSON, 
+        ) {
+
         this.endpoint = `${HTTPTransport.API_URL}/${endpoint}/`;
     }
 
@@ -79,13 +83,19 @@ export default class HTTPTransport {
                 xhr.setRequestHeader(header, value);
             });
             xhr.timeout = timeout;
+            xhr.withCredentials = HTTPTransport.withCredentials;
 
             // обработчики
             xhr.onreadystatechange = () => {
 
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status < 400) {
-                        resolve(xhr.response);
+                        try {
+                            resolve(JSON.parse(xhr.response));
+                        }
+                        catch(exp) {
+                            reject("JSON.parse error");
+                        }
                     } else {
                         reject(xhr.response);
                     }

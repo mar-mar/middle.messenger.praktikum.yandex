@@ -3,10 +3,10 @@ import { _Block } from "./_Block";
 export enum PAGES_PATHS {
     Error404 = "/error404",
     Error500 = "/error500",
-    Login = "/login",
-    Profile = "/profile",
-    Sign = "/sign",
-    Index = "/"
+    Login = "/",
+    Profile = "/settings",
+    Sign = "/sign-up",
+    Index = "/messenger"
 }
 
 function isEqual(lhs: string, rhs: string): boolean {
@@ -35,7 +35,9 @@ class Route {
     }
 
     leave() {
-        // UnMount page.dispatchComponentDidUnMount(); 
+        if (!this.block) return;
+
+        this.block.dispatchComponentDidUnMount();
         this.block = null;
     }
 
@@ -49,7 +51,6 @@ class Route {
         }
         render(this.query, this.block);
         this.block.dispatchComponentDidMount();
-        
     }
 }
 

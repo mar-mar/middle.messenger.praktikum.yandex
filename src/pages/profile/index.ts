@@ -1,10 +1,11 @@
 import routeUse, { PAGES } from "../../utils/route";
+import { withStore } from "../../utils/Store";
 import { _Block } from "../../utils/_Block";
 import template from "./index.hbs";
 import * as styles from "./styles.module.pcss";
 
 
-export default class ProfilePage  extends _Block {
+class ProfilePageBase  extends _Block {
 
     protected getCompileOptions() {
         return { 
@@ -20,3 +21,7 @@ export default class ProfilePage  extends _Block {
     }
 
 }
+
+const withUser = withStore((state) => ({ ...state.user }))
+const ProfilePage = withUser(ProfilePageBase);
+export default ProfilePage;

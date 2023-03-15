@@ -24,7 +24,7 @@ export default class Input extends _ValidatedBlock<InputProps> {
         };
     }
 
-    protected getValue(): any {
+    public getValue(): any {
         const inputBlock = this.getChildByAttacheNameOne("input");
         if (!inputBlock) return null;
 

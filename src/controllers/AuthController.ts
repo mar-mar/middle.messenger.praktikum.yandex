@@ -5,8 +5,9 @@ import store from "../utils/Store";
 import { errorLog } from "../utils/logger";
 
 //import MessagesController from './MessagesController';
-//test-20230312-mar1 12345678D
+//test-20230312-mar1@yandex.ru test-20230312-mar1 12345678D Имя Фамилия
 //test-20230312-mar2 12345678D
+// 
 //withCredentials
 export class AuthController {
     private readonly api: AuthAPI;

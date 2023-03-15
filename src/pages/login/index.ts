@@ -1,4 +1,4 @@
-import { SignupData } from "../../api/AuthAPI";
+import { SigninData } from "../../api/AuthAPI";
 import AuthController from "../../controllers/AuthController";
 import routeUse, { PAGES } from "../../utils/route";
 import { _Block } from "../../utils/_Block";
@@ -22,7 +22,7 @@ export default class LoginPage extends _Block {
 
         let error;
         try {
-            await AuthController.signin(values as SignupData);
+            await AuthController.signin(values as SigninData);
         }
         catch(exp) {
             error = exp;

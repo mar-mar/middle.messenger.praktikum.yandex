@@ -27,11 +27,40 @@ export function isArray(value: unknown): value is Array<any> {
     return Array.isArray(value);
 }
 
-export function isObject(value: unknown): value is object {
-    return  (
-        typeof value === 'object' &&
-        !Array.isArray(value) &&
-        value !== null
-    ) ;
+type PlainObject<T = unknown> = {
+    [k in string | symbol]: T;
+};
+
+//isPlainObject
+export function isObject(value: unknown): value is PlainObject {
+    return typeof value === 'object'
+    && value !== null
+    && value.constructor === Object
+    && Object.prototype.toString.call(value) === '[object Object]';
 }
 
+export function isDate(value: unknown): value is Date {
+    return value instanceof Date;
+}
+
+export function isSet<T>(value: unknown): value is Set<T> {
+    return value instanceof Set;
+}
+
+export function isMap<T, T1>(value: unknown): value is Map<T, T1> {
+    return value instanceof Map;
+}
+
+export function isSimpleType(value: unknown): boolean {
+        // Handle:
+        // * null
+        // typeof value !== "object" ->
+        // * undefined
+        // * boolean
+        // * number
+        // * string
+        // * symbol
+        // * function
+
+    return (value === null || typeof value !== "object") && !isFunction(value);
+}

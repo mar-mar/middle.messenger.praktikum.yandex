@@ -5,6 +5,7 @@ import { isArray } from "./typeCheck";
 export enum EVENTS {
     INIT = "init",
     FLOW_CDM = "flow:component-did-mount",
+    FLOW_CDUM = "flow:component-did-un-mount",
     FLOW_CDU = "flow:component-did-update",
     FLOW_RENDER = "flow:render",
     HIDE = "hide",
@@ -26,7 +27,9 @@ export type TemplateOptions = {
     [index: string]: any 
 };
 
-export type Props<P extends Record<string, any> = any> = { events?: Events, attachName?: string, render?: boolean; item?: any } & P;
+
+export type Props<P extends Record<string, any> = any> = { events?: Events, attachName?: string, render?: boolean; } & P;
+
 // export type Props<P extends Record<string, any> = any> = { events?: Events, attachName?: string, render?: boolean; item?: any } & P;
 
 
@@ -55,7 +58,10 @@ export class _Block<T extends Record<string, any> = any> {
     protected init(): void { };
 
     // Может переопределять пользователь, необязательно трогать
+    // после добавления в документ
     protected componentDidMount(/*oldProps*/): void { };
+    // после удаления из документа
+    protected componentDidUnMount(/*oldProps*/): void { };
 
     // Может переопределять пользователь, необязательно трогать
     protected componentDidUpdate(_oldProps: Partial<T>, _newProps: Partial<T>): boolean { return true; };
@@ -72,6 +78,8 @@ export class _Block<T extends Record<string, any> = any> {
     protected registerLifeCycleEvents(eventBus: EventBus): void {
         eventBus.on(EVENTS.INIT, this.onInit.bind(this));
         eventBus.on(EVENTS.FLOW_CDM, this.onComponentDidMount.bind(this));
+        eventBus.on(EVENTS.FLOW_CDUM, this.onComponentDidUnMount.bind(this));
+        
         eventBus.on(EVENTS.FLOW_CDU, this.onComponentDidUpdate.bind(this));
         eventBus.on(EVENTS.FLOW_RENDER, this.onRender.bind(this));
         eventBus.on(EVENTS.HIDE, this.afterHide.bind(this));
@@ -126,6 +134,20 @@ export class _Block<T extends Record<string, any> = any> {
     private onComponentDidMount(): void {
         this.componentDidMount();
     }
+
+    //CD-UM
+    public dispatchComponentDidUnMount(): void {
+        this.eventBus.emit(EVENTS.FLOW_CDUM);
+
+        this.forEachChildren((child, _) => {
+            child.dispatchComponentDidUnMount();
+        });
+    }
+
+    //CD-UM
+    private onComponentDidUnMount(): void {
+        this.componentDidUnMount();
+    }   
 
     //CDU
     private onComponentDidUpdate(oldProps: Partial<T>, newProps: Partial<T>): void {

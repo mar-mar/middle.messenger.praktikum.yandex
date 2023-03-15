@@ -31,6 +31,8 @@ export class Store extends EventBus {
     }
 }
 
+const isEqual = function(_previousState: any, _newState: any): boolean { return false; };
+
 const store = new Store();
 
 // @ts-ignore
@@ -38,22 +40,24 @@ window.store = store;
 
 export function withStore<SP extends RecordStrAny = any>(mapStateToProps: (state: State) => SP) {
 
-    return function<P extends RecordStrAny = any>(Component: typeof _Block<SP & P>) {
+    return function<P extends RecordStrAny = any>(Component: typeof _Block<{ item: SP } & P>) {
 
         return class WithStore extends Component {
  
             constructor(props: Omit<P, keyof SP>) {
                 let previousState = mapStateToProps(store.getState());
 
-                super({ ...(props as P), ...previousState });
+                super({ ...(props as P), item: { ...previousState } });
 
                 // store Updated
                 store.on(StoreEvents.Updated, () => {
-                    const stateProps = mapStateToProps(store.getState());
+                    const newState = mapStateToProps(store.getState());
 
-                    previousState = stateProps;
-
-                    this.setProps({ ...(stateProps as Partial<SP & P>) });
+                    if (!isEqual(previousState, newState)) {
+                        this.setProps({ item: { ...newState } } as Partial<{ item: SP; } & P>);
+                    }
+                    
+                    previousState = newState;
                 });
 
             }

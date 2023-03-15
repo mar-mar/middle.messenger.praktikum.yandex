@@ -1,9 +1,12 @@
 <div class="{{styles.root}}">
     {{#layout_pageDialog 
+        attachName="pane"
         title="Ваш профиль" }}
 
         {{{pages_sign_components_signBody item=item 
-            execute = goIndex }}}
+            execute = executeSign }}}
+
+        {{{components_simpleError attachName="error" error=error }}}
 
         {{#layout_centerPane  }}
         {{{components_textButton label="Перейти к авторизации" [event:click]=goLogin }}}
