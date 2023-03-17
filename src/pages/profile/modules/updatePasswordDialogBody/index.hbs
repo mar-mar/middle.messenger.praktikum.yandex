@@ -7,10 +7,11 @@
         {{{components_input label="Пароль" name="password" isValid=validatePassword }}}
         {{{components_input label="Повторите пароль" name="password" isValid=validatePassword }}}
     </div>
-
+    
     <div class="{{ styles.root }}__button-cont">
         {{{components_button label="Изменить" type="submit" }}}
     </div>
 
+    {{{components_simpleError attachName="error" error=error }}}
 {{/components_form}}
 </div>

@@ -10,6 +10,7 @@ type SimpleInputProps = {
     events?: {
         focus?: () => void;
         blur?: () => void;
+        change?: ()=> void;
     };
 }
 
@@ -18,6 +19,7 @@ export default class SimpleInput extends _Block<SimpleInputProps> {
 
     protected getCompileOptions() {
         return { 
+            ...super.getCompileOptions(),
             template
         };
     }

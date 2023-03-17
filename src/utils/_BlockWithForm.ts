@@ -18,7 +18,7 @@ const FORM_ATTACHE_NAME: string = "form";
 export type FormValues = Record<string, any> | null;
 
 
-export class _BlockWithForm<T extends WithFormProps = any> extends _Block<T> {
+export class _BlockWithForm<D, T extends RecordStrAny = any> extends _Block<WithFormProps & T & { item: D }> {
 
     protected getCompileOptions() {
         return {
@@ -42,7 +42,7 @@ export class _BlockWithForm<T extends WithFormProps = any> extends _Block<T> {
         form.validate();
 
         if (!form.getError()) {
-            const values = form.getValues();
+            const values = form.getValues() as D;
             log(form.getValues());
             this.getEventBus().emit(FORM_EVENTS.ECEXUTE, values);
         }
@@ -58,7 +58,7 @@ export class _BlockWithForm<T extends WithFormProps = any> extends _Block<T> {
     }
     
     //
-    protected execute(values: FormValues): void { 
+    protected execute(values: D): void { 
         const execute = this.getProps().execute;
         if (isFunction(execute)) execute(values);
     }

@@ -27,7 +27,7 @@ export function isArray(value: unknown): value is Array<any> {
     return Array.isArray(value);
 }
 
-type PlainObject<T = unknown> = {
+type PlainObject<T = any> = {
     [k in string | symbol]: T;
 };
 
@@ -49,6 +49,10 @@ export function isSet<T>(value: unknown): value is Set<T> {
 
 export function isMap<T, T1>(value: unknown): value is Map<T, T1> {
     return value instanceof Map;
+}
+
+export function isBlob(value: unknown): value is Blob {
+    return value instanceof Blob;
 }
 
 export function isSimpleType(value: unknown): boolean {

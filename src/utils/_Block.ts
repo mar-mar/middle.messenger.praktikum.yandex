@@ -183,7 +183,10 @@ export class _Block<T extends Record<string, any> = any> {
         const element = this.element;
         if (!this.element || !events) return;
 
-        Object.keys(events).forEach(eventName => {            
+        
+        Object.keys(events).forEach(eventName => {       
+            console.info(element, eventName);
+                 
             if (value) {
                 element?.addEventListener(eventName, events[eventName]);
             }
@@ -277,10 +280,25 @@ export class _Block<T extends Record<string, any> = any> {
         return this.children[attacheName];
     }
 
-    public getChildByAttacheNameOne(attacheName: string): _Block | null {
+    public getChildByAttacheNameOne(attacheName: string | string[]): _Block | null {
+
+        let child: _Block | null = this;
+        attacheName = isArray(attacheName) ? attacheName : [attacheName];
+
+        const isOk = attacheName.every(name => {
+            child = child?._getChildByAttacheNameOne(name) || null;
+            return child;
+        });
+        
+        return isOk ? child : null;
+    }
+
+    private _getChildByAttacheNameOne(attacheName: string): _Block | null {
+
         const children = this.getChildByAttacheName(attacheName);
         return Array.isArray(children) ? children[0] : children;
     }
+
 
     protected getEventBus(): EventBus {
         return this.eventBus;

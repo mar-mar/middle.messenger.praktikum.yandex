@@ -4,21 +4,23 @@
     [event:submit]=onSubmit }}
 
     <div>
-        {{#layout_centerPane }}
+        {{#layout_centerPane attachName="avatarFileNamePane" }}
             <div class="{{ styles.root__file-name }}" >
-                {{#if fileName}} {{fileName}} {{else}} файл не выбран {{/if}}
+                {{{components_simpleText attachName="avatarFileName" text=avatarFileName }}}
             </div>
         {{/layout_centerPane}}
 
         {{#layout_centerPane }}
-            {{{components_fileInput label="Выбрать файл на комьютере" name="file" }}}
+            {{{components_fileInput label="Выбрать файл на комьютере" name="avatar" [event:change]=changeFile }}}
         {{/layout_centerPane}}
         
     </div>
-
+    
     <div class="{{ styles.root__button-cont }}">
         {{{components_button label="Изменить" type="submit" }}}
     </div>
+
+    {{{components_simpleError attachName="error" error=error }}}
 
 {{/components_form}}
 </div>

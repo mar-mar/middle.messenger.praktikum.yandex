@@ -1,21 +1,54 @@
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
-import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
+import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import * as styles from "./styles.module.pcss";
+import UsersController from "../../../../controllers/UsersController";
+import { AvatarData } from "../../../../api/AvatarUsersAPI";
+import { isHTMLInputElement } from "../../../../utils/typeCheck";
 
-type UpdatePasswordDialogBodyProps = {
-    fileName?: string;
-} & WithFormProps;
 
-export default class UpdatePasswordDialogBody extends _BlockWithForm<UpdatePasswordDialogBodyProps> {
+export default class UpdatePasswordDialogBody extends _BlockWithForm<AvatarData> {
 
     protected getCompileOptions() {
         
         return {
             ...super.getCompileOptions(),
             styles,
-            template
+            changeFile: this.changeFile.bind(this),
+            template,
+            avatarFileName: "файл не выбран"
          };
     }
 
+    public async execute(values: AvatarData) {
+        if (!values) return;
+
+        let error;
+        try {
+            await UsersController.avatar(values);
+            //await AuthController.signup(values as SignupData);
+        }
+        catch(exp) {
+            error = exp;
+        }
+
+        const form = this.getForm();
+        const errorBlock = form?.getChildByAttacheNameOne("error");
+        errorBlock?.setProps({ error: String(error) });
+    }
+
+    private changeFile(evt: Event) {
+
+        if (!isHTMLInputElement(evt.target)) return;
+
+        const textBlock = this.getForm()?.getChildByAttacheNameOne(["avatarFileNamePane", "avatarFileName"]);
+        if (!textBlock) return;
+
+        const file = evt.target.files?.[0];
+
+        textBlock.setProps({ text: file ? file.name : "файл не выбран" })
+    }
+
 }
+
+

@@ -11,12 +11,14 @@ export class _ValidatedBlock<T extends ValidatedBlockProps> extends _Block<T> {
 
     protected getCompileOptions() {
         return {
+            ...super.getCompileOptions(),
             onBlurInput: this.onBlurInput.bind(this),
             onFocusInput: this.onFocusInput.bind(this)
          };
     }
 
     protected getValue(): any { return null; }
+
 
     protected onBlurInput(): void {
                 
@@ -27,6 +29,7 @@ export class _ValidatedBlock<T extends ValidatedBlockProps> extends _Block<T> {
         
         this.validate();
     }
+
 
     public validate(): void {
         const isValid = this.getProps().isValid;

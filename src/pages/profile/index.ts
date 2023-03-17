@@ -1,3 +1,4 @@
+import AuthController from "../../controllers/AuthController";
 import routeUse, { PAGES } from "../../utils/route";
 import { withStore } from "../../utils/Store";
 import { _Block } from "../../utils/_Block";
@@ -12,7 +13,7 @@ class ProfilePageBase  extends _Block {
             template,
             styles,
             goIndex: () => routeUse(PAGES.Index),
-            logoff: () => routeUse(PAGES.Login),
+            logoff: this.logoff.bind(this),
             updatePassword: this.visibleChild.bind(this, true, "updatePassDialogBody"),
             updateAvatar: this.visibleChild.bind(this, true, "updateAvatarDialogBody"),
             ecexuteUpdataAvatar: this.visibleChild.bind(this, false, "updateAvatarDialogBody"),
@@ -20,6 +21,9 @@ class ProfilePageBase  extends _Block {
         };
     }
 
+    logoff() {
+        AuthController.logout();
+    }
 }
 
 const withUser = withStore((state) => ({ ...state.user }))

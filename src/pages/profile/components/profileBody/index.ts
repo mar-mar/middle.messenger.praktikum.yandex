@@ -1,18 +1,24 @@
 import { _Block } from '../../../../utils/_Block';
-import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
+import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import template from './index.hbs';
 import * as styles from "./styles.module.pcss";
 import { validateName, validateLogin, validateEmail, validatePhone } from '../../../../utils/validate';
+import UsersController from "../../../../controllers/UsersController";
+import { ProfileUserData } from "../../../../api/UsersAPI";
+import { User } from "../../../../api/AuthAPI";
 
 
 type ProfileBodyProps = {
     logoff: AnyFunctionNoReturn;
     updatePassword: AnyFunctionNoReturn;
     updateAvatar: AnyFunctionNoReturn;
-} & WithFormProps;
+    item: User
+};
 
-export default class ProfileBody extends _BlockWithForm<ProfileBodyProps> {
+export default class ProfileBody extends _BlockWithForm<ProfileUserData, ProfileBodyProps> {
     
+    
+
     protected getCompileOptions() {
         return { 
             ...super.getCompileOptions(),
@@ -21,7 +27,10 @@ export default class ProfileBody extends _BlockWithForm<ProfileBodyProps> {
             validateName,
             validateLogin,
             validateEmail,
-            validatePhone
+            validatePhone,
+            getAvatar: ()=> {
+                return UsersController.getAvatarURL(this.getProps().item.avatar);
+            }
         };
     }
 }

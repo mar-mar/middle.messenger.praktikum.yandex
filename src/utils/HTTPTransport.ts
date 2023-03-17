@@ -1,4 +1,4 @@
-import { isObject } from "./typeCheck";
+import { isBlob, isObject } from "./typeCheck";
 
 export enum METHODS {
     GET = 'GET',
@@ -17,7 +17,7 @@ type Options = {
     timeout?: number;
     retries?: number;
     method?: METHODS;
-    data?: any
+    data?: Record<string, any>
 }
 
 export default class HTTPTransport {
@@ -32,6 +32,10 @@ export default class HTTPTransport {
         ) {
 
         this.endpoint = `${HTTPTransport.API_URL}/${endpoint}/`;
+    }
+
+    public getURL(childPath: string): string {
+        return this.endpoint + childPath;
     }
 
     public get<R>(url: string, options: Options = {}): Promise<R> {
@@ -70,9 +74,9 @@ export default class HTTPTransport {
         return new Promise((resolve, reject) => {
 
             const xhr = new XMLHttpRequest();
-            let withData = !!data;
+            let withData = data && isObject(data);
 
-            if (METHODS.GET === method && isObject(data)) {
+            if (METHODS.GET === method && withData && data) {
                 url += HTTPTransport.queryStringify(data);
                 withData = false;
             }
@@ -84,18 +88,14 @@ export default class HTTPTransport {
             });
             xhr.timeout = timeout;
             xhr.withCredentials = HTTPTransport.withCredentials;
+            xhr.responseType = 'json';
 
             // обработчики
             xhr.onreadystatechange = () => {
 
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status < 400) {
-                        try {
-                            resolve(JSON.parse(xhr.response));
-                        }
-                        catch(exp) {
-                            reject("JSON.parse error");
-                        }
+                        resolve(xhr.response);
                     } else {
                         reject(xhr.response);
                     }
@@ -122,7 +122,7 @@ export default class HTTPTransport {
             result = await this._request<R>(...args);
         }
         catch (exp) {
-            if (retryNumber >= retries) throw new Error("Не удалось загрузить. " + exp);
+            if (retryNumber >= retries) throw exp;
 
             retryNumber += 1;
             result = await this._requestReq<R>(retryNumber, retries, ...args);
@@ -151,8 +151,21 @@ export default class HTTPTransport {
         } 
 
         if (CONTENT_TYPE.JSON === this.contentType) {
+
             xhr.setRequestHeader('content-type', 'application/json');
             xhr.send(JSON.stringify(data));
+
+        }
+        else if (CONTENT_TYPE.FORMDATA === this.contentType) {
+            const formData = new FormData();
+            
+            Object.entries(data).forEach(([key, value]) => {
+                
+                formData.append(key, isBlob(value) ? value : String(value));
+            })
+
+            xhr.send(formData);
+
         }
         else {
             xhr.send(data);

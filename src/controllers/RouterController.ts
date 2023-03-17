@@ -33,7 +33,7 @@ export class RouterController {
                 path = PAGES_PATHS.Login;
             }
             else {
-                path = PAGES_PATHS.Index;
+                path = PAGES_PATHS.Profile;
             }
         }
         return path;

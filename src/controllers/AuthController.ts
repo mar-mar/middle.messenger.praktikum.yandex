@@ -26,9 +26,8 @@ export class AuthController {
             await this.fetchUser();
 
             router.go(PAGES_PATHS.Profile);
-        } catch (e: any) {
-            errorLog(e);
-            throw e;
+        } catch (exp: any) {
+            this.errorHandler(exp, true);
         }
     }
 
@@ -40,8 +39,8 @@ export class AuthController {
             await this.fetchUser();
 
             router.go(PAGES_PATHS.Profile);
-        } catch (e: any) {
-            errorLog(e);
+        } catch (exp: any) {
+            this.errorHandler(exp);
         }
     }
 
@@ -57,10 +56,15 @@ export class AuthController {
 
             await this.api.logout();
 
-            router.go(PAGES_PATHS.Index);
-        } catch (e: any) {
-            errorLog(e);
+            router.go(PAGES_PATHS.Login);
+        } catch (exp: any) {
+            this.errorHandler(exp);
         }
+    }
+
+    errorHandler(e: any, withThrow: boolean = false) {
+        errorLog(e);
+        if (withThrow) throw e?.reason || "Ошибка";
     }
 }
 

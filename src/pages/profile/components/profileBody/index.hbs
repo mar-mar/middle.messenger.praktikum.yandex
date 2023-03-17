@@ -18,6 +18,8 @@
                     {{{components_input label="Телефон" name="phone" isValid=validatePhone value=item.phone }}}
                 </div>
                 
+                {{{components_simpleError attachName="error" error=error }}}
+                
                 <div class="{{ styles.root }}__setting-button-cont">
                     {{{components_button label="Сохранить изменения" type="submit" }}}
                 </div>
@@ -37,7 +39,7 @@
                 [event:click]=updateAvatar
 
                 clickLabel="Изменить аватар"
-                imageUrl=item.avatar 
+                imageUrl=getAvatar 
                 diameter='L'
                 avatarOwner=item.display_name }}}
         </div>

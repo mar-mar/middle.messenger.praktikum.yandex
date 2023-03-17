@@ -42,11 +42,15 @@ export function withStore<SP extends RecordStrAny = any>(mapStateToProps: (state
 
     return function<P extends RecordStrAny = any>(Component: typeof _Block<{ item: SP } & P>) {
 
+        // class WithStore
         return class WithStore extends Component {
  
+            //
             constructor(props: Omit<P, keyof SP>) {
+
                 let previousState = mapStateToProps(store.getState());
 
+                //
                 super({ ...(props as P), item: { ...previousState } });
 
                 // store Updated
