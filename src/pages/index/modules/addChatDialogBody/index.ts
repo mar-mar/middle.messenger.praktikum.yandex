@@ -1,9 +1,8 @@
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
-import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
+import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
 
-
-export default class AddChatDialogBody<T extends WithFormProps>  extends _BlockWithForm<T> {
+export default class AddChatDialogBody extends _BlockWithForm<Record<string, any>> {
 
     protected getCompileOptions() {
         return {

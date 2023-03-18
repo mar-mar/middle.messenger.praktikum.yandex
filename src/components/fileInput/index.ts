@@ -7,6 +7,11 @@ import * as styles from "./styles.module.pcss";
 
 type FileInputProps = {
     label: string;
+    value?: string;
+    name?: string;
+    accept?: string;
+    parentClassName?: string;
+
     events?: {
         change?: EventHandler // onchange всплывает
     }

@@ -154,7 +154,7 @@ export default class HTTPTransport {
 
             xhr.setRequestHeader('content-type', 'application/json');
             xhr.send(JSON.stringify(data));
-
+            //xhr.send();
         }
         else if (CONTENT_TYPE.FORMDATA === this.contentType) {
             const formData = new FormData();

@@ -14,6 +14,15 @@ export function validatePassword(value: string): string {
     return /^(?=.*[A-Z])(?=.*[0-9])[\s\S]{8,40}$/.test(value) ? "" : ERRORS.passwordError;
 }
 
+export function validateCopyPassword(value: string, copyValue: string) {
+    if (copyValue !== value) {
+        return ERRORS.passwordDiffError;
+    }
+    return "";
+}
+
+
+
 export function validateName(value: string): string {
     //латиница или кириллица, первая буква должна быть заглавной, без пробелов и без цифр, нет спецсимволов (допустим только дефис).
 

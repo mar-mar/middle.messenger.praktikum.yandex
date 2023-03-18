@@ -1,11 +1,11 @@
 //import API, { AuthAPI, SigninData, SignupData } from '../api/AuthAPI';
-import router, { PAGES_PATHS } from '../utils/Router';
+import Router, { PAGES_PATHS } from '../utils/Router';
 import API, { AuthAPI, SigninData, SignupData } from "../api/AuthAPI";
 import store from "../utils/Store";
 import { errorLog } from "../utils/logger";
 
 //import MessagesController from './MessagesController';
-//test-20230312-mar1@yandex.ru test-20230312-mar1 12345678D Имя Фамилия
+//test-20230312-mar1@yandex.ru test-20230312-mar1 12345678D/12345678D1/12345678D2 Имя Фамилия
 //test-20230312-mar2 12345678D
 // 
 //withCredentials
@@ -25,7 +25,7 @@ export class AuthController {
 
             await this.fetchUser();
 
-            router.go(PAGES_PATHS.Profile);
+            Router.go(PAGES_PATHS.Profile);
         } catch (exp: any) {
             this.errorHandler(exp, true);
         }
@@ -38,7 +38,7 @@ export class AuthController {
 
             await this.fetchUser();
 
-            router.go(PAGES_PATHS.Profile);
+            Router.go(PAGES_PATHS.Profile);
         } catch (exp: any) {
             this.errorHandler(exp);
         }
@@ -56,7 +56,7 @@ export class AuthController {
 
             await this.api.logout();
 
-            router.go(PAGES_PATHS.Login);
+            Router.go(PAGES_PATHS.Login);
         } catch (exp: any) {
             this.errorHandler(exp);
         }

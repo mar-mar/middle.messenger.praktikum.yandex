@@ -33,4 +33,8 @@ export default class ProfileBody extends _BlockWithForm<ProfileUserData, Profile
             }
         };
     }
+
+    protected getErrorBlock() {
+        return this.getForm()?.getChildByAttacheNameOne("error");
+    }
 }

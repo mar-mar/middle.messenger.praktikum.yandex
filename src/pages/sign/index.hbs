@@ -3,10 +3,7 @@
         attachName="pane"
         title="Ваш профиль" }}
 
-        {{{pages_sign_components_signBody item=item 
-            execute = executeSign }}}
-
-        {{{components_simpleError attachName="error" error=error }}}
+        {{{pages_sign_components_signBody item=item }}}
 
         {{#layout_centerPane  }}
         {{{components_textButton label="Перейти к авторизации" [event:click]=goLogin }}}

@@ -1,24 +1,33 @@
 import Form from "../components/form";
 import { EventBus } from "./EventBus";
-import { log } from "./logger";
 import { isEvent, isFunction } from "./typeCheck";
 import { _Block } from "./_Block";
 
-export type WithFormProps = {
+export type WithFormProps<T> = {
     onSubmit: (value: any) => void;
-    execute?: (values?: FormValues) => void
-};
+    execute?: (values?: FormValues) => void,
+    error?: string
+} & T;
+
+const FORM_ATTACHE_NAME: string = "form";
 
 enum FORM_EVENTS {
     ECEXUTE = "execute"
 };
 
-const FORM_ATTACHE_NAME: string = "form";
+export type ErrorCallback = (error: string) => void;
 
 export type FormValues = Record<string, any> | null;
 
+export class _BlockWithForm<D extends Record<string, any>, T extends RecordStrAny = any> extends _Block<WithFormProps<T>> {
+    //protected formData: Partial<D> = {};
 
-export class _BlockWithForm<D, T extends RecordStrAny = any> extends _Block<WithFormProps & T & { item: D }> {
+    /*rotected getDomEvents(): Events | undefined {
+        return {
+            ...super(),
+
+        }
+    }*/
 
     protected getCompileOptions() {
         return {
@@ -42,8 +51,9 @@ export class _BlockWithForm<D, T extends RecordStrAny = any> extends _Block<With
         form.validate();
 
         if (!form.getError()) {
+
             const values = form.getValues() as D;
-            log(form.getValues());
+           
             this.getEventBus().emit(FORM_EVENTS.ECEXUTE, values);
         }
     }
@@ -59,8 +69,31 @@ export class _BlockWithForm<D, T extends RecordStrAny = any> extends _Block<With
     
     //
     protected execute(values: D): void { 
+        if (!values) return;
+
         const execute = this.getProps().execute;
-        if (isFunction(execute)) execute(values);
+        
+        if (isFunction(execute)) {
+            execute(values, this.errorCallback.bind(this));
+        }
+    }
+
+    componentDidUpdate(oldProps: Partial<WithFormProps<T>>, newProps: Partial<WithFormProps<T>>) {
+
+        if (newProps.error !== oldProps.error) {
+
+            this.getErrorBlock()?.setProps({ error: newProps.error });
+            return false;
+        }
+        return true;
+    }
+
+    protected getErrorBlock(): _Block | null | undefined{
+        return null;
+    }
+
+    private errorCallback(error: string): void {
+        this.getErrorBlock()?.setProps({ error });
     }
 
 }

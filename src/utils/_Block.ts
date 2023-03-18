@@ -7,13 +7,13 @@ export enum EVENTS {
     FLOW_CDM = "flow:component-did-mount",
     FLOW_CDUM = "flow:component-did-un-mount",
     FLOW_CDU = "flow:component-did-update",
-    FLOW_RENDER = "flow:render",
-    HIDE = "hide",
-    SHOW = "show"
+    FLOW_RENDER = "flow:render" //,
+   // HIDE = "hide",
+   // SHOW = "show"
 };
 
 type Children = Record<string, _Block[] | _Block>;
-type Events = Record<string, AnyFunctionNoReturn>;
+export type Events = Record<string, AnyFunctionNoReturn>;
 
 export type CompileOptions = { 
     template?: Handlebars.TemplateDelegate<any>, 
@@ -21,14 +21,19 @@ export type CompileOptions = {
     [index: string]: any 
 };
 
-export type TemplateOptions = { 
+/*export type TemplateOptions = { 
     styles?: Record<string, any>,
     addChild: (child: _Block) => void,
-    [index: string]: any 
-};
+    [index: string]: any
+};*/
 
 
-export type Props<P extends Record<string, any> = any> = { events?: Events, attachName?: string, render?: boolean; } & P;
+export type Props<T> = { 
+    events?: Events, 
+    attachName?: string, 
+    //render?: boolean; что за ключ???
+    //item?: D
+} & T;
 
 // export type Props<P extends Record<string, any> = any> = { events?: Events, attachName?: string, render?: boolean; item?: any } & P;
 
@@ -68,12 +73,6 @@ export class _Block<T extends Record<string, any> = any> {
 
     protected getCompileOptions(): CompileOptions { return {}; };
 
-    // Может переопределять пользователь, необязательно трогать
-    //protected render(): DocumentFragment | null { return null };    
-    protected afterHide(): void {};
-    protected afterShow(): void {};
-    protected onExecute(): void {};
-
     // constructor
     protected registerLifeCycleEvents(eventBus: EventBus): void {
         eventBus.on(EVENTS.INIT, this.onInit.bind(this));
@@ -82,8 +81,8 @@ export class _Block<T extends Record<string, any> = any> {
         
         eventBus.on(EVENTS.FLOW_CDU, this.onComponentDidUpdate.bind(this));
         eventBus.on(EVENTS.FLOW_RENDER, this.onRender.bind(this));
-        eventBus.on(EVENTS.HIDE, this.afterHide.bind(this));
-        eventBus.on(EVENTS.SHOW, this.afterShow.bind(this));
+       // eventBus.on(EVENTS.HIDE, this.afterHide.bind(this));
+       // eventBus.on(EVENTS.SHOW, this.afterShow.bind(this));
     }
 
     // constructor
@@ -179,21 +178,26 @@ export class _Block<T extends Record<string, any> = any> {
     private toggleDomEvents(value: boolean): void {
         if (!this.element) return;
 
-        const events = this.props.events;
+        const events = this.getDomEvents();
         const element = this.element;
         if (!this.element || !events) return;
 
         
         Object.keys(events).forEach(eventName => {       
-            console.info(element, eventName);
+            //console.info(element, eventName);
                  
             if (value) {
+                //keyof HTMLElementEventMap
                 element?.addEventListener(eventName, events[eventName]);
             }
             else {
                 element?.removeEventListener(eventName, events[eventName]);
             }
         });
+    }
+
+    protected getDomEvents(): Events | undefined {
+        return this.props.events;
     }
 
     protected compile({ template, styles, ...args } : CompileOptions) {
@@ -318,12 +322,14 @@ export class _Block<T extends Record<string, any> = any> {
 
     public readonly show = (args?: Record<string, any>) => {
         this.toggleVisible(true, args);
-        this.eventBus.emit(EVENTS.SHOW);
+        //this.eventBus.emit(EVENTS.SHOW);
+        this.dispatchComponentDidMount();
     }
 
     public readonly hide = (args?: Record<string, any>) => {
         this.toggleVisible(false, args);
-        this.eventBus.emit(EVENTS.HIDE);
+        //this.eventBus.emit(EVENTS.HIDE);
+        this.dispatchComponentDidUnMount();
     }
 
     protected toggleVisible(value: boolean, _args?: Record<string, any>): void { 
@@ -335,5 +341,6 @@ export class _Block<T extends Record<string, any> = any> {
         const dialog = this.getChildByAttacheNameOne(childName);
         visible ? dialog?.show() : dialog?.hide();
     }
+
 }
 

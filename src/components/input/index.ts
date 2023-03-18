@@ -9,7 +9,11 @@ type InputProps = {
     name: string;
     value: string;
     label: string;
+    accept?: string;
+
+    parentClassName?: string;
     noMargin?: 1 |0;
+
 } & ValidatedBlockProps;
 
 

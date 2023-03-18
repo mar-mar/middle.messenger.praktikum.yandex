@@ -2,12 +2,11 @@ import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
 import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import * as styles from "./styles.module.pcss";
-import UsersController from "../../../../controllers/UsersController";
 import { AvatarData } from "../../../../api/AvatarUsersAPI";
 import { isHTMLInputElement } from "../../../../utils/typeCheck";
 
 
-export default class UpdatePasswordDialogBody extends _BlockWithForm<AvatarData> {
+export default class UpdatePasswordDialogBody extends _BlockWithForm<AvatarData, { item?: { fileName?: string, file?: string } } > {
 
     protected getCompileOptions() {
         
@@ -20,22 +19,9 @@ export default class UpdatePasswordDialogBody extends _BlockWithForm<AvatarData>
          };
     }
 
-    public async execute(values: AvatarData) {
-        if (!values) return;
-
-        let error;
-        try {
-            await UsersController.avatar(values);
-            //await AuthController.signup(values as SignupData);
-        }
-        catch(exp) {
-            error = exp;
-        }
-
-        const form = this.getForm();
-        const errorBlock = form?.getChildByAttacheNameOne("error");
-        errorBlock?.setProps({ error: String(error) });
-    }
+    protected componentDidMount(/*oldProps*/): void { 
+        this.setProps({ item: {} });
+    };
 
     private changeFile(evt: Event) {
 
@@ -48,6 +34,11 @@ export default class UpdatePasswordDialogBody extends _BlockWithForm<AvatarData>
 
         textBlock.setProps({ text: file ? file.name : "файл не выбран" })
     }
+
+    protected getErrorBlock() {
+        return this.getForm()?.getChildByAttacheNameOne("error");
+    }
+
 
 }
 

@@ -1,9 +1,9 @@
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
-import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
+import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
 
 
-export default class AddUserDialogBody<T extends WithFormProps>  extends _BlockWithForm<T> {
+export default class AddUserDialogBody extends _BlockWithForm<Record<string, any>> {
 
     protected getCompileOptions() {
         return {

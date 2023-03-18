@@ -18,11 +18,11 @@
                     {{{components_input label="Телефон" name="phone" isValid=validatePhone value=item.phone }}}
                 </div>
                 
-                {{{components_simpleError attachName="error" error=error }}}
-                
                 <div class="{{ styles.root }}__setting-button-cont">
                     {{{components_button label="Сохранить изменения" type="submit" }}}
                 </div>
+
+                {{{components_simpleError attachName="error" error=error }}}
 
             {{/components_form}}
 

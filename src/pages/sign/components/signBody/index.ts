@@ -1,13 +1,14 @@
 import { _Block } from '../../../../utils/_Block';
-import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
+import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import template from './index.hbs';
-import { validateName, validateLogin, validateEmail, validatePhone, validatePassword } from '../../../../utils/validate';
+import { validateName, validateLogin, validateEmail, validatePhone, validatePassword, validateCopyPassword } from '../../../../utils/validate';
 import * as styles from "./styles.module.pcss";
-import { ERRORS } from "../../../../utils/validateErrors";
 import Input from "../../../../components/input";
+import { SignupData } from "../../../../api/AuthAPI";
+import AuthController from "../../../../controllers/AuthController";
 
 
-export default class SignBody<T extends WithFormProps> extends _BlockWithForm<T> {
+export default class SignBody extends _BlockWithForm<SignupData> {
 
     protected getCompileOptions() {
         return { 
@@ -23,19 +24,30 @@ export default class SignBody<T extends WithFormProps> extends _BlockWithForm<T>
         };
     }
 
+    async execute(values: SignupData) {
+        if (!values) return;
+
+        let error;
+        try {
+            await AuthController.signup(values as SignupData);
+        }
+        catch(exp) {
+            error = exp;
+        }
+
+        const errorBlock = this.getChildByAttacheNameOne("error");
+        errorBlock?.setProps({ error: String(error) });
+    }
+
     private validatePassword(value: string): string {
-        const result = validatePassword(value)
+        const result = validatePassword(value, )
         this.getCopyPassword()?.validate();
         return result;
     }
 
     private validateCopyPassword(value: string): string {
         
-        const firstPassword = this.getPassword();
-        if (firstPassword?.getValue() !== value) {
-            return ERRORS.passwordDiffError;
-        }
-        return "";
+        return validateCopyPassword(this.getPassword()?.getValue() || "", value);
     }
 
     getPassword(): Input {

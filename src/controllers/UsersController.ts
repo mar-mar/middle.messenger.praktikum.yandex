@@ -3,6 +3,7 @@ import { errorLog } from "../utils/logger";
 import API, { PasswordData, ProfileUserData, UsersAPI } from "../api/UsersAPI";
 import AvatarAPI, { AvatarData, AvatarUsersAPI } from "../api/AvatarUsersAPI";
 import ResourceAPI, { ResourceUserAPI } from "../api/ResourceUserAPI";
+import Router, { PAGES_PATHS } from "../utils/Router";
 
 
 export class UsersController {
@@ -20,10 +21,14 @@ export class UsersController {
     async profile(data: ProfileUserData) {
 
         try {
+
             const user = await this.api.profile(data);
             store.set("user", user);
 
+            Router.go(PAGES_PATHS.MESS);
+
         } catch (exp: any) {
+
             this.errorHandler(exp, true);
         }
     }
@@ -32,20 +37,25 @@ export class UsersController {
     async avatar(data: AvatarData) {
 
         try {
+            
             const user = await this.avatarApi.avatar(data);
             store.set("user", user);
 
         } catch (exp: any) {
+
             this.errorHandler(exp, true);
         }
     }
 
     // изменить пароль
     async password(data: PasswordData) {
+
         try {
+
             await this.api.password(data);
 
         } catch (exp: any) {
+
             this.errorHandler(exp, true);
         }
     }

@@ -1,5 +1,5 @@
 
-import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
+import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import template from "./index.hbs";
 import * as styles from "./styles.module.pcss";
 import { validateMessage } from "../../../../utils/validate";
@@ -7,9 +7,9 @@ import { validateMessage } from "../../../../utils/validate";
 
 type MessageInputProps = {
     openPopupAttache: FunctionNoArgsNoReturn
-} & WithFormProps;
+};
 
-export default class MessageInput  extends _BlockWithForm<MessageInputProps> {   
+export default class MessageInput  extends _BlockWithForm<Record<string, any>, MessageInputProps> {   
     
     protected getCompileOptions() {
         return {

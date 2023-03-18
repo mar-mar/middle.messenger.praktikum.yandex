@@ -6,6 +6,7 @@ type SimpleInputProps = {
     type: string;
     name: string;
     value?: string;
+    accept?: string;
     parentClassName?: string;
     events?: {
         focus?: () => void;

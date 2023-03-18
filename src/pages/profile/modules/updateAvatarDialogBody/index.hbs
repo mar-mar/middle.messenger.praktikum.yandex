@@ -6,12 +6,16 @@
     <div>
         {{#layout_centerPane attachName="avatarFileNamePane" }}
             <div class="{{ styles.root__file-name }}" >
-                {{{components_simpleText attachName="avatarFileName" text=avatarFileName }}}
+                {{{components_simpleText attachName="avatarFileName" text=item.fileName }}}
             </div>
         {{/layout_centerPane}}
 
         {{#layout_centerPane }}
-            {{{components_fileInput label="Выбрать файл на комьютере" name="avatar" [event:change]=changeFile }}}
+            {{{components_fileInput label="Выбрать файл на комьютере" name="avatar" 
+                value = item.file
+
+                accept="image/*"
+                [event:change]=changeFile }}}
         {{/layout_centerPane}}
         
     </div>

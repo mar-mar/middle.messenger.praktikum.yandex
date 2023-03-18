@@ -1,11 +1,11 @@
-import { Props, _Block } from '../../utils/_Block';
+import { _Block } from '../../utils/_Block';
 import template from './index.hbs';
 import * as styles from "./styles.module.pcss";
 
 type CenterPaneLayoutProps = {
     noMarginTop?: 0|1;
     addeClassName?: string;
-} & Props;
+};
 
 export default class CenterPaneLayout extends _Block<CenterPaneLayoutProps> {
 

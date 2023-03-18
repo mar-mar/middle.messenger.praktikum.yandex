@@ -1,13 +1,14 @@
 <div class="{{styles.root}}">
     {{#layout_pageDialog
-    title="Ваш профиль"
+        title="Ваш профиль"
     }}
 
         {{{pages_profile_components_profileBody item=item 
             updatePassword=updatePassword 
             updateAvatar=updateAvatar 
+
             logoff=logoff
-            execute=goIndex
+            execute=ecexuteMainProps
             }}}
 
         {{#layout_centerPane }}
@@ -17,12 +18,12 @@
     {{/layout_pageDialog}}
 
 
-    {{#layout_modalDialog attachName="updatePassDialogBody" title="Изменение пароля"  }}
+    {{#layout_modalDialog attachName=ATTACHES.PASS_MODAL title="Изменение пароля"  }}
         {{{pages_profile_modules_updatePasswordDialogBody 
             execute=ecexuteUpdatePassword  }}}
     {{/layout_modalDialog}}
 
-    {{#layout_modalDialog attachName="updateAvatarDialogBody" title="Загрузка файла для аватара"  }}
+    {{#layout_modalDialog attachName=ATTACHES.AVATAR_MODAL title="Загрузка файла для аватара"  }}
         {{{pages_profile_modules_updateAvatarDialogBody 
             execute=ecexuteUpdataAvatar }}}
     {{/layout_modalDialog}}
