@@ -2,7 +2,7 @@ import { SigninData } from "../../api/AuthAPI";
 import AuthController from "../../controllers/AuthController";
 import routeUse, { PAGES } from "../../utils/route";
 import { _Block } from "../../utils/_Block";
-import { FormValues } from "../../utils/_BlockWithForm";
+import { ErrorCallback } from "../../utils/_BlockWithForm";
 import template from "./index.hbs";
 import * as styles from "./styles.module.pcss";
 
@@ -17,21 +17,14 @@ export default class LoginPage extends _Block {
         };
     }
 
-    private async executeLogin(values: FormValues) {
-        if (!values) return;
+    private async executeLogin(values: SigninData, errorCallback: ErrorCallback) {
 
-        let error;
         try {
-            await AuthController.signin(values as SigninData);
+            await AuthController.signin(values);
         }
         catch(exp) {
-            error = exp;
-        }
-
-        const paneBlock = this.getChildByAttacheNameOne("pane");
-        const errorBlock = paneBlock?.getChildByAttacheNameOne("error");
-        errorBlock?.setProps({ error: String(error) });
-        
+            errorCallback(String(exp));
+        }        
     }
 
 

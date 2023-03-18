@@ -7,7 +7,7 @@ export type ValidatedBlockProps = {
 };
 
 // базовый класс для компонентов
-export class _ValidatedBlock<T extends ValidatedBlockProps> extends _Block<T> {
+export class _ValidatedBlock<T extends Record<string, any>> extends _Block<T & ValidatedBlockProps> {
 
     protected getCompileOptions() {
         return {

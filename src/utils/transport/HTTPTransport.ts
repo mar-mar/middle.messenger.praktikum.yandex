@@ -1,4 +1,4 @@
-import { isBlob, isObject } from "./typeCheck";
+import { isBlob, isObject } from "../typeCheck";
 
 export enum METHODS {
     GET = 'GET',

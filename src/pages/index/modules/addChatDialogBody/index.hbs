@@ -4,12 +4,14 @@
     [event:submit]=onSubmit }}
 
     <div>
-        {{{components_input label="Имя чата" name="name" }}}
+        {{{components_input label="Имя чата" name="title" }}}
     </div>
 
     <div class="{{ styles.root__button-cont}}">
         {{{components_button label="Создать" type="submit" }}}
     </div>
+
+    {{{components_simpleError attachName="error" error=error }}}
 
 {{/components_form}}
 </div>

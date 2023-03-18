@@ -25,7 +25,7 @@ export class UsersController {
             const user = await this.api.profile(data);
             store.set("user", user);
 
-            Router.go(PAGES_PATHS.MESS);
+            Router.go(PAGES_PATHS.Messages);
 
         } catch (exp: any) {
 

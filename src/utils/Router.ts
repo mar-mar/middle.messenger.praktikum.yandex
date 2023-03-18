@@ -7,7 +7,7 @@ export enum PAGES_PATHS {
     Profile = "/settings",
     Sign = "/sign-up",
     Index = "/messenger",
-    MESS = "/messenger"
+    Messages = "/messenger"
 }
 
 function isEqual(lhs: string, rhs: string): boolean {

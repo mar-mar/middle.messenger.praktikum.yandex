@@ -17,5 +17,9 @@ export default class LoginBody  extends _BlockWithForm<SigninData> {
             validatePassword
          };
     }
+    
+    protected getErrorBlock() {
+        return this.getForm()?.getChildByAttacheNameOne("error");
+    }
 
 }

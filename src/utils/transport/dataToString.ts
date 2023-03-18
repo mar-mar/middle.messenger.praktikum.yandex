@@ -1,4 +1,4 @@
-import { isArray, isDate, isFunction, isObject, isSimpleType } from "./typeCheck";
+import { isArray, isDate, isFunction, isObject, isSimpleType } from "../typeCheck";
 
 type StringIndexed = Record<string, any>;
 type GetKeyFunc = (key: string) => string;

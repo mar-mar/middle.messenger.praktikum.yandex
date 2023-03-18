@@ -2,6 +2,7 @@ import { AvatarData } from "../../api/AvatarUsersAPI";
 import { PasswordData, ProfileUserData } from "../../api/UsersAPI";
 import AuthController from "../../controllers/AuthController";
 import UsersController from "../../controllers/UsersController";
+import routeUse, { PAGES } from "../../utils/route";
 import { withStore } from "../../utils/Store";
 import { _Block } from "../../utils/_Block";
 import { ErrorCallback } from "../../utils/_BlockWithForm";
@@ -21,6 +22,7 @@ class ProfilePageBase  extends _Block {
             styles,
             ATTACHES,
             
+            goMess: () => routeUse(PAGES.Messages),
             logoff: this.logoff.bind(this),
             updatePassword: this.visibleChild.bind(this, true, ATTACHES.PASS_MODAL),
             updateAvatar: this.visibleChild.bind(this, true, ATTACHES.AVATAR_MODAL),
@@ -34,7 +36,6 @@ class ProfilePageBase  extends _Block {
     logoff() {
         AuthController.logout();
     }
-
 
     async ecexuteUpdataAvatar(values: AvatarData, errorCallback: ErrorCallback) {
 
@@ -59,7 +60,7 @@ class ProfilePageBase  extends _Block {
             return;
         }
 
-        this.visibleChild(false, "updatePassDialogBody");
+        this.visibleChild(false, ATTACHES.PASS_MODAL);
     }
 
     async ecexuteMainProps(values: ProfileUserData, errorCallback: ErrorCallback) {

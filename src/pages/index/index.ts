@@ -1,7 +1,11 @@
 //import routeUse from "../../utils/route";
+import { CreateChatData } from "../../api/ChatsAPI";
+import ChatsController from "../../controllers/ChatsController";
 import Popup from "../../layout/popup";
 import routeUse, { PAGES } from "../../utils/route";
+import { withStore } from "../../utils/Store";
 import { _Block } from "../../utils/_Block";
+import { ErrorCallback } from "../../utils/_BlockWithForm";
 import template from "./index.hbs";
 import * as styles from './styles.module.pcss';
 
@@ -15,7 +19,8 @@ enum CHILD_NAMES {
     CreateChat = "createChatDialogBody"
 }
 
-export default class IndexPage extends _Block {
+//{ item: { chats?: ChatInfo[] }}
+class IndexPageBase extends _Block {
 
     protected getCompileOptions() {
         return { 
@@ -40,7 +45,8 @@ export default class IndexPage extends _Block {
             ecexuteAddUser: this.visibleChild .bind(this, false, CHILD_NAMES.AddUser),
             ecexuteRemoveUser: this.visibleChild .bind(this, false, CHILD_NAMES.RemoveUser),
             ecexuteFindChat: this.visibleChild .bind(this, false, CHILD_NAMES.FindChat),
-            executeCreateChat: this.visibleChild .bind(this, false, CHILD_NAMES.CreateChat),
+            executeCreateChat: this.executeCreateChat.bind(this),
+            
             ecexuteSendMessage: this.go.bind(this, PAGES.Index),
 
             CHILD_NAMES
@@ -82,4 +88,26 @@ export default class IndexPage extends _Block {
         ];
     }
     
+    async executeCreateChat(values: CreateChatData, errorCallback: ErrorCallback) {
+
+        try {
+            await ChatsController.create(values);
+        }
+        catch(exp) {
+            errorCallback(String(exp));
+            return;
+        }
+
+        this.visibleChild.bind(this, false, CHILD_NAMES.CreateChat);
+    }
 }
+
+
+const withChats = withStore((state) => (
+    { 
+        chats: state.chats ? [...state.chats] : [] 
+    } 
+));
+
+const IndexPage = withChats(IndexPageBase);
+export default IndexPage;

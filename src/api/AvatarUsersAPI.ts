@@ -1,4 +1,4 @@
-import { CONTENT_TYPE } from "../utils/HTTPTransport";
+import { CONTENT_TYPE } from "../utils/transport/HTTPTransport";
 import { User } from "./AuthAPI";
 import _BaseAPI from './_BaseAPI';
 

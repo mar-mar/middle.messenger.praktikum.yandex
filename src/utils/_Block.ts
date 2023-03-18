@@ -30,13 +30,8 @@ export type CompileOptions = {
 
 export type Props<T> = { 
     events?: Events, 
-    attachName?: string, 
-    //render?: boolean; что за ключ???
-    //item?: D
+    attachName?: string
 } & T;
-
-// export type Props<P extends Record<string, any> = any> = { events?: Events, attachName?: string, render?: boolean; item?: any } & P;
-
 
 // базовый класс для компонентов
 export class _Block<T extends Record<string, any> = any> {

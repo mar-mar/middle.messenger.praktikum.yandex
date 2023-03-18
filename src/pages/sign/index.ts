@@ -14,3 +14,7 @@ export default class SignPage extends _Block {
     }
 }
 
+// проверить после логаута очищается или нет 
+// и логин проверить на очистку
+
+
