@@ -1,6 +1,6 @@
 import Form from "../components/form";
 import { EventBus } from "./EventBus";
-import { isEvent, isFunction } from "./typeCheck";
+import { isEvent, isFunction } from "./helpers/typeCheck";
 import { _Block } from "./_Block";
 
 export type WithFormProps<T> = {

@@ -1,6 +1,6 @@
 import { EventBus } from "./EventBus";
 import { nanoid } from 'nanoid';
-import { isArray } from "./typeCheck";
+import { isArray } from "./helpers/typeCheck";
 
 export enum EVENTS {
     INIT = "init",

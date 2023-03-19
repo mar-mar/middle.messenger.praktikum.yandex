@@ -1,4 +1,4 @@
-import { isFunction, isString } from "./typeCheck";
+import { isFunction, isString } from "./helpers/typeCheck";
 import { _Block } from "./_Block";
 
 export type ValidatedBlockProps = {

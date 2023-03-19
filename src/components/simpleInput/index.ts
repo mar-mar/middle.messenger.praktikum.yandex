@@ -1,4 +1,4 @@
-import { isHTMLInputElement } from "../../utils/typeCheck";
+import { isHTMLInputElement } from "../../utils/helpers/typeCheck";
 import { _Block } from '../../utils/_Block';
 import template from './index.hbs';
 

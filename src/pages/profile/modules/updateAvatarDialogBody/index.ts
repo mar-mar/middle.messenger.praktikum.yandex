@@ -3,7 +3,7 @@ import template from "./index.hbs";
 import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import * as styles from "./styles.module.pcss";
 import { AvatarData } from "../../../../api/AvatarUsersAPI";
-import { isHTMLInputElement } from "../../../../utils/typeCheck";
+import { isHTMLInputElement } from "../../../../utils/helpers/typeCheck";
 
 
 export default class UpdatePasswordDialogBody extends _BlockWithForm<AvatarData, { item?: { fileName?: string, file?: string } } > {

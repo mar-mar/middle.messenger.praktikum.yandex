@@ -2,8 +2,8 @@
 import { EventBus } from './EventBus';
 import { _Block } from './_Block';
 import { User } from '../api/AuthAPI';
-import { set } from "./merge";
-import isEqual from "./isEqual";
+import { set } from "./helpers/merge";
+import isEqual from "./helpers/isEqual";
 import { ChatInfo } from '../api/ChatsAPI';
 //import { Message } from '../controllers/MessagesController';
 

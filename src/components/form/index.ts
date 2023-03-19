@@ -1,4 +1,4 @@
-import { isArray, isHTMLFormElement } from "../../utils/typeCheck";
+import { isArray, isHTMLFormElement } from "../../utils/helpers/typeCheck";
 import { _Block } from '../../utils/_Block';
 import { _ValidatedBlock } from "../../utils/_ValidatedBlock";
 import template from './index.hbs';
