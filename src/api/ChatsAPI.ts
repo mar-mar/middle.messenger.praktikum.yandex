@@ -31,7 +31,7 @@ export interface RemoveUserFromChatData {
 
 export class ChatsAPI extends _BaseAPI {
     constructor() {
-        super('/chats');
+        super('chats');
     }
 
     create(data: CreateChatData) {
