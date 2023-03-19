@@ -1,13 +1,15 @@
 
-<div class="{{ styles.root }}">
+<div class="{{ styles.root }}  {{#unless item.selectedChat}}{{ styles.root--nochat }}{{/unless}} ">
+
+{{#if item.selectedChat}}
 
     <div class="{{ styles.root__avatar }}">
-        {{{components_avatar imageUrl=item.profile.avatar diameter='S' 
-            avatarOwner=item.title }}}
+        {{{components_avatar imageUrl=item.selectedChat.avatar diameter='S' 
+            avatarOwner=item.selectedChat.title }}}
     </div>
 
     <div class="{{ styles.root__label }}">
-        {{item.title}}
+        {{item.selectedChat.title}}
     </div>
 
     <div class="{{ styles.root__menu }}">
@@ -16,4 +18,7 @@
             [event:click] = openPopupChatMenu
             }}}
     </div>
+
+ {{/if}}  
+
 </div>

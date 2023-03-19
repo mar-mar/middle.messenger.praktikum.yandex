@@ -1,10 +1,8 @@
-//import routeUse from "../../utils/route";
 import { CreateChatData } from "../../api/ChatsAPI";
 import { SearchUserData } from "../../api/UsersAPI";
 import ChatsController from "../../controllers/ChatsController";
 import Popup from "../../layout/popup";
 import routeUse, { PAGES } from "../../utils/route";
-import { withStore } from "../../utils/Store";
 import { _Block } from "../../utils/_Block";
 import { ErrorCallback } from "../../utils/_BlockWithForm";
 import template from "./index.hbs";
@@ -21,7 +19,7 @@ enum CHILD_NAMES {
 }
 
 //{ item: { chats?: ChatInfo[] }}
-class IndexPageBase extends _Block {
+export default class IndexPage extends _Block {
 
     protected getCompileOptions() {
         return { 
@@ -34,9 +32,10 @@ class IndexPageBase extends _Block {
             goError500: this.go.bind(this, PAGES.Error500),
             
 
-            attachMenuItems: this.attachMenuItems(),
+            //attachMenuItems: this.attachMenuItems(),
             chatMenuMenuItems: this.chatMenuMenuItems(),
             menuMenuItems: this.menuMenuItems(),
+
             openPopupAttache: this.openPopup.bind(this, CHILD_NAMES.Attache),
             openPopupChatMenu: this.openPopup.bind(this, CHILD_NAMES.ChatMenu),
             openPopupMenu: this.openPopup.bind(this, CHILD_NAMES.Menu),
@@ -48,8 +47,6 @@ class IndexPageBase extends _Block {
             ecexuteRemoveUser: this.visibleChild .bind(this, false, CHILD_NAMES.RemoveUser),
             ecexuteFindChat: this.visibleChild .bind(this, false, CHILD_NAMES.FindChat),
             executeCreateChat: this.executeCreateChat.bind(this),
-            
-            ecexuteSendMessage: this.go.bind(this, PAGES.Index),
 
             CHILD_NAMES
         };
@@ -67,19 +64,19 @@ class IndexPageBase extends _Block {
         (popup as Popup).show({ parent: evt.target as Element });
     }
 
-    private attachMenuItems(): MenuItemTemplateProps[] {
+    /*private attachMenuItems(): MenuItemTemplateProps[] {
         return [
             { label: "Фото или Видео"},
             { label: "Файл" },
             { label: "Локация" }
         ];
-    }
+    }*/
 
     private chatMenuMenuItems(): MenuItemTemplateProps[] {
         return [
             { label: "Добавить пользователя", click: this.visibleChild.bind(this, true, CHILD_NAMES.AddUser) },
             { label: "Удалить пользователя", click: this.visibleChild.bind(this, true, CHILD_NAMES.RemoveUser) },
-            { label: "Удалить чат", click: this.deleteSelChat.bind(this) }
+            { label: "Удалить чат", click: this.ecexuteDelChat.bind(this) }
         ];
     }
 
@@ -103,9 +100,10 @@ class IndexPageBase extends _Block {
         this.visibleChild.bind(this, false, CHILD_NAMES.CreateChat);
     }
 
-    async deleteSelChat() {
+
+    async ecexuteDelChat() {
         try {
-            await ChatsController.delete(this.getSelectedChatId());
+            await ChatsController.deleteSelectedChat();
         }
         catch(exp) {
             //errorCallback(String(exp)); где показать???
@@ -116,7 +114,7 @@ class IndexPageBase extends _Block {
 
     async ecexuteAddUser(values: SearchUserData, errorCallback: ErrorCallback) {
         try {
-            await ChatsController.addUserToChat(this.getSelectedChatId(), values);
+            await ChatsController.addUserToSelectedChat(values);
         }
         catch(exp) {
             errorCallback(String(exp));
@@ -124,18 +122,16 @@ class IndexPageBase extends _Block {
         }
     }
 
-    private getSelectedChatId() {
-        return this.getProps().item.selectedChat.id;
+    async ecexuteRemoveUser(values: SearchUserData, errorCallback: ErrorCallback) {
+        try {
+            await ChatsController.removeUserFromSelectedChat(values);
+        }
+        catch(exp) {
+            errorCallback(String(exp));
+            return;
+        }
     }
+    
 }
 
 
-const withChats = withStore((state) => (
-    { 
-        chats: state.chats ? [...state.chats] : [],
-        selectedChat: state.chats && state.selectedChat ? state.chats.get(state.selectedChat) : undefined
-    } 
-));
-
-const IndexPage = withChats(IndexPageBase);
-export default IndexPage;

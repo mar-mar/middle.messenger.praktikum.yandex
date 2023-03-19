@@ -76,8 +76,6 @@ export class _Block<T extends Record<string, any> = any> {
         
         eventBus.on(EVENTS.FLOW_CDU, this.onComponentDidUpdate.bind(this));
         eventBus.on(EVENTS.FLOW_RENDER, this.onRender.bind(this));
-       // eventBus.on(EVENTS.HIDE, this.afterHide.bind(this));
-       // eventBus.on(EVENTS.SHOW, this.afterShow.bind(this));
     }
 
     // constructor

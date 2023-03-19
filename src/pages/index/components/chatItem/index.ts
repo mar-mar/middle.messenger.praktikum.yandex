@@ -6,14 +6,13 @@ import * as styles from "./styles.module.pcss";
 
 type ChatItemProps = { 
     item: ChatInfo,
-    selectedChat: ChatInfo
+    selectedChatId: number
 };
 
- export default class ChatItemB extends _Block<ChatItemProps> {
+ export default class ChatItem extends _Block<ChatItemProps> {
     
     protected getCompileOptions() {
-        const selChat = this.getProps().selectedChat;
-        const selId = selChat ? selChat.id : undefined;
+        const selId = this.getProps().selectedChatId;
 
         return { 
             template, 

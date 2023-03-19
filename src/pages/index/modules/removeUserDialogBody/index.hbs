@@ -4,7 +4,7 @@
     [event:submit]=onSubmit }}
 
     <div>
-        {{{components_input label="Логин" name="login" value=item.login}}}
+        {{{components_input label="Логин" name="login" value=item.login isValid=validateLogin }}}
     </div>
 
     <div class="{{ styles.root }}__button-cont">

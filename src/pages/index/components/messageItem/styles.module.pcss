@@ -1,0 +1,23 @@
+
+@import url("src/style/mixin.pcss");
+
+.root {
+    background: var(--message-back-color3);
+    border-radius: var(--pane-radius);
+    margin: var(--micro-offset);
+    max-width: 90%;
+    overflow: hidden;
+    padding: var(--mini-offset);
+    width: fit-content;
+
+    &--my {
+        align-self: flex-end;
+        background: var(--message-back-color1);
+    }
+
+    &-time {
+        color: var(--grey-font-color);
+        font-size: var(--mini-font-size);
+        margin-top: var(--micro-offset);
+    }
+}

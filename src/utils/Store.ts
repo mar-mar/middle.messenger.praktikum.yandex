@@ -5,6 +5,8 @@ import { User } from '../api/AuthAPI';
 import { set } from "./helpers/merge";
 import isEqual from "./helpers/isEqual";
 import { ChatInfo } from '../api/ChatsAPI';
+import { Message } from "../controllers/MessagesController";
+import cloneDeep from "./helpers/cloneDeep";
 //import { Message } from '../controllers/MessagesController';
 
 export enum StoreEvents {
@@ -14,14 +16,13 @@ export enum StoreEvents {
 interface State {
     user: User;
     sleep: boolean;
-    // 
-    chats: Map<number, ChatInfo>;
-    //messages: Record<number, Message[]>;
-    selectedChat?: number;
+    chats: Record<number, ChatInfo>;
+    selectedChatId?: number;
+    messages: Record<number, Message[]>
 }
 
 export class Store extends EventBus {
-    private state: any = {};
+    private state: Partial<State> = {};
 
     public set(keypath: string, data: unknown) {
         set(this.state, keypath, data);
@@ -29,7 +30,7 @@ export class Store extends EventBus {
         this.emit(StoreEvents.Updated, this.getState());
     }
 
-    public getState() {
+    public getState(): Partial<State> {
         return this.state;
     }
 }
@@ -49,20 +50,23 @@ export function withStore<SP extends RecordStrAny = any>(mapStateToProps: (state
             //
             constructor(props: Omit<P, keyof SP>) {
 
-                let previousState = mapStateToProps(store.getState());
+                let activeState = cloneDeep(mapStateToProps(store.getState()));
 
                 //
-                super({ ...(props as P), item: { ...previousState } });
+                super({ ...(props as P), item: activeState});
 
                 // store Updated
                 store.on(StoreEvents.Updated, () => {
                     const newState = mapStateToProps(store.getState());
 
-                    if (!isEqual(previousState, newState)) {
-                        this.setProps({ item: { ...newState } } as Partial<{ item: SP; } & P>);
+                    if (!isEqual(activeState, newState)) {
+
+                        activeState = cloneDeep(newState);
+
+                        this.setProps({ item: activeState } as Partial<{ item: SP; } & P>);
                     }
                     
-                    previousState = newState;
+                    
                 });
 
             }
@@ -85,17 +89,19 @@ export function eventBusWithStore<D extends Record<string, any>>(getStoreData: (
             }
 
             private storeInit(): void {
-                let previousState = getStoreData(store.getState());
+                let activeState = cloneDeep(getStoreData(store.getState()));
 
                 store.on(StoreEvents.Updated, () => {
                     const newState = getStoreData(store.getState());
 
-                    if (!isEqual(previousState, newState)) {
+                    if (!isEqual(activeState, newState)) {
+                        activeState = cloneDeep(newState);
+
                         //this.setProps({ item: { ...newState } } as Partial<{ item: SP; } & P>);
-                        this.emit(eventBusWithStoreEventName, { ...newState });
+                        this.emit(eventBusWithStoreEventName, activeState);
                     }
                     
-                    previousState = newState;
+                    activeState = newState;
                 });
             }
             

@@ -15,7 +15,7 @@ const WSTransportBase = eventBusWithStore<TransportStore>(state => {
 
 export default class WSTransport extends WSTransportBase {
     static BASE_URL = 'wss://ya-praktikum.tech/ws';
-    static PING_INTERVAL: 5000;
+    static PING_INTERVAL: number = 10000;
     //`wss://ya-praktikum.tech/ws/chats/${userId}/${id}/${token}`
 
     private socket: WebSocket | null = null;
@@ -59,21 +59,27 @@ export default class WSTransport extends WSTransportBase {
 
     private initPing() {
 
-        this.ping();
+        this.togglePing(true);
 
         this.on(WSTransportEvents.CLOSE, () => {
-            if (this.pingTimeout) clearInterval(this.pingTimeout);
-
-            this.pingTimeout = 0;
+            this.togglePing(false);
         })
     }
 
-    private ping() {
-        this.pingTimeout = setTimeout(() => {
-            if (this.socket?.readyState !== 1) return; // зкрывается не сразу можем поймать ошибки
+    private togglePing(value: boolean) {
+        if (this.pingTimeout) clearInterval(this.pingTimeout);
+        this.pingTimeout = 0;
 
-            this.send({ type: 'ping' });
-            this.ping();
+        if (!value) return;
+
+        this.pingTimeout = setTimeout(() => {
+
+            if (this.socket?.readyState === 1) { // закрывается не сразу можем поймать ошибки
+
+                this.send({ type: 'ping' });
+            } 
+
+            this.togglePing(true);
         }, WSTransport.PING_INTERVAL)
     }
 

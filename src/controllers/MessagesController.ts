@@ -8,7 +8,7 @@ export interface Message {
     type: string;
     user_id: number;
     content: string;
-    file?: {
+    /*file?: {
         id: number;
         user_id: number;
         path: string;
@@ -16,7 +16,11 @@ export interface Message {
         content_type: string;
         content_size: number;
         upload_date: string;
-    }
+    }*/
+}
+
+export interface SendMessageData {
+    message: string;
 }
 
 class MessagesController {
@@ -29,7 +33,7 @@ class MessagesController {
             return;
         }
 
-        const userId = store.getState().user.id;
+        const userId = store.getState().user?.id;
 
         const wsTransport = new WSTransport(`chats/${userId}/${id}/${token}`);
 
@@ -91,7 +95,7 @@ class MessagesController {
 
         messagesToAdd = [...currentMessages, ...messagesToAdd];
 
-        store.set(`messages.${chatId}.messages`, messagesToAdd);
+        store.set(`messages.${chatId}`, messagesToAdd);
     }
 
     // удалить из мапа при закрытии подключения
@@ -106,10 +110,4 @@ class MessagesController {
     }
 }
 
-
-const controller = new MessagesController();
-
-// @ts-ignore
-window.messagesController = controller;
-
-export default controller;
+export default new MessagesController();

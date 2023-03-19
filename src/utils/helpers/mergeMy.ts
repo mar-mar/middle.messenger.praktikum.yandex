@@ -1,14 +1,9 @@
+import { isObject } from "./typeCheck";
+
 type Indexed<T = unknown> = {
     [key in string]: T;
 };
 
-function isObject(value: unknown): value is Record<string, any> {
-    return (
-        typeof value === 'object' &&
-        !Array.isArray(value) &&
-        value !== null
-    );
-}
 
 function merge(lhs: Indexed, rhs: Indexed): Indexed {
     mergeObj(lhs, rhs);

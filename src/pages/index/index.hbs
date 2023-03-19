@@ -2,12 +2,12 @@
 
     {{#layout_pane secBackColor=1 addeClassName=styles.[left-pane] }}
         <section class="{{ styles.root__profile }}">
-            {{{pages_index_components_profile item=item 
+            {{{pages_index_components_profile  
                 openPopupMenu=openPopupMenu }}}
         </section>
 
         <nav class="{{ styles.root__chats }}">
-            {{{pages_index_components_chatList item=item  
+            {{{pages_index_components_chatList 
                 openFindChat=openFindChat }}}
         </nav>
     {{/layout_pane }}
@@ -15,32 +15,23 @@
 
     <main class="{{ styles.root__chat }}">
 
-        {{#if item.selectedChat}}
-
-            {{#layout_pane addeClassName=styles.[chat-header] }}
-                {{{pages_index_components_chatHeader item=item.selectedChat 
-                    openPopupChatMenu=openPopupChatMenu }}}
-            {{/layout_pane }}
+        {{#layout_pane addeClassName=styles.[chat-header] }}
+            {{{pages_index_components_chatHeader 
+                openPopupChatMenu=openPopupChatMenu }}}
+        {{/layout_pane }}
 
 
-            <div class="{{ styles.root__chat__messages }}">
-                <section aria-label="Беседа">
-                    {{{pages_index_components_chatMessages item=item }}}
-                </section>
-            </div>
+        <div class="{{ styles.root__chat__messages }}">
+            <section aria-label="Беседа">
+                {{{pages_index_components_chatMessages }}}
+            </section>
+        </div>
 
-            {{#layout_pane addeClassName=styles.[chat-input] secBackColor=1 }}
-                {{{pages_index_components_messageInput item=item 
-                    openPopupAttache=openPopupAttache execute=ecexuteSendMessage }}}
-            {{/layout_pane }}
+        {{#layout_pane addeClassName=styles.[chat-input] secBackColor=1 }}
+            {{{pages_index_components_messageInput 
+                openPopupAttache=openPopupAttache }}}
+        {{/layout_pane }}
 
-        {{else}}
-
-            {{#layout_centerPane }}
-                <div>Выберите чат, чтобы отправить сообщение</div>
-            {{/layout_centerPane }}
-
-        {{/if}}
     </main>
 
     <div class="{{ styles.root }}__url-for-check">

@@ -1,17 +1,16 @@
 
-<div>
+<div >
 {{#components_form
     attachName=FORM_ATTACHE_NAME
-    item=item 
     [event:submit]=onSubmit }}
 
-    <div class="{{ styles.root }}">
+    <div class="{{ styles.root }} {{#unless item.selectedChatId}}{{ styles.root--nochat }}{{/unless}}">
 
-        <div class="{{ styles.root__attach-cont }}">
+        <!--div class="{{ styles.root__attach-cont }}">
             
             {{{components_textButton label="Прикрепить" type="button" [event:click]=openPopupAttache 
                 iconClass="attache-icon" noLabel=1 }}}
-        </div>
+        </div-->
 
         <div class="{{ styles.root__input-cont }}">
             {{{components_textarea label="Сообщение" isValid=validateMessage name="message" }}}
@@ -20,6 +19,8 @@
         <div class="{{ styles.root__send-cont }}">
             {{{components_textButton label="Отправить" type="submit" iconClass="send-icon" noLabel=1 }}}
         </div>
+
+        {{{components_simpleError attachName="error" error=error }}}
     </div>
 
 {{/components_form}}

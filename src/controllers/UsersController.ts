@@ -4,6 +4,9 @@ import API, { PasswordData, ProfileUserData, SearchUserData, UsersAPI } from "..
 import AvatarAPI, { AvatarData, AvatarUsersAPI } from "../api/AvatarUsersAPI";
 import ResourceAPI, { ResourceUserAPI } from "../api/ResourceUserAPI";
 import Router, { PAGES_PATHS } from "../utils/Router";
+import { get } from "../utils/helpers/merge";
+import { isNumber } from "../utils/helpers/typeCheck";
+import { User } from "../api/AuthAPI";
 
 
 export class UsersController {
@@ -15,6 +18,10 @@ export class UsersController {
         this.api = API;
         this.avatarApi = AvatarAPI;
         this.resourceApi = ResourceAPI;
+    }
+
+    getUser(): User | undefined {
+        return store.getState().user;
     }
 
     // изменить профиль
@@ -79,10 +86,14 @@ export class UsersController {
         if (withThrow) throw e?.reason || "Ошибка";
     }
 
-    public getAvatarURL(path: string): string {
-        return this.resourceApi.url(path);
+    public getAvatarURL(path?: string): string {
+        return path ? this.resourceApi.url(path) : "";
     }
 
+    isCurrentUserId(id: number) {
+        const currentId = get(store.getState(), "user.id")
+        return (isNumber(currentId) && id === currentId);
+    }
 }
 
 export default new UsersController();

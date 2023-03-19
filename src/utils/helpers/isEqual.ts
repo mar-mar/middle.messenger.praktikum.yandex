@@ -12,10 +12,10 @@ function isEqual(a: Indexed, b: Indexed): boolean {
 function isEqualObj(lhs: Indexed, rhs: Indexed): boolean {
     const keysl = Object.keys(rhs);
     const keys2 = Object.keys(rhs);
-    if (isEqualStringArray(keysl, keys2)) return false;
+    if (!isEqualStringArray(keysl, keys2)) return false;
 
-    return !keysl.some(key => {
-        return !isEqualAny(lhs[key], rhs[key]);
+    return keysl.every(key => {
+        return isEqualAny(lhs[key], rhs[key]);
     });
 }
 

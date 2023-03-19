@@ -1,22 +1,29 @@
 
 <div class="{{ styles.root }}">
 
-    <div>
-        {{#each item.groups styles=styles }} <!--item.chats-->
-        <div class="{{ ../styles.root__group }}">
-            {{#layout_centerPane addeClassName=../styles.root__group-name}}
-                {{groupName}}
-            {{/layout_centerPane}}
+{{#if item.selectedChatId}}
 
-            {{#each messages  }}
-                <div class="{{ ../../styles.root__message}} {{#if my}}{{ ../../styles.root__message--my }}{{/if}}">
-                    
-                    <div>{{message}}</div>
-                    <div class="{{ ../../styles.root__message-time}}">{{time}}</div>
-                </div>
-            {{/each}}
+    <div>
+
+        <div class="{{ styles.root__group }}">
+
+            {{#with this as | parent | }}
+                {{#each item.messages  }}
+
+                    {{{pages_index_components_messageItem item=this selectedChatId=parent.selectedChatId }}}
+
+                {{/each}}
+            {{/with}}
         </div>
-        {{/each}}
+
     </div>
+
+{{else}}
+
+    {{#layout_centerPane }}
+        <div>Выберите чат, чтобы отправить сообщение</div>
+    {{/layout_centerPane }}
+
+{{/if}}
 
 </div>

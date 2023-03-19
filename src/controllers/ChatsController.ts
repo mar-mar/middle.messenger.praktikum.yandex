@@ -1,4 +1,4 @@
-import API, { CreateChatData, ChatsAPI } from '../api/ChatsAPI';
+import API, { CreateChatData, ChatsAPI, ChatInfo } from '../api/ChatsAPI';
 import { SearchUserData } from "../api/UsersAPI";
 import { errorLog } from "../utils/logger";
 import store from '../utils/Store';
@@ -43,15 +43,21 @@ class ChatsController {
         this.fetchChats();
     }
 
+    async deleteSelectedChat() {
+        const chatId = this.getSelectedChat();
+        if (!chatId) return;
+
+        await this.delete(chatId);
+    }
 
     // запрашиваем чаты и коннектимся к ним
     async fetchChats() {
         const chats = await this.api.read();
-        const mapChats = new Map();
+        const mapChats: Record<string, ChatInfo> = {};
 
         chats.forEach(async (chat) => {
 
-            mapChats.set(chat.id, chat);
+            mapChats[chat.id] = chat;
 
             const token = await this.getToken(chat.id);
 
@@ -63,6 +69,35 @@ class ChatsController {
 
     // добавление юзера в чат
     async addUserToChat(chatId: number, data: SearchUserData) {
+        
+        this.withSearchUser(data, (userId: number) => {
+            this.api.addUsers({ chatId, users: [userId] });
+        })
+    }
+
+    async removeUserFromChat(chatId: number, data: SearchUserData) {
+        
+        this.withSearchUser(data, (userId: number) => {
+            this.api.removeUsers({ chatId, users: [userId] });
+        })
+    }
+
+    async addUserToSelectedChat(data: SearchUserData) {
+        const chatId = this.getSelectedChat();
+        if (!chatId) return;
+
+        await this.addUserToChat(chatId, data);
+    }
+
+
+    async removeUserFromSelectedChat(data: SearchUserData) {
+        const chatId = this.getSelectedChat();
+        if (!chatId) return;
+
+        await this.addUserToChat(chatId, data);
+    }
+
+    async withSearchUser(data: SearchUserData, func: (userId: number) => void) {
         let user;
 
         try {
@@ -74,22 +109,25 @@ class ChatsController {
 
         try {
 
-            this.api.addUsers({ chatId, users: [user.id] });
+            func(user.id);
         }
         catch (exp) {
 
             this.errorHandler(exp, true);
             return;
         }
-
     }
+
+
+
 
     private async getToken(chatId: number): Promise<string> {
         return this.api.getToken(chatId);
     }
 
+
     selectChat(chatId: number) {
-        store.set('selectedChat', chatId);
+        store.set('selectedChatId', chatId);
     }
 
 
@@ -98,6 +136,9 @@ class ChatsController {
         if (withThrow) throw new Error(e?.reason || "Ошибка");
     }
 
+    getSelectedChat(): number | undefined {
+        return store.getState().selectedChatId;
+    }
     //{"reason":"title is empty, but required","error":"Bad format"}
 }
 

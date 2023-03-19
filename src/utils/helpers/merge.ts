@@ -1,40 +1,60 @@
+import { isObject } from "./typeCheck";
 
 export type Indexed<T = any> = {
-  [key in string]: T;
+    [key in string]: T;
 };
 
 export function merge(lhs: Indexed, rhs: Indexed): Indexed {
-  for (let p in rhs) {
-    if (!rhs.hasOwnProperty(p)) {
-      continue;
+    for (let p in rhs) {
+        if (!rhs.hasOwnProperty(p)) {
+            continue;
+        }
+
+        try {
+            if (rhs[p].constructor === Object) {
+                rhs[p] = merge(lhs[p] as Indexed, rhs[p] as Indexed);
+            } else {
+                lhs[p] = rhs[p];
+            }
+        } catch (e) {
+            lhs[p] = rhs[p];
+        }
     }
 
-    try {
-      if (rhs[p].constructor === Object) {
-        rhs[p] = merge(lhs[p] as Indexed, rhs[p] as Indexed);
-      } else {
-        lhs[p] = rhs[p];
-      }
-    } catch (e) {
-      lhs[p] = rhs[p];
-    }
-  }
-
-  return lhs;
+    return lhs;
 }
 
 export function set(object: Indexed | unknown, path: string, value: unknown): Indexed | unknown {
-  if (typeof object !== 'object' || object === null) {
-    return object;
-  }
+    if (typeof object !== 'object' || object === null) {
+        return object;
+    }
 
-  if (typeof path !== 'string') {
-    throw new Error('path must be string');
-  }
+    if (typeof path !== 'string') {
+        throw new Error('path must be string');
+    }
 
-  const result = path.split('.').reduceRight<Indexed>((acc, key) => ({
-    [key]: acc,
-  }), value as any);
+    const result = path.split('.').reduceRight<Indexed>((acc, key) => ({
+        [key]: acc,
+    }), value as any);
 
-  return merge(object as Indexed, result);
+
+    return merge(object as Indexed, result);
+}
+
+export function get(object: Indexed | unknown, path: string): any {
+    if (typeof path !== 'string') {
+        throw new Error('path must be string');
+    }
+
+    if (!isObject(object)) return undefined;
+
+    const isOk = path.split('.').every(key => {
+
+        if (!isObject(object)) return false;
+        object = object[key];
+        
+        return true;
+    });
+
+    return isOk ? object : undefined;
 }
