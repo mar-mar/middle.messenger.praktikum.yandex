@@ -28,8 +28,12 @@ class ChatsController {
     // запрашиваем чаты и коннектимся к ним
     async fetchChats() {
         const chats = await this.api.read();
+        const mapChats = new Map();
 
-        chats.map(async (chat) => {
+        chats.forEach(async (chat) => {
+            
+            mapChats.set(chat.id, chat);
+
             const token = await this.getToken(chat.id);
 
             await MessagesController.connect(chat.id, token);

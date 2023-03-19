@@ -43,11 +43,11 @@ export default class WSTransport extends WSTransportBase {
 
         this.subscribe(this.socket);
 
-        this.setupPing();
-
         return new Promise((resolve) => {
 
             this.on(WSTransportEvents.CONNECTED, () => {
+                this.setupPing();
+
                 resolve();
             });
         });

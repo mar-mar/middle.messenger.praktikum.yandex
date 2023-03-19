@@ -105,7 +105,8 @@ class IndexPageBase extends _Block {
 
 const withChats = withStore((state) => (
     { 
-        chats: state.chats ? [...state.chats] : [] 
+        chats: state.chats ? [...state.chats] : [],
+        selectedChat: state.selectedChat
     } 
 ));
 

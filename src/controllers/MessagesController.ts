@@ -31,7 +31,7 @@ class MessagesController {
 
         const userId = store.getState().user.id;
 
-        const wsTransport = new WSTransport(`${userId}/${id}/${token}`);
+        const wsTransport = new WSTransport(`chats/${userId}/${id}/${token}`);
 
         this.sockets.set(id, wsTransport);
 

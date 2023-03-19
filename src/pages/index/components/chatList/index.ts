@@ -10,6 +10,15 @@ type ChatListProps = {
 export default class ChatList extends _Block<ChatListProps> {
     
     protected getCompileOptions() {
-        return { template, styles };
+        return { 
+            template, 
+            styles,
+            selectChat: this.selectChat.bind(this)
+        };
+    }
+
+    selectChat(evt: any) {
+        console.info(evt);
+        debugger;
     }
 }
