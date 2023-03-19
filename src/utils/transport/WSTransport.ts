@@ -20,7 +20,7 @@ export default class WSTransport extends WSTransportBase {
 
     private socket: WebSocket | null = null;
     private url: string;
-    private pingInterval: number = 0;
+    private pingTimeout: number = 0;
 
     constructor(path: string) {
 
@@ -46,7 +46,7 @@ export default class WSTransport extends WSTransportBase {
         return new Promise((resolve) => {
 
             this.on(WSTransportEvents.CONNECTED, () => {
-                this.setupPing();
+                this.initPing();
 
                 resolve();
             });
@@ -57,18 +57,26 @@ export default class WSTransport extends WSTransportBase {
         this.socket?.close();
     }
 
-    private setupPing() {
+    private initPing() {
 
-        this.pingInterval = setInterval(() => {
-            this.send({ type: 'ping' });
-        }, WSTransport.PING_INTERVAL)
+        this.ping();
 
         this.on(WSTransportEvents.CLOSE, () => {
-            if (this.pingInterval) clearInterval(this.pingInterval);
+            if (this.pingTimeout) clearInterval(this.pingTimeout);
 
-            this.pingInterval = 0;
+            this.pingTimeout = 0;
         })
     }
+
+    private ping() {
+        this.pingTimeout = setTimeout(() => {
+            if (this.socket?.readyState !== 1) return; // зкрывается не сразу можем поймать ошибки
+
+            this.send({ type: 'ping' });
+            this.ping();
+        }, WSTransport.PING_INTERVAL)
+    }
+
 
     private subscribe(socket: WebSocket) {
         // ??? removeEventListener
@@ -77,6 +85,7 @@ export default class WSTransport extends WSTransportBase {
             this.emit(WSTransportEvents.CONNECTED)
         });
         socket.addEventListener('close', () => {
+            console.info("close");
             this.emit(WSTransportEvents.CLOSE)
         });
 

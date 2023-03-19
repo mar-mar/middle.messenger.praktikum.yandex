@@ -12,13 +12,8 @@ export default class ChatList extends _Block<ChatListProps> {
     protected getCompileOptions() {
         return { 
             template, 
-            styles,
-            selectChat: this.selectChat.bind(this)
+            styles
         };
     }
 
-    selectChat(evt: any) {
-        console.info(evt);
-        debugger;
-    }
 }

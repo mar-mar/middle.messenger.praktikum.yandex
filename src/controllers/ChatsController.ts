@@ -1,7 +1,9 @@
 import API, { CreateChatData, ChatsAPI } from '../api/ChatsAPI';
+import { SearchUserData } from "../api/UsersAPI";
 import { errorLog } from "../utils/logger";
 import store from '../utils/Store';
 import MessagesController from './MessagesController';
+import UsersController from "./UsersController";
 
 class ChatsController {
 
@@ -13,11 +15,11 @@ class ChatsController {
 
     // создание чата
     async create(data: CreateChatData) {
-        try {
+        try {            
             await this.api.create(data);
-
         }
         catch(exp) {
+
             this.errorHandler(exp, true);
             return;
         }
@@ -25,13 +27,30 @@ class ChatsController {
         this.fetchChats();
     }
 
+    // удаление чата
+    async delete(chatId: number) {
+        try {            
+            await this.api.delete(chatId);
+        }
+        catch(exp) {
+            
+            this.errorHandler(exp, true);
+            return;
+        }
+
+        debugger
+        MessagesController.closeById(chatId); //закрывает бэк???
+        this.fetchChats();
+    }
+
+
     // запрашиваем чаты и коннектимся к ним
     async fetchChats() {
         const chats = await this.api.read();
         const mapChats = new Map();
 
         chats.forEach(async (chat) => {
-            
+
             mapChats.set(chat.id, chat);
 
             const token = await this.getToken(chat.id);
@@ -39,21 +58,31 @@ class ChatsController {
             await MessagesController.connect(chat.id, token);
         });
 
-        store.set('chats', chats);
+        store.set('chats', mapChats);
     }
 
     // добавление юзера в чат
-    addUserToChat(chatId: number, userId: number) {
-        this.api.addUsers(chatId, [userId]);
+    async addUserToChat(chatId: number, data: SearchUserData) {
+        let user;
+
+        try {
+            user = await UsersController.search(data);
+        }
+        catch(exp) { }
+        
+        if (!user) throw new Error("Не найден пользователь с таким логином");
+
+        try {
+
+            this.api.addUsers({ chatId, users: [user.id] });
+        }
+        catch (exp) {
+
+            this.errorHandler(exp, true);
+            return;
+        }
+
     }
-
-    // удаление чата
-    async delete(chatId: number) {
-        await this.api.delete(chatId);
-
-        this.fetchChats();
-    }
-
 
     private async getToken(chatId: number): Promise<string> {
         return this.api.getToken(chatId);

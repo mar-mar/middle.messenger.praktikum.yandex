@@ -15,6 +15,10 @@ export interface PasswordData {
     newPassword: string
 }
 
+export interface SearchUserData {
+    login: string,
+}
+
 
 export class UsersAPI extends _BaseAPI {
     constructor() {
@@ -29,6 +33,10 @@ export class UsersAPI extends _BaseAPI {
     // редактирование пароля
     password(data: PasswordData) {
         return this.http.put<User>('password', { data });
+    }
+
+    search(data: SearchUserData) {
+        return this.http.post<User>('search', { data });
     }
 
 }

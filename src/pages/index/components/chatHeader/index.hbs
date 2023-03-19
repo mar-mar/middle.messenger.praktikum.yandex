@@ -3,11 +3,11 @@
 
     <div class="{{ styles.root__avatar }}">
         {{{components_avatar imageUrl=item.profile.avatar diameter='S' 
-            avatarOwner=item.profile.display_name }}}
+            avatarOwner=item.title }}}
     </div>
 
     <div class="{{ styles.root__label }}">
-        {{item.profile.display_name}}
+        {{item.title}}
     </div>
 
     <div class="{{ styles.root__menu }}">

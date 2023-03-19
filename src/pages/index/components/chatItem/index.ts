@@ -6,24 +6,27 @@ import * as styles from "./styles.module.pcss";
 
 type ChatItemProps = { 
     item: ChatInfo,
-    selectedChat: number
+    selectedChat: ChatInfo
 };
 
  export default class ChatItemB extends _Block<ChatItemProps> {
     
     protected getCompileOptions() {
+        const selChat = this.getProps().selectedChat;
+        const selId = selChat ? selChat.id : undefined;
+
         return { 
             template, 
             styles,
-            isSelected: this.getProps().item.id === this.getProps().selectedChat
+            isSelected: selId && this.getProps().item.id === selId
         };
     }
 
     constructor(props: Props<ChatItemProps>) { 
         props.events = props.events || {};
         const id = props.item.id;
+
         props.events.click = () => { 
-            debugger
             ChatsController.selectChat(id); 
         }
         super(props);

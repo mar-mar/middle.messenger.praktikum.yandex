@@ -1,5 +1,6 @@
 //import routeUse from "../../utils/route";
 import { CreateChatData } from "../../api/ChatsAPI";
+import { SearchUserData } from "../../api/UsersAPI";
 import ChatsController from "../../controllers/ChatsController";
 import Popup from "../../layout/popup";
 import routeUse, { PAGES } from "../../utils/route";
@@ -42,6 +43,7 @@ class IndexPageBase extends _Block {
 
             openFindChat: this.visibleChild .bind(this, true, CHILD_NAMES.FindChat),
             openCreateChat: this.visibleChild.bind(this, true, CHILD_NAMES.CreateChat),
+
             ecexuteAddUser: this.visibleChild .bind(this, false, CHILD_NAMES.AddUser),
             ecexuteRemoveUser: this.visibleChild .bind(this, false, CHILD_NAMES.RemoveUser),
             ecexuteFindChat: this.visibleChild .bind(this, false, CHILD_NAMES.FindChat),
@@ -77,7 +79,7 @@ class IndexPageBase extends _Block {
         return [
             { label: "Добавить пользователя", click: this.visibleChild.bind(this, true, CHILD_NAMES.AddUser) },
             { label: "Удалить пользователя", click: this.visibleChild.bind(this, true, CHILD_NAMES.RemoveUser) },
-            { label: "Удалить чат" }
+            { label: "Удалить чат", click: this.deleteSelChat.bind(this) }
         ];
     }
 
@@ -100,13 +102,38 @@ class IndexPageBase extends _Block {
 
         this.visibleChild.bind(this, false, CHILD_NAMES.CreateChat);
     }
+
+    async deleteSelChat() {
+        try {
+            await ChatsController.delete(this.getSelectedChatId());
+        }
+        catch(exp) {
+            //errorCallback(String(exp)); где показать???
+            // делать модулку с вопросом???
+            return;
+        }
+    }
+
+    async ecexuteAddUser(values: SearchUserData, errorCallback: ErrorCallback) {
+        try {
+            await ChatsController.addUserToChat(this.getSelectedChatId(), values);
+        }
+        catch(exp) {
+            errorCallback(String(exp));
+            return;
+        }
+    }
+
+    private getSelectedChatId() {
+        return this.getProps().item.selectedChat.id;
+    }
 }
 
 
 const withChats = withStore((state) => (
     { 
         chats: state.chats ? [...state.chats] : [],
-        selectedChat: state.selectedChat
+        selectedChat: state.chats && state.selectedChat ? state.chats.get(state.selectedChat) : undefined
     } 
 ));
 

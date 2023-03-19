@@ -13,4 +13,8 @@ export default class FindChatDialogBody extends _BlockWithForm<Record<string, an
             styles
          };
     }
+
+    protected getErrorBlock() {
+        return this.getForm()?.getChildByAttacheNameOne("error");
+    }
 }

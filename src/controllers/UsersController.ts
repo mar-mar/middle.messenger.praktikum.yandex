@@ -1,6 +1,6 @@
 import store from "../utils/Store";
 import { errorLog } from "../utils/logger";
-import API, { PasswordData, ProfileUserData, UsersAPI } from "../api/UsersAPI";
+import API, { PasswordData, ProfileUserData, SearchUserData, UsersAPI } from "../api/UsersAPI";
 import AvatarAPI, { AvatarData, AvatarUsersAPI } from "../api/AvatarUsersAPI";
 import ResourceAPI, { ResourceUserAPI } from "../api/ResourceUserAPI";
 import Router, { PAGES_PATHS } from "../utils/Router";
@@ -58,6 +58,20 @@ export class UsersController {
 
             this.errorHandler(exp, true);
         }
+    }
+
+    async search(data: SearchUserData) {
+        let user;
+        try {
+
+            user = await this.api.search(data);
+
+        } catch (exp: any) {
+
+            this.errorHandler(exp, true);
+        }
+
+        return user;
     }
 
     errorHandler(e: any, withThrow: boolean = false) {

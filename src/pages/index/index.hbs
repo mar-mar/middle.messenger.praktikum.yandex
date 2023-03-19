@@ -15,23 +15,32 @@
 
     <main class="{{ styles.root__chat }}">
 
-        {{#layout_pane addeClassName=styles.[chat-header] }}
-            {{{pages_index_components_chatHeader item=item 
-                openPopupChatMenu=openPopupChatMenu }}}
-        {{/layout_pane }}
+        {{#if item.selectedChat}}
+
+            {{#layout_pane addeClassName=styles.[chat-header] }}
+                {{{pages_index_components_chatHeader item=item.selectedChat 
+                    openPopupChatMenu=openPopupChatMenu }}}
+            {{/layout_pane }}
 
 
-        <div class="{{ styles.root__chat__messages }}">
-            <section aria-label="Беседа">
-                {{{pages_index_components_chatMessages item=item }}}
-            </section>
-        </div>
+            <div class="{{ styles.root__chat__messages }}">
+                <section aria-label="Беседа">
+                    {{{pages_index_components_chatMessages item=item }}}
+                </section>
+            </div>
 
-        {{#layout_pane addeClassName=styles.[chat-input] secBackColor=1 }}
-            {{{pages_index_components_messageInput item=item 
-                openPopupAttache=openPopupAttache execute=ecexuteSendMessage }}}
-        {{/layout_pane }}
+            {{#layout_pane addeClassName=styles.[chat-input] secBackColor=1 }}
+                {{{pages_index_components_messageInput item=item 
+                    openPopupAttache=openPopupAttache execute=ecexuteSendMessage }}}
+            {{/layout_pane }}
 
+        {{else}}
+
+            {{#layout_centerPane }}
+                <div>Выберите чат, чтобы отправить сообщение</div>
+            {{/layout_centerPane }}
+
+        {{/if}}
     </main>
 
     <div class="{{ styles.root }}__url-for-check">

@@ -11,11 +11,23 @@ export interface ChatInfo {
         time: string;
         content: string;
     }
-}
+};
 
 export interface CreateChatData {
     title: string;
 }
+
+export interface AddUserToChatData {
+    chatId: number;
+    users: number[];
+}
+
+
+export interface RemoveUserFromChatData {
+    chatId: number;
+    users: number[];
+}
+
 
 export class ChatsAPI extends _BaseAPI {
     constructor() {
@@ -39,8 +51,12 @@ export class ChatsAPI extends _BaseAPI {
         return this.http.get(`${id}/users`)
     }
 
-    addUsers(chatId: number, users: number[]): Promise<unknown> {
-        return this.http.put('users', { data: { users, chatId }});
+    addUsers(data: AddUserToChatData): Promise<unknown> {
+        return this.http.put('users', { data });
+    }
+
+    removeUsers(data: RemoveUserFromChatData): Promise<unknown> {
+        return this.http.put('users', { data });
     }
 
     async getToken(chatId: number): Promise<string> {

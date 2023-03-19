@@ -23,6 +23,7 @@ export interface User {
     password: string;
     phone: string;
     avatar: string;
+    display_name: string;
 }
 
 export class AuthAPI extends _BaseAPI {
