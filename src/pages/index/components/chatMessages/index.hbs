@@ -4,26 +4,30 @@
 {{#if item.selectedChatId}}
 
     <div>
+        {{#with this as | parent | }}
+            {{#each messageGroups  }}
 
-        <div class="{{ styles.root__group }}">
+                <div class="{{ parent.styles.root__group }}">
+                    {{#layout_centerPane addeClassName=parent.styles.root__group-name}}
+                     {{this.[0]}}
+                    {{/layout_centerPane}}
+                    
+                        {{#each this.[1]  }}
+ 
+                            {{{pages_index_components_messageItem 
+                                item=this 
+                                userId=parent.item.userId 
+                                scrollMessage=parent.item.scrollMessage
+                            }}}
 
-            {{#with this as | parent | }}
-                {{#each item.messages  }}
+                        {{/each}}
+                    
+                </div>
 
-                    {{{pages_index_components_messageItem item=this selectedChatId=parent.selectedChatId }}}
-
-                {{/each}}
-            {{/with}}
-        </div>
-
+            {{/each}}
+        {{/with}}
     </div>
-
-{{else}}
-
-    {{#layout_centerPane }}
-        <div>Выберите чат, чтобы отправить сообщение</div>
-    {{/layout_centerPane }}
-
+    
 {{/if}}
 
 </div>

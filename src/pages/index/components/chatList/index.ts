@@ -1,6 +1,3 @@
-
-
-import { get } from "../../../../utils/helpers/merge";
 import { withStore } from "../../../../utils/Store";
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";

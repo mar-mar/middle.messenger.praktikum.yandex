@@ -1,5 +1,6 @@
 import { ChatInfo } from "../../../../api/ChatsAPI";
 import ChatsController from "../../../../controllers/ChatsController";
+import { dateToStr } from "../../../../utils/helpers/dateToStr";
 import { Props, _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
 import * as styles from "./styles.module.pcss";
@@ -17,8 +18,15 @@ type ChatItemProps = {
         return { 
             template, 
             styles,
-            isSelected: selId && this.getProps().item.id === selId
+            isSelected: selId && this.getProps().item.id === selId,
+            getStrDate: this.getStrDate.bind(this)
         };
+    }
+
+    private getStrDate() {
+        const props = this.getProps();
+        const time = props.item?.last_message?.time;
+        return time ? dateToStr(new Date(time)) : "";
     }
 
     constructor(props: Props<ChatItemProps>) { 

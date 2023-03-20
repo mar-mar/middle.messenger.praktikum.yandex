@@ -1,4 +1,3 @@
-//import WSTransport, { WSTransportEvents } from '../utils/WSTransport';
 import store from '../utils/Store';
 import WSTransport, { WSTransportEvents } from "../utils/transport/WSTransport";
 
@@ -91,11 +90,18 @@ class MessagesController {
             messagesToAdd.push(messages);
         }
 
-        const currentMessages = (store.getState().messages || {})[chatId] || [];
+        const state = store.getState();
+        const messState = state.messages?.[chatId];
+        const currentMessages = messState?.messages || [];
 
         messagesToAdd = [...currentMessages, ...messagesToAdd];
 
-        store.set(`messages.${chatId}`, messagesToAdd);
+        console.log(messages, [...currentMessages, ...messagesToAdd]);
+
+        store.set(`messages.${chatId}`, {
+            messages: messagesToAdd,
+            scrollMessage: messagesToAdd[messagesToAdd.length-1]
+        });
     }
 
     // удалить из мапа при закрытии подключения

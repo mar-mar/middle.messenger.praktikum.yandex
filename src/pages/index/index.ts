@@ -97,7 +97,7 @@ export default class IndexPage extends _Block {
             return;
         }
 
-        this.visibleChild.bind(this, false, CHILD_NAMES.CreateChat);
+        this.visibleChild(false, CHILD_NAMES.CreateChat);
     }
 
 

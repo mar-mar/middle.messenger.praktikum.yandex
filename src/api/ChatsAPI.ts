@@ -6,6 +6,8 @@ export interface ChatInfo {
     title: string;
     avatar: string;
     unread_count: number;
+    time: string;
+    
     last_message: {
         user: User,
         time: string;
@@ -38,7 +40,7 @@ export class ChatsAPI extends _BaseAPI {
         return this.http.post('', { data });
     }
 
-    delete(id: number): Promise<unknown> {
+    delete(id: number) {
         return this.http.delete('', { data: { chatId: id }});
     }
 

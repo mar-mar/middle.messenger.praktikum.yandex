@@ -16,7 +16,13 @@
             {{#with this as | parent |}}
 
                 {{#each item.chats }} <!--item.chats-->
-                    {{{pages_index_components_chatItem item=this selectedChatId=parent.item.selectedChatId }}}
+
+                    {{{pages_index_components_chatItem 
+                        item=this 
+                        selectedChatId=parent.item.selectedChatId 
+                        
+                    }}}
+
                 {{/each}}
 
             {{/with}}

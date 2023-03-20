@@ -13,8 +13,7 @@ type ProfileProps = {
 class ProfileBase extends _Block<ProfileProps> {
     
     protected getCompileOptions() {
-        debugger
-        
+    
         return { 
             template, 
             styles,

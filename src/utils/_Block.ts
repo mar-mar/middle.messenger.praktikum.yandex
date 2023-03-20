@@ -42,11 +42,13 @@ export class _Block<T extends Record<string, any> = any> {
     private readonly eventBus: EventBus;
     private readonly props: Props<T>;
     private readonly id: string;
+    private isMounted: boolean;
 
     constructor(props: Props<T>) {
         this.eventBus = new EventBus();
 
         this.id = nanoid(6);
+        this.isMounted = false;
         props.attachName = props.attachName || this.id;
 
         this.props = this.makePropsProxy(props, this.eventBus);
@@ -59,12 +61,12 @@ export class _Block<T extends Record<string, any> = any> {
 
     // Может переопределять пользователь, необязательно трогать
     // после добавления в документ
-    protected componentDidMount(/*oldProps*/): void { };
+    protected componentDidMount(): void { };
     // после удаления из документа
-    protected componentDidUnMount(/*oldProps*/): void { };
+    protected componentDidUnMount(): void { };
 
     // Может переопределять пользователь, необязательно трогать
-    protected componentDidUpdate(_oldProps: Partial<T>, _newProps: Partial<T>): boolean { return true; };
+    protected componentDidUpdate(_oldProps: T, _newProps: T): boolean { return true; };
 
     protected getCompileOptions(): CompileOptions { return {}; };
 
@@ -115,6 +117,7 @@ export class _Block<T extends Record<string, any> = any> {
 
     //CDM
     public dispatchComponentDidMount(): void {
+        
         this.eventBus.emit(EVENTS.FLOW_CDM);
 
         this.forEachChildren((child, _) => {
@@ -124,6 +127,7 @@ export class _Block<T extends Record<string, any> = any> {
 
     //CDM
     private onComponentDidMount(): void {
+        this.isMounted = true;
         this.componentDidMount();
     }
 
@@ -138,11 +142,12 @@ export class _Block<T extends Record<string, any> = any> {
 
     //CD-UM
     private onComponentDidUnMount(): void {
+        this.isMounted = false;
         this.componentDidUnMount();
     }   
 
     //CDU
-    private onComponentDidUpdate(oldProps: Partial<T>, newProps: Partial<T>): void {
+    private onComponentDidUpdate(oldProps: T, newProps: T): void {
         if (this.componentDidUpdate(oldProps, newProps)) {
             this.eventBus.emit(EVENTS.FLOW_RENDER);
         }
@@ -154,7 +159,7 @@ export class _Block<T extends Record<string, any> = any> {
         this.toggleDomEvents(false);
         this.children = {};
 
-        const newElement = this.compile(this.getCompileOptions());
+        const newElement = this.compile(this.getCompileOptions()); // тут заполняются children
 
         const oldElement = this.element;
         this.element = newElement;
@@ -165,6 +170,12 @@ export class _Block<T extends Record<string, any> = any> {
         }
 
         this.toggleDomEvents(true);
+
+        if (this.isMounted) {
+            this.forEachChildren((child, _) => {
+                child.dispatchComponentDidMount();
+            });
+        }
     }
 
     //render
@@ -243,6 +254,7 @@ export class _Block<T extends Record<string, any> = any> {
     public addChild(child: _Block): void {
         const attachName = child.getProps().attachName || child.getId();
         let children = this.children[attachName];
+
         if (!children) {
             this.children[attachName] = child;
         }

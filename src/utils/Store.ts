@@ -14,15 +14,19 @@ export enum StoreEvents {
 }
 
 interface State {
-    user: User;
-    sleep: boolean;
-    chats: Record<number, ChatInfo>;
+    user?: User;
+    sleep?: boolean;
+    chats?: Record<number, ChatInfo>;
     selectedChatId?: number;
-    messages: Record<number, Message[]>
+
+    messages?:  Record<number, {
+        messages: Message[],
+        scrollMessage: Message
+    }>
 }
 
 export class Store extends EventBus {
-    private state: Partial<State> = {};
+    private state: State = {};
 
     public set(keypath: string, data: unknown) {
         set(this.state, keypath, data);
@@ -30,7 +34,7 @@ export class Store extends EventBus {
         this.emit(StoreEvents.Updated, this.getState());
     }
 
-    public getState(): Partial<State> {
+    public getState(): State {
         return this.state;
     }
 }

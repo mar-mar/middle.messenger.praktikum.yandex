@@ -15,7 +15,7 @@ const WSTransportBase = eventBusWithStore<TransportStore>(state => {
 
 export default class WSTransport extends WSTransportBase {
     static BASE_URL = 'wss://ya-praktikum.tech/ws';
-    static PING_INTERVAL: number = 10000;
+    static PING_INTERVAL: number = 5000;
     //`wss://ya-praktikum.tech/ws/chats/${userId}/${id}/${token}`
 
     private socket: WebSocket | null = null;

@@ -18,7 +18,6 @@ export class AuthController {
 
     // вход
     async signin(data: SigninData) {
-        debugger;
 
         try {
             await this.api.signin(data);

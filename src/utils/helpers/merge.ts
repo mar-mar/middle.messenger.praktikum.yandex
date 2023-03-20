@@ -12,7 +12,7 @@ export function merge(lhs: Indexed, rhs: Indexed): Indexed {
 
         try {
             if (rhs[p].constructor === Object) {
-                rhs[p] = merge(lhs[p] as Indexed, rhs[p] as Indexed);
+                lhs[p] = merge(lhs[p] as Indexed, rhs[p] as Indexed);
             } else {
                 lhs[p] = rhs[p];
             }
@@ -24,8 +24,8 @@ export function merge(lhs: Indexed, rhs: Indexed): Indexed {
     return lhs;
 }
 
-export function set(object: Indexed | unknown, path: string, value: unknown): Indexed | unknown {
-    if (typeof object !== 'object' || object === null) {
+export function set(object: Indexed | any, path: string, value: unknown): Indexed | unknown {
+    if (!isObject(object)) {
         return object;
     }
 
@@ -33,12 +33,21 @@ export function set(object: Indexed | unknown, path: string, value: unknown): In
         throw new Error('path must be string');
     }
 
-    const result = path.split('.').reduceRight<Indexed>((acc, key) => ({
-        [key]: acc,
-    }), value as any);
+    const paths = path.split('.');
+    const hi = paths.length - 1;
+    
+    path.split('.').forEach((key, ikey) => {
 
+        if (hi === ikey) {
+            object[key] = value;
+            return;
+        }
 
-    return merge(object as Indexed, result);
+        if (!isObject(object[key])) object[key] = {};
+        object = object[key];
+    });
+
+    return object;
 }
 
 export function get(object: Indexed | unknown, path: string): any {
@@ -52,7 +61,7 @@ export function get(object: Indexed | unknown, path: string): any {
 
         if (!isObject(object)) return false;
         object = object[key];
-        
+
         return true;
     });
 

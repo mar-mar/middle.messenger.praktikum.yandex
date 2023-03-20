@@ -37,8 +37,7 @@ class ChatsController {
             this.errorHandler(exp, true);
             return;
         }
-
-        debugger
+        
         MessagesController.closeById(chatId); //закрывает бэк???
         this.fetchChats();
     }
