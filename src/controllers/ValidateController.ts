@@ -6,8 +6,9 @@ enum ERRORS {
     emailError = `латиница, может включать цифры и спецсимволы вроде дефиса, обязательно должна быть «собака» (@) и 
 точка после неё, но перед точкой обязательно должны быть буквы`,
     phoneError = `от 10 до 15 символов, состоит из цифр, может начинается с плюса`,
-    messageError = `не должно быть пустым`,
-    passwordDiffError = `Пароли должны совпадать`
+    messageError = `Не должно быть пустым`,
+    passwordDiffError = `Пароли должны совпадать`,
+    chatNameError = `Имя чата не должно быть пустым и должно содержать не более 50 символов`,
 }
 
 
@@ -56,4 +57,8 @@ export function validateMessage(value: string): string {
     return !!value ? "" : ERRORS.messageError;
 }
 
+export function validateChatName(value: string): string {
+    
+    return (value && value.length <= 50) ? "" : ERRORS.chatNameError;
+}
 

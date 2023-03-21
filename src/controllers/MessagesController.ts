@@ -25,37 +25,46 @@ export interface SendMessageData {
 class MessagesController {
     // по активным чатам
     private sockets: Map<number, WSTransport> = new Map();
+    
 
     // создать коннект и получить сообщения
-    async connect(id: number, token: string) {
-        if (this.sockets.has(id)) {
+    async connect(chatId: number, token: string) {
+        if (this.sockets.has(chatId)) {
             return;
         }
 
         const userId = store.getState().user?.id;
 
-        const wsTransport = new WSTransport(`chats/${userId}/${id}/${token}`);
+        const wsTransport = new WSTransport(`chats/${userId}/${chatId}/${token}`);
 
-        this.sockets.set(id, wsTransport);
+        this.sockets.set(chatId, wsTransport);
 
         await wsTransport.connect();
 
-        this.subscribe(wsTransport, id);
-        this.fetchOldMessages(id);
+        this.subscribe(wsTransport, chatId);
+        this.fetchOldMessages(chatId);
     }
 
     // отправка сообщений
-    sendMessage(chatId: number, message: string) {
-        const socket = this.sockets.get(chatId);
+    async sendMessage(chatId: number, message: string, getToken: () => Promise<string>) {
+        
 
-        if (!socket) {
-            throw new Error(`Chat ${chatId} is not connected`);
+        if (!this.sockets.has(chatId)) {
+            const token = await getToken();
+            await this.connect(chatId, token);
         }
+
+        const socket = this.sockets.get(chatId);
+        if (!socket) throw new Error(`Chat ${chatId} is not connected`);
 
         socket.send({
             type: 'message',
             content: message,
         });
+    }
+
+    private clearMessage(_chatId: number) {
+       // store.set(`messages.${chatId}`, undefined);
     }
 
     // страница pageNumber с сообщениями, 20 сообщений на странице
@@ -102,11 +111,13 @@ class MessagesController {
             messages: messagesToAdd,
             scrollMessage: messagesToAdd[messagesToAdd.length-1]
         });
+        console.info(chatId, messagesToAdd);
     }
 
     // удалить из мапа при закрытии подключения
     private onClose(id: number) {
         this.sockets.delete(id);
+        this.clearMessage(id);
     }
 
     // подписываемся на события транспорта

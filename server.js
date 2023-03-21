@@ -8,6 +8,7 @@ const indexPath = pathUtils.resolve("dist", "index.html");
 
 // helmet
 app.disable("x-powered-by");
+//express-history-api-fallback
 
 app.use((req, res, next) => {
     res.header("X-Frame-Options", "SAMEORIGIN");

@@ -92,7 +92,7 @@ export class _BlockWithForm<D extends Record<string, any>, T extends RecordStrAn
         return null;
     }
 
-    private errorCallback(error: string): void {
+    protected errorCallback(error: string): void {
         this.getErrorBlock()?.setProps({ error });
     }
 

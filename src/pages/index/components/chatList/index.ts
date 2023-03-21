@@ -23,7 +23,7 @@ class ChatListBase extends _Block<ChatListProps> {
 const withChats = withStore((state) => {
 
     return {
-        chats: state.chats ? Object.values(state.chats) : [],
+        chats: state.chats || [],
         selectedChatId: state.selectedChatId
     };
 });

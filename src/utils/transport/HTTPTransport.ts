@@ -91,14 +91,11 @@ export default class HTTPTransport {
             xhr.responseType = 'json';
 
             // обработчики
-            xhr.onreadystatechange = () => {
-
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status < 400) {
-                        resolve(xhr.response);
-                    } else {
-                        reject(xhr.response);
-                    }
+            xhr.onload = () => {
+                if (xhr.status < 400) {
+                    resolve(xhr.response);
+                } else {
+                    reject(xhr.response);
                 }
             };
 

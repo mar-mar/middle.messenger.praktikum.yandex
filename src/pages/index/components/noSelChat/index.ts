@@ -1,4 +1,3 @@
-import { get } from "../../../../utils/helpers/merge";
 import { withStore } from "../../../../utils/Store";
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
@@ -16,7 +15,7 @@ class NoSelChatBase extends _Block {
 
 const withChats = withStore(state  => {
     return {
-        selectedChat: get(state, `chats.${state.selectedChatId}`)
+        selectedChat: state.selectedChatId
     }
 });
 

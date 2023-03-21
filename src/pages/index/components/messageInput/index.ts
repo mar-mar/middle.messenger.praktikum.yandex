@@ -3,8 +3,9 @@ import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import template from "./index.hbs";
 import * as styles from "./styles.module.pcss";
 import { validateMessage } from "../../../../utils/validate";
-import MessagesController, { SendMessageData } from "../../../../controllers/MessagesController";
+import { SendMessageData } from "../../../../controllers/MessagesController";
 import { withStore } from "../../../../utils/Store";
+import ChatsController from "../../../../controllers/ChatsController";
 
 
 type MessageInputProps = {
@@ -24,7 +25,7 @@ class MessageInputBase  extends _BlockWithForm<SendMessageData, MessageInputProp
     }
 
     execute(values: SendMessageData) {
-        MessagesController.sendMessage(this.getSelectedChatId(), values.message);
+        ChatsController.sendMessage(this.getSelectedChatId(), values.message);
     }
 
     private getSelectedChatId() {

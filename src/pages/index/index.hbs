@@ -36,14 +36,6 @@
         
     </main>
 
-    <div class="{{ styles.root }}__url-for-check">
-        <div>{{{components_textButton label="Авторизация" [event:click]=goLogin }}}</div>
-        <div>{{{components_textButton label="Регистриция" [event:click]=goSign }}}</div>
-        <div>{{{components_textButton label="Профиль" [event:click]=goProfile }}}</div>
-        <div>{{{components_textButton label="404 ошибка" [event:click]=goError404 }}}</div>
-        <div>{{{components_textButton label="500 ошибка" [event:click]=goError500 }}}</div>
-    </div>
-
     {{#layout_popup attachName=CHILD_NAMES.Attache }}
         {{{components_menu memuItems=attachMenuItems }}}
     {{/layout_popup}}
@@ -65,6 +57,11 @@
     {{/layout_modalDialog}}
     {{#layout_modalDialog attachName=CHILD_NAMES.CreateChat title="Создание чата"  }}
         {{{pages_index_modules_addChatDialogBody execute=executeCreateChat }}}
+    {{/layout_modalDialog}}
+
+    {{#layout_modalDialog attachName=ATTACHES.AVATAR_MODAL title="Загрузка файла для аватара"  }}
+        {{{pages_profile_modules_updateAvatarDialogBody 
+            execute=ecexuteUpdataAvatar }}}
     {{/layout_modalDialog}}
 
 </div>

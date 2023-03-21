@@ -38,7 +38,8 @@ class ChatsController {
             return;
         }
         
-        MessagesController.closeById(chatId); //закрывает бэк???
+        MessagesController.closeById(chatId); 
+
         this.fetchChats();
     }
 
@@ -52,18 +53,28 @@ class ChatsController {
     // запрашиваем чаты и коннектимся к ним
     async fetchChats() {
         const chats = await this.api.read();
-        const mapChats: Record<string, ChatInfo> = {};
 
         chats.forEach(async (chat) => {
-
-            mapChats[chat.id] = chat;
 
             const token = await this.getToken(chat.id);
 
             await MessagesController.connect(chat.id, token);
         });
 
-        store.set('chats', mapChats);
+        store.set('chats', chats);
+    }
+
+    // поиск чатов
+    async seachChats(filter: string): Promise<ChatInfo[] | undefined> {
+        let chats: ChatInfo[] = [];
+        try {
+            chats = await this.api.search(filter);
+        }
+        catch(exp) {
+            this.errorHandler(exp, true);
+            return;
+        }
+        return chats;
     }
 
     // добавление юзера в чат
@@ -117,9 +128,6 @@ class ChatsController {
         }
     }
 
-
-
-
     private async getToken(chatId: number): Promise<string> {
         return this.api.getToken(chatId);
     }
@@ -137,6 +145,10 @@ class ChatsController {
 
     getSelectedChat(): number | undefined {
         return store.getState().selectedChatId;
+    }
+
+    sendMessage(chatId: number, message: string) {
+        return MessagesController.sendMessage(chatId, message, this.getToken.bind(this, chatId));
     }
     //{"reason":"title is empty, but required","error":"Bad format"}
 }

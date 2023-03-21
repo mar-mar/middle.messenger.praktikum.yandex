@@ -16,19 +16,24 @@ export enum StoreEvents {
 interface State {
     user?: User;
     sleep?: boolean;
-    chats?: Record<number, ChatInfo>;
+    chats?: ChatInfo[]; // не делать объектом, так как set(state, 'chats', { 33: {} }) не оставит один чат, а только добавит или обновит chats.33
     selectedChatId?: number;
 
-    messages?:  Record<number, {
+    messages?: Record<number, { // тут можно делать объектом, но аккуратно, для удаления чата делать - set(state, 'messages', { 33: undefined })
         messages: Message[],
         scrollMessage: Message
     }>
 }
 
+// в set все объекты мутабельные
+// и только объекты - то есть ссылка остается постоянной и свойства примешиваются, не получится удалить какое-то свойство,
+// то есть хранить обновляемые списки в массвах - нельзя
+// массивы, Map, Set - иммутабельные, то подменяется один массив другим, тоже с Set и Map
 export class Store extends EventBus {
     private state: State = {};
 
     public set(keypath: string, data: unknown) {
+
         set(this.state, keypath, data);
 
         this.emit(StoreEvents.Updated, this.getState());
@@ -54,20 +59,21 @@ export function withStore<SP extends RecordStrAny = any>(mapStateToProps: (state
             //
             constructor(props: Omit<P, keyof SP>) {
 
-                let activeState = cloneDeep(mapStateToProps(store.getState()));
+                const state = mapStateToProps(store.getState());
+                let activeState = cloneDeep(state);
 
                 //
-                super({ ...(props as P), item: activeState});
+                super({ ...(props as P), item: state});
 
                 // store Updated
                 store.on(StoreEvents.Updated, () => {
-                    const newState = mapStateToProps(store.getState());
+                    const state = mapStateToProps(store.getState());
 
-                    if (!isEqual(activeState, newState)) {
+                    if (!isEqual(activeState, state)) {
 
-                        activeState = cloneDeep(newState);
+                        activeState = cloneDeep(state);
 
-                        this.setProps({ item: activeState } as Partial<{ item: SP; } & P>);
+                        this.setProps({ item: state } as Partial<{ item: SP; } & P>);
                     }
                     
                     

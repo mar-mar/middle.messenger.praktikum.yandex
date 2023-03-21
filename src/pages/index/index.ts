@@ -24,13 +24,7 @@ export default class IndexPage extends _Block {
     protected getCompileOptions() {
         return { 
             template, 
-            styles,
-            goLogin: this.go.bind(this, PAGES.Login),
-            goSign: this.go.bind(this, PAGES.Sign),
-            goProfile: this.go.bind(this, PAGES.Profile),
-            goError404: this.go.bind(this, PAGES.Error404),
-            goError500: this.go.bind(this, PAGES.Error500),
-            
+            styles,           
 
             //attachMenuItems: this.attachMenuItems(),
             chatMenuMenuItems: this.chatMenuMenuItems(),
@@ -43,10 +37,11 @@ export default class IndexPage extends _Block {
             openFindChat: this.visibleChild .bind(this, true, CHILD_NAMES.FindChat),
             openCreateChat: this.visibleChild.bind(this, true, CHILD_NAMES.CreateChat),
 
-            ecexuteAddUser: this.visibleChild .bind(this, false, CHILD_NAMES.AddUser),
-            ecexuteRemoveUser: this.visibleChild .bind(this, false, CHILD_NAMES.RemoveUser),
-            ecexuteFindChat: this.visibleChild .bind(this, false, CHILD_NAMES.FindChat),
+            ecexuteAddUser: this.ecexuteAddUser.bind(this),
+            ecexuteRemoveUser: this.ecexuteRemoveUser.bind(this),
+            ecexuteFindChat: this.visibleChild.bind(this, false, CHILD_NAMES.FindChat),
             executeCreateChat: this.executeCreateChat.bind(this),
+            ecexuteUpdataAvatar: this.ecexuteUpdataAvatar.bind(this),
 
             CHILD_NAMES
         };
@@ -120,6 +115,8 @@ export default class IndexPage extends _Block {
             errorCallback(String(exp));
             return;
         }
+
+        this.visibleChild(false, CHILD_NAMES.AddUser);
     }
 
     async ecexuteRemoveUser(values: SearchUserData, errorCallback: ErrorCallback) {
@@ -130,8 +127,11 @@ export default class IndexPage extends _Block {
             errorCallback(String(exp));
             return;
         }
+
+        this.visibleChild(false, CHILD_NAMES.RemoveUser);
     }
     
+    async ecexuteUpdataAvatar() {}
 }
 
 

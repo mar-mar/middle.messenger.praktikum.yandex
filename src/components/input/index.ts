@@ -13,7 +13,7 @@ type InputProps = {
 
     parentClassName?: string;
     noMargin?: 1 |0;
-
+    addedClassName?: string;
 };
 
 

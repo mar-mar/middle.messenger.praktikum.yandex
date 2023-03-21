@@ -4,7 +4,11 @@
     [event:submit]=onSubmit }}
 
     <div>
-        {{{components_input label="Имя чата" name="title" value=item.title }}}
+        {{{components_input label="Имя чата" 
+            name="title" 
+            value=item.title
+            isValid = validateChatName
+        }}}
     </div>
 
     <div class="{{ styles.root__button-cont}}">

@@ -1,5 +1,4 @@
 import UsersController from "../../../../controllers/UsersController";
-import { get } from "../../../../utils/helpers/merge";
 import { withStore } from "../../../../utils/Store";
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
@@ -23,8 +22,9 @@ class ChatHeaderBase extends _Block<ChatHeaderProps> {
 }
 
 const withChats = withStore(state  => {
+    
     return {
-        selectedChat: get(state, `chats.${state.selectedChatId}`)
+        selectedChat: state.selectedChatId ? state.chats?.find( chat => chat.id === state.selectedChatId) : undefined
     }
 });
 

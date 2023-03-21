@@ -44,6 +44,9 @@ export class ChatsAPI extends _BaseAPI {
         return this.http.delete('', { data: { chatId: id }});
     }
 
+    search(filter: string): Promise<ChatInfo[]> {
+        return this.http.get('', { data: { title: filter }} );
+    }
 
     read(): Promise<ChatInfo[]> {
         return this.http.get('');

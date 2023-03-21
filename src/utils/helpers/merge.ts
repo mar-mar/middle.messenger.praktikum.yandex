@@ -10,21 +10,20 @@ export function merge(lhs: Indexed, rhs: Indexed): Indexed {
             continue;
         }
 
-        try {
-            if (rhs[p].constructor === Object) {
-                lhs[p] = merge(lhs[p] as Indexed, rhs[p] as Indexed);
-            } else {
-                lhs[p] = rhs[p];
-            }
-        } catch (e) {
-            lhs[p] = rhs[p];
+        if (isObject(rhs[p]) && isObject(lhs[p])) {
+
+            merge(lhs[p] as Indexed, rhs[p] as Indexed);
+            continue;
         }
+
+        lhs[p] = rhs[p];
     }
 
     return lhs;
 }
 
-export function set(object: Indexed | any, path: string, value: unknown): Indexed | unknown {
+export function set(object: Indexed | unknown, path: string, value: unknown): Indexed | unknown {
+
     if (!isObject(object)) {
         return object;
     }
@@ -33,22 +32,13 @@ export function set(object: Indexed | any, path: string, value: unknown): Indexe
         throw new Error('path must be string');
     }
 
-    const paths = path.split('.');
-    const hi = paths.length - 1;
-    
-    path.split('.').forEach((key, ikey) => {
+    const result = path.split('.').reduceRight<Indexed>((acc, key) => ({
+        [key]: acc,
+    }), value as any);
 
-        if (hi === ikey) {
-            object[key] = value;
-            return;
-        }
-
-        if (!isObject(object[key])) object[key] = {};
-        object = object[key];
-    });
-
-    return object;
+    return merge(object as Indexed, result);
 }
+
 
 export function get(object: Indexed | unknown, path: string): any {
     if (typeof path !== 'string') {
