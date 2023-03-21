@@ -47,7 +47,8 @@ const withChats = withStore(state => {
         selectedChatId: state.selectedChatId,
         userId: state.user?.id,
         messages,
-        scrollMessage
+        scrollMessage,
+        chatUsers: state.selectedChatUsers
     }
 });
 

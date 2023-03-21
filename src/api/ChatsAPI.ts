@@ -70,6 +70,12 @@ export class ChatsAPI extends _BaseAPI {
         return response.token;
     }
 
+    getChatUsers(chatId: number): Promise<User[]> {
+        return this.http.get(`chats/${chatId}/users`, { data: { limit: 100 }} );
+    }
+
+    
+
 }
 
 export default new ChatsAPI();

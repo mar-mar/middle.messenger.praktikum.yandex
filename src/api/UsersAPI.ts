@@ -36,7 +36,7 @@ export class UsersAPI extends _BaseAPI {
     }
 
     search(data: SearchUserData) {
-        return this.http.post<User>('search', { data });
+        return this.http.post<User[]>('search', { data });
     }
 
 }

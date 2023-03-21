@@ -8,7 +8,7 @@ import UsersController from "./UsersController";
 class ChatsController {
 
     private readonly api: ChatsAPI;
-
+    private selectedChatUserIndex: number = 1; 
     constructor() {
         this.api = API;
     }
@@ -108,18 +108,19 @@ class ChatsController {
     }
 
     async withSearchUser(data: SearchUserData, func: (userId: number) => void) {
-        let user;
+        let users;
 
         try {
-            user = await UsersController.search(data);
+            users = await UsersController.search(data);
         }
         catch(exp) { }
         
-        if (!user) throw new Error("Не найден пользователь с таким логином");
+        const userId = users?.[0]?.id;
+        if (!userId) throw new Error("Не найден пользователь с таким логином");
 
         try {
 
-            func(user.id);
+            func(userId);
         }
         catch (exp) {
 
@@ -133,10 +134,20 @@ class ChatsController {
     }
 
 
-    selectChat(chatId: number) {
-        store.set('selectedChatId', chatId);
-    }
+    async selectChat(chatId: number) {
 
+        this.selectedChatUserIndex += 1;
+        const index = this.selectedChatUserIndex;
+
+        store.set('selectedChatId', chatId);
+        
+        const users = await this.api.getChatUsers(chatId);
+        
+        if (index === this.selectedChatUserIndex) {
+            store.set("selectedChatUsers", users);
+        }
+    
+    }
 
     errorHandler(e: any, withThrow: boolean = false) {
         errorLog(e);

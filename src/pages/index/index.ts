@@ -15,7 +15,9 @@ enum CHILD_NAMES {
     AddUser = "dialogAddUser",
     RemoveUser = "dialogRemoveUser",
     FindChat = "findChatDialogBody",
-    CreateChat = "createChatDialogBody"
+    CreateChat = "createChatDialogBody",
+    AvatarChat = "avatarChat",
+    Users = "users"
 }
 
 //{ item: { chats?: ChatInfo[] }}
@@ -71,6 +73,8 @@ export default class IndexPage extends _Block {
         return [
             { label: "Добавить пользователя", click: this.visibleChild.bind(this, true, CHILD_NAMES.AddUser) },
             { label: "Удалить пользователя", click: this.visibleChild.bind(this, true, CHILD_NAMES.RemoveUser) },
+            { label: "Посмотреть пользователей чата", click: this.visibleChild.bind(this, true, CHILD_NAMES.Users) },
+            { label: "Установить аватар", click: this.visibleChild.bind(this, true, CHILD_NAMES.AvatarChat) },
             { label: "Удалить чат", click: this.ecexuteDelChat.bind(this) }
         ];
     }
@@ -102,7 +106,7 @@ export default class IndexPage extends _Block {
         }
         catch(exp) {
             //errorCallback(String(exp)); где показать???
-            // делать модулку с вопросом???
+            // делать модалку с вопросом???
             return;
         }
     }

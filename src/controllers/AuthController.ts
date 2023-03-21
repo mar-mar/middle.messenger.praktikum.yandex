@@ -24,7 +24,7 @@ export class AuthController {
 
             await this.fetchUser();
 
-            Router.go(PAGES_PATHS.Profile);
+            Router.go(PAGES_PATHS.Messages);
         } catch (exp: any) {
             this.errorHandler(exp, true);
         }
@@ -37,7 +37,7 @@ export class AuthController {
 
             await this.fetchUser();
 
-            Router.go(PAGES_PATHS.Profile);
+            Router.go(PAGES_PATHS.Messages);
         } catch (exp: any) {
             this.errorHandler(exp);
         }
@@ -56,6 +56,8 @@ export class AuthController {
             await this.api.logout();
 
             Router.go(PAGES_PATHS.Login);
+            store.clear();
+
         } catch (exp: any) {
             this.errorHandler(exp);
         }

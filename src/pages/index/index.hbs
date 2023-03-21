@@ -52,6 +52,10 @@
     {{#layout_modalDialog attachName=CHILD_NAMES.RemoveUser title="Удалить пользователя"  }}
         {{{pages_index_modules_removeUserDialogBody execute=ecexuteRemoveUser }}}
     {{/layout_modalDialog}}
+    {{#layout_modalDialog attachName=CHILD_NAMES.RemoveUser title="Пользователи чата"  }}
+        {{{pages_index_modules_removeUserDialogBody execute=ecexuteRemoveUser }}}
+    {{/layout_modalDialog}}
+    
     {{#layout_modalDialog attachName=CHILD_NAMES.FindChat title="Поиск чата"  }}
         {{{pages_index_modules_findChatDialogBody execute=ecexuteFindChat }}}
     {{/layout_modalDialog}}
@@ -59,7 +63,7 @@
         {{{pages_index_modules_addChatDialogBody execute=executeCreateChat }}}
     {{/layout_modalDialog}}
 
-    {{#layout_modalDialog attachName=ATTACHES.AVATAR_MODAL title="Загрузка файла для аватара"  }}
+    {{#layout_modalDialog attachName=CHILD_NAMES.AvatarChat title="Загрузка файла для аватара"  }}
         {{{pages_profile_modules_updateAvatarDialogBody 
             execute=ecexuteUpdataAvatar }}}
     {{/layout_modalDialog}}

@@ -18,6 +18,7 @@ interface State {
     sleep?: boolean;
     chats?: ChatInfo[]; // не делать объектом, так как set(state, 'chats', { 33: {} }) не оставит один чат, а только добавит или обновит chats.33
     selectedChatId?: number;
+    selectedChatUsers?: User[];
 
     messages?: Record<number, { // тут можно делать объектом, но аккуратно, для удаления чата делать - set(state, 'messages', { 33: undefined })
         messages: Message[],
@@ -41,6 +42,11 @@ export class Store extends EventBus {
 
     public getState(): State {
         return this.state;
+    }
+
+    clear() {
+        this.state = {};
+        this.emit(StoreEvents.Updated, this.getState());
     }
 }
 
