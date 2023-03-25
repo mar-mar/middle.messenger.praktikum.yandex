@@ -1,14 +1,17 @@
 // server.js
 const express = require("express");
-const pathUtils = require("path");
+const fallback = require("express-history-api-fallback");
+// const pathUtils = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const indexPath = pathUtils.resolve("dist", "index.html");
+
+const root = `${__dirname}/dist`;
+// const indexPath = pathUtils.resolve(root, "index.html");
 
 // helmet
 app.disable("x-powered-by");
-//express-history-api-fallback
+// express-history-api-fallback
 
 app.use((req, res, next) => {
     res.header("X-Frame-Options", "SAMEORIGIN");
@@ -20,16 +23,15 @@ app.use((req, res, next) => {
 });
 
 app.use(express.static("dist"));
+app.use(fallback("index.html", { root }));
 
-app.all("*", (req, res) => {
-    if (req.method === "HEADER") return;
-    if (req.method === "GET") {
-        res.sendfile(indexPath);
+app.all("*", (req, res, next) => {
+    if (req.method === "GET" || req.method === "HEAD") {
+        next();
         return;
     }
-
-    res.set("Allow", "GET");
-    res.send(405, "Method Not Allowed");
+    res.set("Allow", "GET,HEAD");
+    res.status(405).send("Method Not Allowed");
 });
 
 app.listen(PORT, () => {
