@@ -8,7 +8,7 @@ import UsersController from "./UsersController";
 class ChatsController {
 
     private readonly api: ChatsAPI;
-    private selectedChatUserIndex: number = 1; 
+
     constructor() {
         this.api = API;
     }
@@ -47,21 +47,33 @@ class ChatsController {
         const chatId = this.getSelectedChat();
         if (!chatId) return;
 
+        this.selectChat();
+
         await this.delete(chatId);
     }
 
     // запрашиваем чаты и коннектимся к ним
     async fetchChats() {
         const chats = await this.api.read();
+        const mapChats: Record<number, any> = {};
 
+        const oldKeys = new Set(Object.keys(store.getState().chats || {}));
+ 
         chats.forEach(async (chat) => {
+
+            mapChats[chat.id] = chat;
+            oldKeys.delete(String(chat.id));
 
             const token = await this.getToken(chat.id);
 
             await MessagesController.connect(chat.id, token);
         });
 
-        store.set('chats', chats);
+        oldKeys.forEach(key => {
+            mapChats[parseInt(key)] = undefined;
+        });
+
+        store.set('chats', mapChats);
     }
 
     // поиск чатов
@@ -134,21 +146,27 @@ class ChatsController {
     }
 
 
-    async selectChat(chatId: number) {
+    async selectChat(chatId?: number) {
 
-        this.selectedChatUserIndex += 1;
-        const index = this.selectedChatUserIndex;
+        store.set("selectedChatId", chatId);
+        let users;
 
-        store.set('selectedChatId', chatId);
-        
-        const users = await this.api.getChatUsers(chatId);
-        
-        if (index === this.selectedChatUserIndex) {
-            store.set("selectedChatUsers", users);
+        if (undefined !== chatId) {
+            try {
+                users = await this.api.getChatUsers(chatId);
+            }
+            catch(exp) { 
+                this.errorHandler(exp, false);
+            }
         }
-    
+
+        if (chatId === store.getState().selectedChatId) {
+            store.set("selectedChatUsers", users ? new Map(users.map(u => [u.id, u] )) : undefined);
+        }
+        
     }
 
+    
     errorHandler(e: any, withThrow: boolean = false) {
         errorLog(e);
         if (withThrow) throw new Error(e?.reason || "Ошибка");

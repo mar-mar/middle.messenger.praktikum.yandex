@@ -1,5 +1,11 @@
+import { get } from "../utils/helpers/merge";
+import { isArray } from "../utils/helpers/typeCheck";
 import store from '../utils/Store';
 import WSTransport, { WSTransportEvents } from "../utils/transport/WSTransport";
+
+export interface TransportMessage {
+    type: string;
+}
 
 export interface Message {
     chat_id: number;
@@ -90,28 +96,39 @@ class MessagesController {
     }
 
     // получили какие-то осообщения
-    private onTransportMessage(chatId: number, messages: Message | Message[]) {
-        let messagesToAdd: Message[] = [];
+    private onTransportMessage(chatId: number, message: TransportMessage | TransportMessage[]) {
 
-        if (Array.isArray(messages)) {
-            messagesToAdd = messages.reverse();
-        } else {
-            messagesToAdd.push(messages);
+        const messages = isArray(message) ? message : [message];
+        const firstMessage: TransportMessage = messages[0];
+        if (!firstMessage) return;
+        
+        switch (firstMessage.type) {
+            case "message": 
+                this.onMessage(chatId, messages as Message[]);
+                 break;
+            case "user connected": 
+                break;
         }
 
+    }
+    
+    
+    private onMessage(chatId: number, messages: Message[]) {
+        let messagesToAdd: Message[] = messages.reverse();
+
         const state = store.getState();
-        const messState = state.messages?.[chatId];
-        const currentMessages = messState?.messages || [];
+        const currentMessages = get(state, `messages.${chatId}.messages`) || [];
 
         messagesToAdd = [...currentMessages, ...messagesToAdd];
-
-        console.log(messages, [...currentMessages, ...messagesToAdd]);
+        
+        const lastMessage = messagesToAdd[messagesToAdd.length-1];
 
         store.set(`messages.${chatId}`, {
             messages: messagesToAdd,
-            scrollMessage: messagesToAdd[messagesToAdd.length-1]
+            scrollMessage: lastMessage
         });
-        console.info(chatId, messagesToAdd);
+
+        store.set(`chats.${chatId}.last_message.time`, lastMessage.time);
     }
 
     // удалить из мапа при закрытии подключения

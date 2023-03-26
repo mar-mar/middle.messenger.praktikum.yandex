@@ -16,9 +16,9 @@ export enum StoreEvents {
 interface State {
     user?: User;
     sleep?: boolean;
-    chats?: ChatInfo[]; // не делать объектом, так как set(state, 'chats', { 33: {} }) не оставит один чат, а только добавит или обновит chats.33
+    chats?: Record<number, ChatInfo>; // не делать объектом, так как set(state, 'chats', { 33: {} }) не оставит один чат, а только добавит или обновит chats.33
     selectedChatId?: number;
-    selectedChatUsers?: User[];
+    selectedChatUsers?: Map<number, User>; // user id, User
 
     messages?: Record<number, { // тут можно делать объектом, но аккуратно, для удаления чата делать - set(state, 'messages', { 33: undefined })
         messages: Message[],

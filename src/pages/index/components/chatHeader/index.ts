@@ -22,10 +22,14 @@ class ChatHeaderBase extends _Block<ChatHeaderProps> {
 }
 
 const withChats = withStore(state  => {
-    
-    return {
-        selectedChat: state.selectedChatId ? state.chats?.find( chat => chat.id === state.selectedChatId) : undefined
+    let selectedChat = undefined;
+
+    if (state.selectedChatId && state.chats) {
+        selectedChat = state.chats[state.selectedChatId]
     }
+
+    return { selectedChat };
+
 });
 
 

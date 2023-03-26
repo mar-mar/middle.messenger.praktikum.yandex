@@ -1,4 +1,4 @@
-import { isArray, isObject } from "./typeCheck";
+import { isArray, isMap, isObject } from "./typeCheck";
 
 type Indexed<T = unknown> = {
     [key in string]: T;
@@ -33,24 +33,54 @@ function isEqualAny(lhs: any, rhs: any): any {
         return isEqualArray(lhs, rhs);
     }
 
+    if (isMap(lhs) && isMap(rhs)) {
+        return isEqualMap(lhs, rhs);
+    }
+
     return lhs === rhs;  
 }
 
-function isEqualArray(array1: any[], array2: any[]): boolean {
-    if (array1.length !== array2.length) return false;
+function isEqualArray(lArr: any[], rArr: any[]): boolean {
+    if (lArr.length !== rArr.length) return false;
 
-    return !array1.some(key => {
-        return !isEqualAny(array1[key], array2[key]);
+    return lArr.every((value, key) => {
+        return isEqualAny(value, rArr[key]);
     });
 }
 
 function isEqualStringArray(array1: string[], array2: string[]): boolean {
     return array1.length === array2.length &&
-        isEqualSet(new Set(array1), new Set(array2));
+        isEqualPrimitiveSet(new Set(array1), new Set(array2));
 }
 
-function isEqualSet(xs: Set<string>, ys: Set<string>): boolean {
-    return xs.size === ys.size && [...xs].every((x) => ys.has(x));
+function isEqualPrimitiveSet(ls: Set<string>, rs: Set<string>): boolean {
+    if (ls.size !== rs.size) return false;
+
+    try {
+        ls.forEach(ch => {
+            if (!rs.has(ch)) throw new Error("not equal")
+        });
+    }
+    catch(exp) {
+        return false;
+    }
+    return true;
 }
+
+function isEqualMap(lhs: Map<any, any>, rhs: Map<any, any>): boolean {
+
+    if (lhs.size !== rhs.size) return false;
+
+    try {
+        lhs.forEach((value, key) => {
+            if (!isEqualAny(value, rhs.get(key))) throw new Error("not equal")
+        });
+    }
+    catch(exp) {
+        return false;
+    }
+    return true;
+}
+
 
 export default isEqual;

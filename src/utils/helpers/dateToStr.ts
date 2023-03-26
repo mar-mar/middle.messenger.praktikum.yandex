@@ -7,3 +7,8 @@ export function dateToStr(date: Date): string {
 
     return date.toLocaleString();
 }
+
+export function timeToStr(date: Date): string {
+
+    return date.toLocaleTimeString();
+}

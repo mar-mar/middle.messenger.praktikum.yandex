@@ -23,6 +23,7 @@ class ChatListBase extends _Block {
     
         messages.forEach(mess => {
     
+            
             const date = new Date(mess.time);
             date.setHours(0,0,0);
             const key = date.toLocaleDateString();
@@ -36,12 +37,14 @@ const withChats = withStore(state => {
     let messages: Message[] = [];
     let scrollMessage: Message | undefined = undefined;
 
-    if (state.selectedChatId && state.messages) {
+    if (!state.selectedChatId || !state.messages) {
+        return {};
+    }
 
-        const messState = state.messages[state.selectedChatId];
+    const messState = state.messages[state.selectedChatId];
         messages = messState?.messages
         scrollMessage = messState?.scrollMessage;
-    }
+
 
     return {
         selectedChatId: state.selectedChatId,

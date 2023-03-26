@@ -9,9 +9,7 @@ export interface ChatInfo {
     time: string;
     
     last_message: {
-        user: User,
         time: string;
-        content: string;
     }
 };
 
@@ -71,7 +69,7 @@ export class ChatsAPI extends _BaseAPI {
     }
 
     getChatUsers(chatId: number): Promise<User[]> {
-        return this.http.get(`chats/${chatId}/users`, { data: { limit: 100 }} );
+        return this.http.get(`${chatId}/users`, { data: { limit: 100 }} );
     }
 
     

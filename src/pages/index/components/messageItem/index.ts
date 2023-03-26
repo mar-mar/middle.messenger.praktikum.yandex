@@ -1,6 +1,6 @@
 import { User } from "../../../../api/AuthAPI";
 import { Message } from "../../../../controllers/MessagesController";
-import { dateToStr } from "../../../../utils/helpers/dateToStr";
+import { timeToStr } from "../../../../utils/helpers/dateToStr";
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
 import * as styles from "./styles.module.pcss";
@@ -9,7 +9,7 @@ type Props = {
     item: Message, 
     userId: number, 
     scrollMessage?: Message,
-    chatUsers: User[]
+    chatUsers: Map<number, User>
 };
 
 export default class MessageItem extends _Block<Props> {
@@ -20,12 +20,12 @@ export default class MessageItem extends _Block<Props> {
             styles,
             isMine: this.isMine.bind(this), 
             messageTime: this.getStrDate.bind(this),
-            messOwner: this.getUser.bind(this) 
+            messOwner: this.getUser.bind(this)
         };
     }
 
     private getStrDate() {
-        return dateToStr(new Date(this.getProps().item.time));
+        return timeToStr(new Date(this.getProps().item.time));
     }
 
     private isMine() {
@@ -37,7 +37,7 @@ export default class MessageItem extends _Block<Props> {
         if (!users) return "";
 
         const message = this.getProps().item;
-        const user = users.find(u => u.id === message.user_id);
+        const user = users.get(message.user_id);
         return user?.display_name || user?.first_name || message.user_id;
     }
 

@@ -10,7 +10,8 @@ import ChatsController from "../../../../controllers/ChatsController";
 
 type MessageInputProps = {
     openPopupAttache: FunctionNoArgsNoReturn,
-    item: any
+    item: any,
+    message: string
 };
 
 class MessageInputBase  extends _BlockWithForm<SendMessageData, MessageInputProps> {   
@@ -26,6 +27,8 @@ class MessageInputBase  extends _BlockWithForm<SendMessageData, MessageInputProp
 
     execute(values: SendMessageData) {
         ChatsController.sendMessage(this.getSelectedChatId(), values.message);
+
+        this.setProps({ message: "" });
     }
 
     private getSelectedChatId() {
