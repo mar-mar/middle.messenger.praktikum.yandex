@@ -3,6 +3,7 @@ import template from "./index.hbs";
 import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import { validateLogin } from "../../../../utils/validate";
 import ChatsController from "../../../../controllers/ChatsController";
+import { SearchUserData } from "../../../../api/UsersAPI";
 
 
 export default class RemoveUserDialogBody extends _BlockWithForm<Record<string, any>> {
@@ -19,14 +20,16 @@ export default class RemoveUserDialogBody extends _BlockWithForm<Record<string, 
         return this.getForm()?.getChildByAttacheNameOne("error");
     }
 
-    async execute() {
+    async execute(values: SearchUserData) {
         try {
-            await ChatsController.deleteSelectedChat();
+            await ChatsController.removeUserFromSelectedChat(values);
         }
         catch(exp) {
-            //errorCallback(String(exp)); где показать???
-            // делать модулку с вопросом???
+            this.errorCallback(String(exp));
             return;
         }
+
+        super.execute(values);
+
     }
 }

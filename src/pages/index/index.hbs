@@ -36,34 +36,31 @@
         
     </main>
 
-    {{#layout_popup attachName=CHILD_NAMES.Attache }}
+    {{#layout_popup attachName=ATTACHES.Attache }}
         {{{components_menu memuItems=attachMenuItems }}}
     {{/layout_popup}}
-    {{#layout_popup attachName=CHILD_NAMES.ChatMenu }}
+    {{#layout_popup attachName=ATTACHES.ChatMenu }}
         {{{components_menu memuItems=chatMenuMenuItems }}}
     {{/layout_popup}}
-    {{#layout_popup attachName=CHILD_NAMES.Menu }}
+    {{#layout_popup attachName=ATTACHES.Menu }}
         {{{components_menu memuItems=menuMenuItems }}}
     {{/layout_popup}}
 
-    {{#layout_modalDialog attachName=CHILD_NAMES.AddUser title="Добавить пользователя"  }}
+    {{#layout_modalDialog attachName=ATTACHES.AddUser title="Добавить пользователя"  }}
         {{{pages_index_modules_addUserDialogBody execute=ecexuteAddUser }}}
     {{/layout_modalDialog}}
-    {{#layout_modalDialog attachName=CHILD_NAMES.RemoveUser title="Удалить пользователя"  }}
-        {{{pages_index_modules_removeUserDialogBody execute=ecexuteRemoveUser }}}
-    {{/layout_modalDialog}}
-    {{#layout_modalDialog attachName=CHILD_NAMES.RemoveUser title="Пользователи чата"  }}
+    {{#layout_modalDialog attachName=ATTACHES.RemoveUser title="Удалить пользователя"  }}
         {{{pages_index_modules_removeUserDialogBody execute=ecexuteRemoveUser }}}
     {{/layout_modalDialog}}
     
-    {{#layout_modalDialog attachName=CHILD_NAMES.FindChat title="Поиск чата"  }}
+    {{#layout_modalDialog attachName=ATTACHES.FindChat title="Поиск чата"  }}
         {{{pages_index_modules_findChatDialogBody execute=ecexuteFindChat }}}
     {{/layout_modalDialog}}
-    {{#layout_modalDialog attachName=CHILD_NAMES.CreateChat title="Создание чата"  }}
+    {{#layout_modalDialog attachName=ATTACHES.CreateChat title="Создание чата"  }}
         {{{pages_index_modules_addChatDialogBody execute=executeCreateChat }}}
     {{/layout_modalDialog}}
 
-    {{#layout_modalDialog attachName=CHILD_NAMES.AvatarChat title="Загрузка файла для аватара"  }}
+    {{#layout_modalDialog attachName=ATTACHES.AvatarChat title="Загрузка файла для аватара"  }}
         {{{pages_profile_modules_updateAvatarDialogBody 
             execute=ecexuteUpdataAvatar }}}
     {{/layout_modalDialog}}

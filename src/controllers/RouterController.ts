@@ -13,9 +13,10 @@ export class RouterController {
         return this;
     }
 
-    public go(path: string): void {
+    public go(path: string, quick?: boolean): void {
+        
+        if (!quick) path = this.getTrueRoute(path);
 
-        path = this.getTrueRoute(path);
         Router.go(path); // если неизвестная startPage, то куда на 404?
 
         if (path === PAGES_PATHS.Messages) {
@@ -35,18 +36,21 @@ export class RouterController {
 
     private getTrueRoute(path: string): string {
         const state = store.getState();
+//if (type in MESSAGE_TYPE) {
 
-        const isOpenPage = (path === PAGES_PATHS.Login || path === PAGES_PATHS.Sign);
-        const permOpenPage = !state.user;
-
-        if (permOpenPage !== isOpenPage) {
-            if (permOpenPage) {
-                path = PAGES_PATHS.Login;
-            }
-            else {
-                path = PAGES_PATHS.Messages;
-            }
+//}
+        const noUserPage = (path === PAGES_PATHS.Login || path === PAGES_PATHS.Sign);
+        const noUser = !state.user;
+  
+        if (noUser) {
+            if (!noUserPage) path = PAGES_PATHS.Login;
         }
+        else {
+            if (noUserPage) {
+                path = PAGES_PATHS.Messages;
+            }           
+        }
+
         return path;
     }
 

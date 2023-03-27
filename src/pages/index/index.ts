@@ -1,5 +1,4 @@
-import { CreateChatData } from "../../api/ChatsAPI";
-import { SearchUserData } from "../../api/UsersAPI";
+import { AvatarData } from "../../api/AvatarAPI";
 import ChatsController from "../../controllers/ChatsController";
 import Popup from "../../layout/popup";
 import routeUse, { PAGES } from "../../utils/route";
@@ -8,7 +7,7 @@ import { ErrorCallback } from "../../utils/_BlockWithForm";
 import template from "./index.hbs";
 import * as styles from './styles.module.pcss';
 
-enum CHILD_NAMES {
+enum ATTACHES {
     Attache = "popupAttache",
     ChatMenu = "popupChatMenu",
     Menu = "popupMenu",
@@ -32,20 +31,21 @@ export default class IndexPage extends _Block {
             chatMenuMenuItems: this.chatMenuMenuItems(),
             menuMenuItems: this.menuMenuItems(),
 
-            openPopupAttache: this.openPopup.bind(this, CHILD_NAMES.Attache),
-            openPopupChatMenu: this.openPopup.bind(this, CHILD_NAMES.ChatMenu),
-            openPopupMenu: this.openPopup.bind(this, CHILD_NAMES.Menu),
+            openPopupAttache: this.openPopup.bind(this, ATTACHES.Attache),
+            openPopupChatMenu: this.openPopup.bind(this, ATTACHES.ChatMenu),
+            openPopupMenu: this.openPopup.bind(this, ATTACHES.Menu),
 
-            openFindChat: this.visibleChild .bind(this, true, CHILD_NAMES.FindChat),
-            openCreateChat: this.visibleChild.bind(this, true, CHILD_NAMES.CreateChat),
+            openFindChat: this.visibleChild .bind(this, true, ATTACHES.FindChat),
+            openCreateChat: this.visibleChild.bind(this, true, ATTACHES.CreateChat),
 
-            ecexuteAddUser: this.ecexuteAddUser.bind(this),
-            ecexuteRemoveUser: this.ecexuteRemoveUser.bind(this),
-            ecexuteFindChat: this.visibleChild.bind(this, false, CHILD_NAMES.FindChat),
-            executeCreateChat: this.executeCreateChat.bind(this),
+            ecexuteAddUser: this.visibleChild.bind(this, false, ATTACHES.AddUser),
+            ecexuteRemoveUser: this.visibleChild.bind(this, false, ATTACHES.RemoveUser),
+            ecexuteFindChat: this.visibleChild.bind(this, false, ATTACHES.FindChat),
+            executeCreateChat: this.visibleChild.bind(this, false, ATTACHES.CreateChat),
             ecexuteUpdataAvatar: this.ecexuteUpdataAvatar.bind(this),
+            
 
-            CHILD_NAMES
+            ATTACHES
         };
     }
 
@@ -71,71 +71,45 @@ export default class IndexPage extends _Block {
 
     private chatMenuMenuItems(): MenuItemTemplateProps[] {
         return [
-            { label: "Добавить пользователя", click: this.visibleChild.bind(this, true, CHILD_NAMES.AddUser) },
-            { label: "Удалить пользователя", click: this.visibleChild.bind(this, true, CHILD_NAMES.RemoveUser) },
-            { label: "Посмотреть пользователей чата", click: this.visibleChild.bind(this, true, CHILD_NAMES.Users) },
-            { label: "Установить аватар", click: this.visibleChild.bind(this, true, CHILD_NAMES.AvatarChat) },
+            { label: "Добавить пользователя", click: this.visibleChild.bind(this, true, ATTACHES.AddUser) },
+            { label: "Удалить пользователя", click: this.visibleChild.bind(this, true, ATTACHES.RemoveUser) },
+            { label: "Установить аватар", click: this.visibleChild.bind(this, true, ATTACHES.AvatarChat) },
             { label: "Удалить чат", click: this.ecexuteDelChat.bind(this) }
         ];
     }
 
     private menuMenuItems(): MenuItemTemplateProps[] {
         return [
-            { label: "Создать чат", click: this.visibleChild.bind(this, true, CHILD_NAMES.CreateChat) },
+            { label: "Создать чат", click: this.visibleChild.bind(this, true, ATTACHES.CreateChat) },
             { label: "Открыть профиль", click: this.go.bind(this, PAGES.Profile) }
         ];
     }
     
-    async executeCreateChat(values: CreateChatData, errorCallback: ErrorCallback) {
-
-        try {
-            await ChatsController.create(values);
-        }
-        catch(exp) {
-            errorCallback(String(exp));
-            return;
-        }
-
-        this.visibleChild(false, CHILD_NAMES.CreateChat);
-    }
-
-
     async ecexuteDelChat() {
         try {
             await ChatsController.deleteSelectedChat();
         }
         catch(exp) {
+            // если удалить чат, который не создавал? reason	"Action is not permitted"
             //errorCallback(String(exp)); где показать???
             // делать модалку с вопросом???
             return;
         }
     }
-
-    async ecexuteAddUser(values: SearchUserData, errorCallback: ErrorCallback) {
-        try {
-            await ChatsController.addUserToSelectedChat(values);
-        }
-        catch(exp) {
-            errorCallback(String(exp));
-            return;
-        }
-
-        this.visibleChild(false, CHILD_NAMES.AddUser);
-    }
-
-    async ecexuteRemoveUser(values: SearchUserData, errorCallback: ErrorCallback) {
-        try {
-            await ChatsController.removeUserFromSelectedChat(values);
-        }
-        catch(exp) {
-            errorCallback(String(exp));
-            return;
-        }
-
-        this.visibleChild(false, CHILD_NAMES.RemoveUser);
-    }
     
-    async ecexuteUpdataAvatar() {}
+    async ecexuteUpdataAvatar(values: AvatarData, errorCallback: ErrorCallback) {
+
+        try {
+            await ChatsController.avatar(values);
+        }
+        catch(exp) {
+            errorCallback(String(exp));
+            return;
+        }
+
+        this.visibleChild(false, ATTACHES.AvatarChat);
+
+    }
 }
 
 

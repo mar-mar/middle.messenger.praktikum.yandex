@@ -1,23 +1,21 @@
 import store from "../utils/Store";
 import { errorLog } from "../utils/logger";
 import API, { PasswordData, ProfileUserData, SearchUserData, UsersAPI } from "../api/UsersAPI";
-import AvatarAPI, { AvatarData, AvatarUsersAPI } from "../api/AvatarUsersAPI";
-import ResourceAPI, { ResourceUserAPI } from "../api/ResourceUserAPI";
-import Router, { PAGES_PATHS } from "../utils/Router";
+import AvatarAPI, { AvatarData, AvatarUsersAPI } from "../api/AvatarAPI";
+import { PAGES_PATHS } from "../utils/Router";
 import { get } from "../utils/helpers/merge";
 import { isNumber } from "../utils/helpers/typeCheck";
 import { User } from "../api/AuthAPI";
+import RouterController from "./RouterController";
 
 
 export class UsersController {
     private readonly api: UsersAPI;
     private readonly avatarApi: AvatarUsersAPI;
-    private readonly resourceApi: ResourceUserAPI;
 
     constructor() {
         this.api = API;
         this.avatarApi = AvatarAPI;
-        this.resourceApi = ResourceAPI;
     }
 
     getUser(): User | undefined {
@@ -32,7 +30,7 @@ export class UsersController {
             const user = await this.api.profile(data);
             store.set("user", user);
 
-            Router.go(PAGES_PATHS.Messages);
+            RouterController.go(PAGES_PATHS.Messages);
 
         } catch (exp: any) {
 
@@ -45,7 +43,7 @@ export class UsersController {
 
         try {
             
-            const user = await this.avatarApi.avatar(data);
+            const user = await this.avatarApi.userAvatar(data);
             store.set("user", user);
 
         } catch (exp: any) {
@@ -84,10 +82,6 @@ export class UsersController {
     errorHandler(e: any, withThrow: boolean = false) {
         errorLog(e);
         if (withThrow) throw e?.reason || "Ошибка";
-    }
-
-    public getAvatarURL(path?: string): string {
-        return path ? this.resourceApi.url(path) : "";
     }
 
     isCurrentUserId(id: number) {

@@ -102,6 +102,7 @@ class Router {
  
     // то же по сути инициализация
     public start(pathname: string) {
+
         window.onpopstate = (event: PopStateEvent) => {
             const target = event.currentTarget as Window;
 
@@ -113,10 +114,12 @@ class Router {
     }
 
     private onChangeRoute(pathname: string) {
-        const route = this.getRoute(pathname);
+        let route = this.getRoute(pathname);
 
         if (!route) {
-            return;
+            
+            route = this.getRoute(PAGES_PATHS.Error404);
+            if (!route) return;
         }
 
         if (this.currentRoute && this.currentRoute !== route) {

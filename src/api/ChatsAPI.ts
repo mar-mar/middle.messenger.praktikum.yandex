@@ -43,11 +43,11 @@ export class ChatsAPI extends _BaseAPI {
     }
 
     search(filter: string): Promise<ChatInfo[]> {
-        return this.http.get('', { data: { title: filter }} );
+        return this.http.get('', { data: { title: filter, limit: 100 }} );
     }
 
     read(): Promise<ChatInfo[]> {
-        return this.http.get('');
+        return this.http.get('', { data: { limit: 200 }} );
     }
 
     getUsers(id: number): Promise<Array<User & { role: string }>> {
@@ -59,7 +59,7 @@ export class ChatsAPI extends _BaseAPI {
     }
 
     removeUsers(data: RemoveUserFromChatData): Promise<unknown> {
-        return this.http.put('users', { data });
+        return this.http.delete('users', { data });
     }
 
     async getToken(chatId: number): Promise<string> {
@@ -68,7 +68,7 @@ export class ChatsAPI extends _BaseAPI {
         return response.token;
     }
 
-    getChatUsers(chatId: number): Promise<User[]> {
+    fetchChatUsers(chatId: number): Promise<User[]> {
         return this.http.get(`${chatId}/users`, { data: { limit: 100 }} );
     }
 

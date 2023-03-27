@@ -1,5 +1,6 @@
 import { ChatInfo } from "../../../../api/ChatsAPI";
 import ChatsController from "../../../../controllers/ChatsController";
+import ResourceController from "../../../../controllers/ResourceController";
 import { dateToStr } from "../../../../utils/helpers/dateToStr";
 import { Props, _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
@@ -19,7 +20,10 @@ type ChatItemProps = {
             template, 
             styles,
             isSelected: selId && this.getProps().item.id === selId,
-            getStrDate: this.getStrDate.bind(this)
+            getStrDate: this.getStrDate.bind(this),
+            getAvatar: ()=> {
+                return ResourceController.getResourceURL(this.getProps().item?.avatar);
+            }
         };
     }
 

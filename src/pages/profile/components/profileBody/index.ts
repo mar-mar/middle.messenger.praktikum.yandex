@@ -3,7 +3,7 @@ import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import template from './index.hbs';
 import * as styles from "./styles.module.pcss";
 import { validateName, validateLogin, validateEmail, validatePhone } from '../../../../utils/validate';
-import UsersController from "../../../../controllers/UsersController";
+import ResourceController from "../../../../controllers/ResourceController";
 import { ProfileUserData } from "../../../../api/UsersAPI";
 import { User } from "../../../../api/AuthAPI";
 
@@ -29,7 +29,7 @@ export default class ProfileBody extends _BlockWithForm<ProfileUserData, Profile
             validateEmail,
             validatePhone,
             getAvatar: ()=> {
-                return UsersController.getAvatarURL(this.getProps().item.avatar);
+                return ResourceController.getResourceURL(this.getProps().item.avatar);
             }
         };
     }

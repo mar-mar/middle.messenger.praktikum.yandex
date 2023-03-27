@@ -1,4 +1,4 @@
-import { AvatarData } from "../../api/AvatarUsersAPI";
+import { AvatarData } from "../../api/AvatarAPI";
 import { PasswordData, ProfileUserData } from "../../api/UsersAPI";
 import AuthController from "../../controllers/AuthController";
 import UsersController from "../../controllers/UsersController";

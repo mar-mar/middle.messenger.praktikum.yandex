@@ -2,7 +2,7 @@
 <li class="{{ styles.root }} {{#if isSelected }}{{ styles.root--selected }}{{/if}}">
 
     <div class="{{ styles.root__avatar }}">
-        {{{components_avatar imageUrl=item.avatar diameter='S'
+        {{{components_avatar imageUrl=getAvatar diameter='S'
             avatarOwner=item.title }}}
     </div>
 

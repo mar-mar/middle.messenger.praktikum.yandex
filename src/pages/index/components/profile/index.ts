@@ -1,5 +1,5 @@
 import { User } from "../../../../api/AuthAPI";
-import UsersController from "../../../../controllers/UsersController";
+import ResourceController from "../../../../controllers/ResourceController";
 import { withStore } from "../../../../utils/Store";
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
@@ -18,7 +18,7 @@ class ProfileBase extends _Block<ProfileProps> {
             template, 
             styles,
             getAvatar: ()=> {
-                return UsersController.getAvatarURL(this.getProps().item.avatar);
+                return ResourceController.getResourceURL(this.getProps().item.avatar);
             }
         };
     }

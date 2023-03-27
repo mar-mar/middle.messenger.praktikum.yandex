@@ -1,3 +1,4 @@
+import AvatarAPI, { AvatarData, AvatarUsersAPI } from "../api/AvatarAPI";
 import API, { CreateChatData, ChatsAPI, ChatInfo } from '../api/ChatsAPI';
 import { SearchUserData } from "../api/UsersAPI";
 import { errorLog } from "../utils/logger";
@@ -8,9 +9,11 @@ import UsersController from "./UsersController";
 class ChatsController {
 
     private readonly api: ChatsAPI;
-
+    private readonly avatarApi: AvatarUsersAPI;
+    
     constructor() {
         this.api = API;
+        this.avatarApi = AvatarAPI;
     }
 
     // создание чата
@@ -25,6 +28,22 @@ class ChatsController {
         }
 
         this.fetchChats();
+    }
+
+    // изменить аватар
+    async avatar(data: AvatarData) {
+        const chatId = this.getSelectedChat();
+        if (!chatId) return;
+
+        try {
+            
+            const chat = await this.avatarApi.chatAvatar({ ...data, chatId });
+            store.set(`chats.${chatId}`, chat);
+
+        } catch (exp: any) {
+
+            this.errorHandler(exp, true);
+        }
     }
 
     // удаление чата
@@ -92,15 +111,15 @@ class ChatsController {
     // добавление юзера в чат
     async addUserToChat(chatId: number, data: SearchUserData) {
         
-        this.withSearchUser(data, (userId: number) => {
-            this.api.addUsers({ chatId, users: [userId] });
+        await this.withSearchUser(data, (userId: number) => {
+            return this.api.addUsers({ chatId, users: [userId] });
         })
     }
 
     async removeUserFromChat(chatId: number, data: SearchUserData) {
         
-        this.withSearchUser(data, (userId: number) => {
-            this.api.removeUsers({ chatId, users: [userId] });
+        await this.withSearchUser(data, (userId: number) => {
+            return this.api.removeUsers({ chatId, users: [userId] });
         })
     }
 
@@ -109,6 +128,7 @@ class ChatsController {
         if (!chatId) return;
 
         await this.addUserToChat(chatId, data);
+        this.fetchChatUsers();
     }
 
 
@@ -117,13 +137,14 @@ class ChatsController {
         if (!chatId) return;
 
         await this.addUserToChat(chatId, data);
+        this.fetchChatUsers();
     }
 
-    async withSearchUser(data: SearchUserData, func: (userId: number) => void) {
+    async withSearchUser(data: SearchUserData, func: (userId: number) => Promise<any>) {
         let users;
 
         try {
-            users = await UsersController.search(data);
+            users = await UsersController.search({ ...data, limit: 1 });
         }
         catch(exp) { }
         
@@ -131,8 +152,7 @@ class ChatsController {
         if (!userId) throw new Error("Не найден пользователь с таким логином");
 
         try {
-
-            func(userId);
+            await func(userId);
         }
         catch (exp) {
 
@@ -145,15 +165,20 @@ class ChatsController {
         return this.api.getToken(chatId);
     }
 
-
+    // выделить chat
     async selectChat(chatId?: number) {
 
         store.set("selectedChatId", chatId);
+        await this.fetchChatUsers();
+    }
+
+    async fetchChatUsers() {
         let users;
+        const chatId = this.getSelectedChat();
 
         if (undefined !== chatId) {
             try {
-                users = await this.api.getChatUsers(chatId);
+                users = await this.api.fetchChatUsers(chatId);
             }
             catch(exp) { 
                 this.errorHandler(exp, false);
@@ -163,7 +188,6 @@ class ChatsController {
         if (chatId === store.getState().selectedChatId) {
             store.set("selectedChatUsers", users ? new Map(users.map(u => [u.id, u] )) : undefined);
         }
-        
     }
 
     
