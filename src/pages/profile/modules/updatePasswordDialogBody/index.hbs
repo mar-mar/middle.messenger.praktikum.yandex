@@ -4,14 +4,14 @@
     [event:submit]=onSubmit }}
 
     <div>
-        {{{components_input label="Старый пароль" type="password" name="oldPassword" value=item.oldPassword
+        {{{components_input label="Старый пароль" type="password" name="oldPassword" value=oldPassword
             isValid=validatePassword }}}
 
-        {{{components_input label="Новый пароль" type="password" name ="newPassword" value=item.newPassword
+        {{{components_input label="Новый пароль" type="password" name ="newPassword" value=newPassword
             isValid=validatePassword  
             attachName="inpPassword" }}}
 
-        {{{components_input label="Новый пароль (еще раз)" type="password" value=item.newPassword
+        {{{components_input label="Новый пароль (еще раз)" type="password" value=newPassword
             isValid=validateCopyPassword 
             attachName="inpCopyPassword" }}}
     </div>

@@ -4,9 +4,14 @@ import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import { validateCopyPassword, validatePassword } from '../../../../utils/validate';
 import { PasswordData } from "../../../../api/UsersAPI";
 import Input from "../../../../components/input";
+import UsersController from "../../../../controllers/UsersController";
 
+type Props = {
+    oldPassword?: string;
+    newPassword?: string;
+};
 
-export default class UpdatePasswordDialogBody extends _BlockWithForm<PasswordData, { item?: Partial<PasswordData> }> {
+export default class UpdatePasswordDialogBody extends _BlockWithForm<PasswordData, Props>  {
 
     protected getCompileOptions() {
         return {
@@ -18,24 +23,23 @@ export default class UpdatePasswordDialogBody extends _BlockWithForm<PasswordDat
     }
 
     protected componentDidMount(/*oldProps*/): void { 
-        this.setProps({ item: {} });
+        this.reset();
     };
 
-    /*async execute(values: PasswordData) {
+    async execute(values: PasswordData) {
         if (!values) return;
 
-        let error = "";
         try {
             await UsersController.password(values);
         }
-        catch(exp) {
-            error = String(exp);
+        catch (exp) {
+            this.errorCallback(String(exp));
+            return;
         }
 
-        const errorBlock = this.getForm()?.getChildByAttacheNameOne("error");
-        errorBlock?.setProps({ error });
+        super.execute(values);
     }
-*/
+
     protected getErrorBlock() {
         return this.getForm()?.getChildByAttacheNameOne("error");
     }
@@ -58,4 +62,6 @@ export default class UpdatePasswordDialogBody extends _BlockWithForm<PasswordDat
     getCopyPassword(): Input {
         return this.getForm()?.getChildByAttacheNameOne("inpCopyPassword") as Input;
     }
+
+    
 }

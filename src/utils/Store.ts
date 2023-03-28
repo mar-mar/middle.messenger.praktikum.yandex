@@ -62,29 +62,39 @@ export function withStore<SP extends RecordStrAny = any>(mapStateToProps: (state
         // class WithStore
         return class WithStore extends Component {
  
-            //
+            private activeState: SP;
+            onChangeStoreBind: (state: State) => void;
+
             constructor(props: Omit<P, keyof SP>) {
 
                 const state = mapStateToProps(store.getState());
-                let activeState = cloneDeep(state);
-
+                const activeState = cloneDeep(state);
                 //
                 super({ ...(props as P), storeItem: state});
 
+                this.activeState = activeState;
+
                 // store Updated
-                store.on(StoreEvents.Updated, () => {
-                    const state = mapStateToProps(store.getState());
+                this.onChangeStoreBind = this.onChangeStore.bind(this);
+                store.on(StoreEvents.Updated, this.onChangeStoreBind);
 
-                    if (!isEqual(activeState, state)) {
+            }
 
-                        activeState = cloneDeep(state);
+            private onChangeStore() {
+                const state = mapStateToProps(store.getState());
 
-                        this.setProps({ storeItem: state } as Partial<{ storeItem: SP; } & P>);
-                    }
-                    
-                    
-                });
+                if (!isEqual(this.activeState, state)) {
 
+                    this.activeState = cloneDeep(state);
+
+                    this.setProps({ storeItem: state } as Partial<{ storeItem: SP; } & P>);
+                }
+            }
+
+            dispatchComponentDidUnMount() {
+                store.off(StoreEvents.Updated, this.onChangeStoreBind);
+
+                super.dispatchComponentDidUnMount();
             }
 
         }

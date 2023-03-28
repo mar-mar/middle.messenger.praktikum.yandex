@@ -3,12 +3,10 @@
         title="Ваш профиль"
     }}
 
-        {{{pages_profile_components_profileBody item=item 
+        {{{pages_profile_components_profileBody user=storeItem.user
             updatePassword=updatePassword 
             updateAvatar=updateAvatar 
 
-            logoff=logoff
-            execute=ecexuteMainProps
             }}}
 
         {{#layout_centerPane }}

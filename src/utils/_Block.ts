@@ -159,6 +159,8 @@ export class _Block<T extends Record<string, any> = any> {
 
     //render
     private onRender(): void {
+console.info("render", this, JSON.stringify(this.getProps()));
+
 
         this.toggleDomEvents(false);
         this.children = {};

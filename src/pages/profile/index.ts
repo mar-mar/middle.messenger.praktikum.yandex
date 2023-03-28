@@ -1,6 +1,5 @@
+import { User } from "../../api/AuthAPI";
 import { AvatarData } from "../../api/AvatarAPI";
-import { PasswordData, ProfileUserData } from "../../api/UsersAPI";
-import AuthController from "../../controllers/AuthController";
 import UsersController from "../../controllers/UsersController";
 import routeUse, { PAGES } from "../../utils/route";
 import { withStore } from "../../utils/Store";
@@ -14,27 +13,28 @@ enum ATTACHES {
     AVATAR_MODAL = "updateAvatarDialogBody"
 };
 
-class ProfilePageBase  extends _Block {
+type Props = {
+    storeItem: {
+        user: User | undefined;
+    }
+}
+
+class ProfilePageBase extends _Block<Props> {
 
     protected getCompileOptions() {
-        return { 
+        return {
             template,
             styles,
             ATTACHES,
-            
+
             goMess: () => routeUse(PAGES.Messages),
-            logoff: this.logoff.bind(this),
+
             updatePassword: this.visibleChild.bind(this, true, ATTACHES.PASS_MODAL),
             updateAvatar: this.visibleChild.bind(this, true, ATTACHES.AVATAR_MODAL),
 
             ecexuteUpdataAvatar: this.ecexuteUpdataAvatar.bind(this),
-            ecexuteUpdatePassword: this.ecexuteUpdatePassword.bind(this),
-            ecexuteMainProps: this.ecexuteMainProps.bind(this)
+            ecexuteUpdatePassword: this.visibleChild.bind(this, false, ATTACHES.PASS_MODAL),
         };
-    }
-
-    logoff() {
-        AuthController.logout();
     }
 
     async ecexuteUpdataAvatar(values: AvatarData, errorCallback: ErrorCallback) {
@@ -42,7 +42,7 @@ class ProfilePageBase  extends _Block {
         try {
             await UsersController.avatar(values);
         }
-        catch(exp) {
+        catch (exp) {
             errorCallback(String(exp));
             return;
         }
@@ -50,31 +50,12 @@ class ProfilePageBase  extends _Block {
         this.visibleChild(false, ATTACHES.AVATAR_MODAL);
     }
 
-    async ecexuteUpdatePassword(values: PasswordData, errorCallback: ErrorCallback) {
-
-        try {
-            await UsersController.password(values);
-        }
-        catch(exp) {
-            errorCallback(String(exp));
-            return;
-        }
-
-        this.visibleChild(false, ATTACHES.PASS_MODAL);
-    }
-
-    async ecexuteMainProps(values: ProfileUserData, errorCallback: ErrorCallback) {
-
-        try {
-            await UsersController.profile(values);
-        }
-        catch(exp) {
-            errorCallback(String(exp));
-        }
-    }
-
 }
 
-const withUser = withStore((state) => ({ ...state.user }))
+const withUser = withStore((state) => {
+    return {
+        user: state.user
+    }
+})
 const ProfilePage = withUser(ProfilePageBase);
 export default ProfilePage;

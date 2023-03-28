@@ -6,18 +6,17 @@ import { validateName, validateLogin, validateEmail, validatePhone } from '../..
 import ResourceController from "../../../../controllers/ResourceController";
 import { ProfileUserData } from "../../../../api/UsersAPI";
 import { User } from "../../../../api/AuthAPI";
+import UsersController from "../../../../controllers/UsersController";
+import AuthController from "../../../../controllers/AuthController";
 
 
 type ProfileBodyProps = {
-    logoff: AnyFunctionNoReturn;
     updatePassword: AnyFunctionNoReturn;
     updateAvatar: AnyFunctionNoReturn;
-    item: User
+    user: User | undefined
 };
 
-export default class ProfileBody extends _BlockWithForm<ProfileUserData, ProfileBodyProps> {
-    
-    
+export default class ProfileBody extends _BlockWithForm<ProfileUserData, ProfileBodyProps> {  
 
     protected getCompileOptions() {
         return { 
@@ -29,12 +28,30 @@ export default class ProfileBody extends _BlockWithForm<ProfileUserData, Profile
             validateEmail,
             validatePhone,
             getAvatar: ()=> {
-                return ResourceController.getResourceURL(this.getProps().item.avatar);
-            }
+                return ResourceController.getResourceURL(this.getProps().user?.avatar);
+            },
+            logout: this.logout.bind(this)
         };
+    }
+
+    logout() {
+        AuthController.logout();
     }
 
     protected getErrorBlock() {
         return this.getForm()?.getChildByAttacheNameOne("error");
+    }
+
+    async execute(values: ProfileUserData) {
+        if (!values) return;
+
+        try {
+            await UsersController.profile(values);
+        }
+        catch (exp) {
+            this.errorCallback(String(exp));
+        }
+
+        super.execute(values);
     }
 }

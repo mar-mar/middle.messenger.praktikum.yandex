@@ -6,8 +6,7 @@ import { AvatarData } from "../../api/AvatarAPI";
 import { isHTMLInputElement } from "../../utils/helpers/typeCheck";
 
 
-export default class UpdatePasswordDialogBody extends _BlockWithForm<AvatarData, 
-    { item?: { fileName?: string, file?: string } } > {
+export default class UpdatePasswordDialogBody extends _BlockWithForm<AvatarData> {
 
     protected getCompileOptions() {
         
@@ -15,13 +14,12 @@ export default class UpdatePasswordDialogBody extends _BlockWithForm<AvatarData,
             ...super.getCompileOptions(),
             styles,
             changeFile: this.changeFile.bind(this),
-            template,
-            avatarFileName: "файл не выбран"
+            template
          };
     }
 
     protected componentDidMount(/*oldProps*/): void { 
-        this.setProps({ item: {} });
+        this.reset();
     };
 
     private changeFile(evt: Event) {

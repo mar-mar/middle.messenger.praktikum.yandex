@@ -3,11 +3,11 @@ import { EventBus } from "./EventBus";
 import { isEvent, isFunction } from "./helpers/typeCheck";
 import { _Block } from "./_Block";
 
-export type WithFormProps<T> = {
-    onSubmit: (value: any) => void;
-    execute?: (values?: FormValues) => void,
-    error?: string
-} & T;
+export type WithFormProps<T> = T & {
+    onSubmit?: (value: any) => void;
+    execute?: (values?: FormValues) => void;
+    error?: string | undefined;
+};
 
 const FORM_ATTACHE_NAME: string = "form";
 
@@ -34,6 +34,13 @@ export class _BlockWithForm<D extends Record<string, any>, T extends RecordStrAn
             onSubmit: this.onSubmit.bind(this),
             FORM_ATTACHE_NAME
          };
+    }
+
+    protected reset() {
+        const props: Partial<WithFormProps<T>> = {};
+        props.error = undefined;
+        this.setProps(props);
+        super.reset();
     }
 
     protected registerLifeCycleEvents(eventBus: EventBus): void {
@@ -93,6 +100,7 @@ export class _BlockWithForm<D extends Record<string, any>, T extends RecordStrAn
     }
 
     protected errorCallback(error: string): void {
+
         this.getErrorBlock()?.setProps({ error });
     }
 
