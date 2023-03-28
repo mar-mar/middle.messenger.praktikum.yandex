@@ -57,7 +57,7 @@ window.store = store;
 
 export function withStore<SP extends RecordStrAny = any>(mapStateToProps: (state: State) => SP) {
 
-    return function<P extends RecordStrAny = any>(Component: typeof _Block<{ item: SP } & P>) {
+    return function<P extends RecordStrAny = any>(Component: typeof _Block<{ storeItem: SP } & P>) {
 
         // class WithStore
         return class WithStore extends Component {
@@ -69,7 +69,7 @@ export function withStore<SP extends RecordStrAny = any>(mapStateToProps: (state
                 let activeState = cloneDeep(state);
 
                 //
-                super({ ...(props as P), item: state});
+                super({ ...(props as P), storeItem: state});
 
                 // store Updated
                 store.on(StoreEvents.Updated, () => {
@@ -79,7 +79,7 @@ export function withStore<SP extends RecordStrAny = any>(mapStateToProps: (state
 
                         activeState = cloneDeep(state);
 
-                        this.setProps({ item: state } as Partial<{ item: SP; } & P>);
+                        this.setProps({ storeItem: state } as Partial<{ storeItem: SP; } & P>);
                     }
                     
                     

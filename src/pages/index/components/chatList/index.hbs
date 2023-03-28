@@ -14,13 +14,11 @@
 
         <ul >
             {{#with this as | parent |}}
-
-                {{#each item.chats }} <!--item.chats-->
+ 
+                {{#each storeItem.chats }} <!--item.chats-->
 
                     {{{pages_index_components_chatItem 
-                        item=this
-                        selectedChatId=parent.item.selectedChatId 
-                        
+                        chatItem=this                        
                     }}}
 
                 {{/each}}

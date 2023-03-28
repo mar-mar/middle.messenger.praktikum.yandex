@@ -1,12 +1,13 @@
-import { _Block } from "../../../../utils/_Block";
+import { _Block } from "../../utils/_Block";
 import template from "./index.hbs";
-import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
+import { _BlockWithForm } from "../../utils/_BlockWithForm";
 import * as styles from "./styles.module.pcss";
-import { AvatarData } from "../../../../api/AvatarAPI";
-import { isHTMLInputElement } from "../../../../utils/helpers/typeCheck";
+import { AvatarData } from "../../api/AvatarAPI";
+import { isHTMLInputElement } from "../../utils/helpers/typeCheck";
 
 
-export default class UpdatePasswordDialogBody extends _BlockWithForm<AvatarData, { item?: { fileName?: string, file?: string } } > {
+export default class UpdatePasswordDialogBody extends _BlockWithForm<AvatarData, 
+    { item?: { fileName?: string, file?: string } } > {
 
     protected getCompileOptions() {
         
@@ -20,7 +21,7 @@ export default class UpdatePasswordDialogBody extends _BlockWithForm<AvatarData,
     }
 
     protected componentDidMount(/*oldProps*/): void { 
-        this.setProps({ item: {} });
+        this.setProps({ item: {}, error: "" });
     };
 
     private changeFile(evt: Event) {

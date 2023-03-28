@@ -16,7 +16,8 @@ enum ATTACHES {
     FindChat = "findChatDialogBody",
     CreateChat = "createChatDialogBody",
     AvatarChat = "avatarChat",
-    Users = "users"
+    Users = "users",
+    DeleteChat = "deleteChat"
 }
 
 //{ item: { chats?: ChatInfo[] }}
@@ -43,7 +44,7 @@ export default class IndexPage extends _Block {
             ecexuteFindChat: this.visibleChild.bind(this, false, ATTACHES.FindChat),
             executeCreateChat: this.visibleChild.bind(this, false, ATTACHES.CreateChat),
             ecexuteUpdataAvatar: this.ecexuteUpdataAvatar.bind(this),
-            
+            ecexuteDelChat: this.ecexuteDelChat.bind(this),
 
             ATTACHES
         };
@@ -74,7 +75,7 @@ export default class IndexPage extends _Block {
             { label: "Добавить пользователя", click: this.visibleChild.bind(this, true, ATTACHES.AddUser) },
             { label: "Удалить пользователя", click: this.visibleChild.bind(this, true, ATTACHES.RemoveUser) },
             { label: "Установить аватар", click: this.visibleChild.bind(this, true, ATTACHES.AvatarChat) },
-            { label: "Удалить чат", click: this.ecexuteDelChat.bind(this) }
+            { label: "Удалить чат", click: this.visibleChild.bind(this, true, ATTACHES.DeleteChat) }
         ];
     }
 
@@ -85,16 +86,17 @@ export default class IndexPage extends _Block {
         ];
     }
     
-    async ecexuteDelChat() {
+    async ecexuteDelChat(_values: any, errorCallback: ErrorCallback) {
         try {
             await ChatsController.deleteSelectedChat();
         }
         catch(exp) {
             // если удалить чат, который не создавал? reason	"Action is not permitted"
-            //errorCallback(String(exp)); где показать???
+            errorCallback(String(exp)); //где показать???
             // делать модалку с вопросом???
             return;
         }
+        this.visibleChild(false, ATTACHES.DeleteChat)
     }
     
     async ecexuteUpdataAvatar(values: AvatarData, errorCallback: ErrorCallback) {

@@ -46,10 +46,10 @@
         {{{components_menu memuItems=menuMenuItems }}}
     {{/layout_popup}}
 
-    {{#layout_modalDialog attachName=ATTACHES.AddUser title="Добавить пользователя"  }}
+    {{#layout_modalDialog attachName=ATTACHES.AddUser title="Добавление пользователя"  }}
         {{{pages_index_modules_addUserDialogBody execute=ecexuteAddUser }}}
     {{/layout_modalDialog}}
-    {{#layout_modalDialog attachName=ATTACHES.RemoveUser title="Удалить пользователя"  }}
+    {{#layout_modalDialog attachName=ATTACHES.RemoveUser title="Удаление пользователя"  }}
         {{{pages_index_modules_removeUserDialogBody execute=ecexuteRemoveUser }}}
     {{/layout_modalDialog}}
     
@@ -61,9 +61,14 @@
     {{/layout_modalDialog}}
 
     {{#layout_modalDialog attachName=ATTACHES.AvatarChat title="Загрузка файла для аватара"  }}
-        {{{pages_profile_modules_updateAvatarDialogBody 
+        {{{components_updateAvatarDialogBody 
             execute=ecexuteUpdataAvatar }}}
     {{/layout_modalDialog}}
+    {{#layout_modalDialog attachName=ATTACHES.DeleteChat title="Удаление чата"  }}
+        {{{components_messageDialogBody actionLabel="Да, конечно" message="Вы действительно хотите удалить чат?"
+            execute=ecexuteDelChat }}}
+    {{/layout_modalDialog}}
+
 
 </div>
 

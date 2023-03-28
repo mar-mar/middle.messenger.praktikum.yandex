@@ -6,7 +6,7 @@ import template from "./index.hbs";
 import * as styles from "./styles.module.pcss";
 
 type Props = {
-    item: Message, 
+    storeItem: Message, 
     userId: number, 
     scrollMessage?: Message,
     chatUsers: Map<number, User>
@@ -25,18 +25,18 @@ export default class MessageItem extends _Block<Props> {
     }
 
     private getStrDate() {
-        return timeToStr(new Date(this.getProps().item.time));
+        return timeToStr(new Date(this.getProps().storeItem.time));
     }
 
     private isMine() {
-        return this.getProps().userId === this.getProps().item.user_id;
+        return this.getProps().userId === this.getProps().storeItem.user_id;
     }
 
     private getUser() {
         const users = this.getProps().chatUsers;
         if (!users) return "";
 
-        const message = this.getProps().item;
+        const message = this.getProps().storeItem;
         const user = users.get(message.user_id);
         return user?.display_name || user?.first_name || message.user_id;
     }
@@ -53,7 +53,7 @@ export default class MessageItem extends _Block<Props> {
 
     private scrollTo(props: Props) {
         
-        if (props.scrollMessage && props.item.time === props.scrollMessage?.time) {
+        if (props.scrollMessage && props.storeItem.time === props.scrollMessage?.time) {
             this.getElement()?.scrollIntoView(true);
         }
     }

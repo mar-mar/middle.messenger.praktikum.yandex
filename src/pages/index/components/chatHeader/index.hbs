@@ -1,15 +1,15 @@
 
 <div class="{{ styles.root }}">
 
-{{#if item.selectedChat}}
+{{#if storeItem.selectedChat}}
 
     <div class="{{ styles.root__avatar }}">
         {{{components_avatar imageUrl=getAvatar diameter='S' 
-            avatarOwner=item.selectedChat.title }}}
+            avatarOwner=storeItem.selectedChat.title }}}
     </div>
 
     <div class="{{ styles.root__label }}">
-        {{item.selectedChat.title}}
+        {{storeItem.selectedChat.title}}
         <div class="{{ styles.root__label__users }}">{{chatUsersStr}}</div>
     </div>
 

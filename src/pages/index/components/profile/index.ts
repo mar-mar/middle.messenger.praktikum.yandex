@@ -7,7 +7,7 @@ import * as styles from "./styles.module.pcss";
 
 type ProfileProps = {
     openPopupMenu?: FunctionNoArgsNoReturn;
-    item: User
+    storeItem: { user: User | undefined };
 };
 
 class ProfileBase extends _Block<ProfileProps> {
@@ -18,13 +18,19 @@ class ProfileBase extends _Block<ProfileProps> {
             template, 
             styles,
             getAvatar: ()=> {
-                return ResourceController.getResourceURL(this.getProps().item.avatar);
+
+                return ResourceController.getResourceURL(this.getProps().storeItem.user?.avatar);
             }
         };
     }
 }
 
-const withUser = withStore((state) => ({ ...state.user }))
+const withUser = withStore(state => { 
+    return {
+        user: state.user
+    }
+});
+
 const Profile = withUser(ProfileBase);
 export default Profile;
 

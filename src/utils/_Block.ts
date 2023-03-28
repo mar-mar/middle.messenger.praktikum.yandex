@@ -153,6 +153,10 @@ export class _Block<T extends Record<string, any> = any> {
         }
     }
 
+    protected reset() {
+        this.eventBus.emit(EVENTS.FLOW_RENDER);
+    }
+
     //render
     private onRender(): void {
 

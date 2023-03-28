@@ -15,13 +15,13 @@ export default class AddChatDialogBody extends _BlockWithForm<CreateChatData, { 
          };
     }
 
+    protected componentDidMount(/*oldProps*/): void { 
+        this.setProps({ item: { title: ""} });
+    };
+
     protected getErrorBlock() {
         return this.getForm()?.getChildByAttacheNameOne("error");
     }
-
-    protected componentDidMount(/*oldProps*/): void { 
-        this.setProps({ item: { title: "" } });
-    };
 
     async execute(values: CreateChatData) {
         try {

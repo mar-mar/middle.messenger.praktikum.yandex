@@ -48,6 +48,7 @@ class ChatsController {
 
     // удаление чата
     async delete(chatId: number) {
+
         try {            
             await this.api.delete(chatId);
         }
@@ -66,9 +67,9 @@ class ChatsController {
         const chatId = this.getSelectedChat();
         if (!chatId) return;
 
-        this.selectChat();
-
         await this.delete(chatId);
+
+        this.selectChat();
     }
 
     // запрашиваем чаты и коннектимся к ним
@@ -136,7 +137,7 @@ class ChatsController {
         const chatId = this.getSelectedChat();
         if (!chatId) return;
 
-        await this.addUserToChat(chatId, data);
+        await this.removeUserFromChat(chatId, data);
         this.fetchChatUsers();
     }
 

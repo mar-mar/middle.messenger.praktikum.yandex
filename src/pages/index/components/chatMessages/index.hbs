@@ -1,7 +1,7 @@
 
 <div class="{{ styles.root }}">
 
-{{#if item.selectedChatId}}
+{{#if storeItem.selectedChatId}}
 
     <div>
         {{#with this as | parent | }}
@@ -15,10 +15,10 @@
                         {{#each this.[1]  }}
  
                             {{{pages_index_components_messageItem 
-                                item=this 
-                                userId=parent.item.userId 
-                                scrollMessage=parent.item.scrollMessage
-                                chatUsers=parent.item.chatUsers
+                                storeItem=this 
+                                userId=parent.storeItem.userId 
+                                scrollMessage=parent.storeItem.scrollMessage
+                                chatUsers=parent.storeItem.chatUsers
                             }}}
 
                         {{/each}}

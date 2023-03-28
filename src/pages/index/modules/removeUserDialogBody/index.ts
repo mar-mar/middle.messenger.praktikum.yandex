@@ -16,6 +16,10 @@ export default class RemoveUserDialogBody extends _BlockWithForm<Record<string, 
          };
     }
 
+    protected componentDidMount(/*oldProps*/): void { 
+        this.setProps({ item: {} });
+    };
+
     protected getErrorBlock() {
         return this.getForm()?.getChildByAttacheNameOne("error");
     }

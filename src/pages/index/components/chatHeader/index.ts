@@ -1,3 +1,5 @@
+import { User } from "../../../../api/AuthAPI";
+import { ChatInfo } from "../../../../api/ChatsAPI";
 import ResourceController from "../../../../controllers/ResourceController";
 import { withStore } from "../../../../utils/Store";
 import { _Block } from "../../../../utils/_Block";
@@ -5,7 +7,34 @@ import template from "./index.hbs";
 import * as styles from "./styles.module.pcss";
 
 type ChatHeaderProps = {
-    openPopupChatMenu: FunctionNoArgsNoReturn
+    openPopupChatMenu: FunctionNoArgsNoReturn,
+    storeItem: {
+        selectedChat: ChatInfo | undefined;
+        chatUsers: Map<number, User> | undefined
+    }
+}
+
+class ChatHeaderBase extends _Block<ChatHeaderProps> {
+    
+    protected getCompileOptions() {
+        return { 
+            template, 
+            styles,
+            getAvatar: ()=> {
+                return ResourceController.getResourceURL(this.getProps().storeItem?.selectedChat?.avatar);
+            },
+            chatUsersStr: ()=> {
+                
+                const chatUsers = this.getProps().storeItem?.chatUsers;
+                if (!chatUsers) return;
+
+                const users = Array.from(chatUsers.values());
+                const srts = users.slice(0, 5).map(user => user.display_name)
+
+                return srts.join(", ");
+            }
+        };
+    }
 }
 
 const withChats = withStore(state  => {
@@ -24,28 +53,6 @@ const withChats = withStore(state  => {
 
 });
 
-const ChatHeaderBase = withChats<ChatHeaderProps>(_Block);
+const ChatHeader = withChats<ChatHeaderProps>(ChatHeaderBase);
 
-export default class ChatHeader extends ChatHeaderBase {
-    
-    protected getCompileOptions() {
-        return { 
-            template, 
-            styles,
-            getAvatar: ()=> {
-                return ResourceController.getResourceURL(this.getProps().item?.selectedChat?.avatar);
-            },
-            chatUsersStr: ()=> {
-                
-                const chatUsers = this.getProps().item?.chatUsers;
-                if (!chatUsers) return;
-
-                const users = Array.from(chatUsers.values());
-                const srts = users.slice(0, 5).map(user => user.display_name)
-
-                return srts.join(", ");
-            }
-        };
-    }
-}
-
+export default ChatHeader;
