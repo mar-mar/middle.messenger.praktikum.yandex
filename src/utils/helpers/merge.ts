@@ -5,6 +5,29 @@ export type Indexed<T = any> = {
 };
 
 export function merge(lhs: Indexed, rhs: Indexed): Indexed {
+
+    if (isObject(lhs) && isObject(rhs)) {
+
+        for (let p in rhs) {
+            if (!rhs.hasOwnProperty(p)) {
+                continue;
+            }
+    
+            lhs[p] = merge(lhs[p], rhs[p]);
+        }
+    }
+    else {
+        lhs = rhs;
+    }  
+
+    return lhs;
+}
+
+export function mergeObj(lhs: Indexed, rhs: Indexed): Indexed {
+    if (isObject(rhs) && isObject(rhs)) {
+
+    }
+
     for (let p in rhs) {
         if (!rhs.hasOwnProperty(p)) {
             continue;
@@ -21,6 +44,7 @@ export function merge(lhs: Indexed, rhs: Indexed): Indexed {
 
     return lhs;
 }
+
 
 export function set(object: Indexed | unknown, path: string, value: unknown): Indexed | unknown {
 

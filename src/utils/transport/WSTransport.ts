@@ -91,7 +91,6 @@ export default class WSTransport extends WSTransportBase {
             this.emit(WSTransportEvents.CONNECTED)
         });
         socket.addEventListener('close', () => {
-            console.info("close");
             this.emit(WSTransportEvents.CLOSE)
         });
 

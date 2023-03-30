@@ -2,9 +2,7 @@
   "name": "chat",
   "version": "1.0.0",
   "description": "",
-  "targets": {
-    "main": false
-  },
+
   "scripts": {
     "start": "export PORT=3000 && npm run build && node server.js",
     "dev": "parcel src/index.html --no-cache --open",

@@ -23,4 +23,9 @@ export default class TextArea extends _ValidatedBlock<TextAreaProps> {
 
         return (inputBlock as SimpleTextArea).getValue();
     }
+
+    public focus() {
+        const inputBlock = this.getChildByAttacheNameOne("input");
+        inputBlock?.getElement()?.focus();
+    }
 }

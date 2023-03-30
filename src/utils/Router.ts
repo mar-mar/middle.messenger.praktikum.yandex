@@ -48,12 +48,10 @@ class Route {
 
     render() {
         if (!this.block) {
-            console.info("*** create *** start ");
 
             this.block = new this.blockClass({});
-
-            console.info("*** create *** end ", this.block);
         }
+        
         render(this.query, this.block);
         this.block.dispatchComponentDidMount();
     }
@@ -113,8 +111,7 @@ class Router {
             this.onChangeRoute(target.location.pathname);
         }
 
-        //window.location.pathname
-        this.onChangeRoute(pathname);
+        this.go(pathname);
     }
 
     private onChangeRoute(pathname: string) {

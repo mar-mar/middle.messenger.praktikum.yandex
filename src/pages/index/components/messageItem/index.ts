@@ -8,7 +8,7 @@ import * as styles from "./styles.module.pcss";
 type Props = {
     storeItem: Message, 
     userId: number, 
-    scrollMessage?: Message,
+    scrollMessage?: Message[],
     chatUsers: Map<number, User>
 };
 
@@ -38,7 +38,7 @@ export default class MessageItem extends _Block<Props> {
 
         const message = this.getProps().storeItem;
         const user = users.get(message.user_id);
-        return user?.display_name || user?.first_name || message.user_id;
+        return user ? (user.display_name || `${user.first_name} ${user.second_name}`) : "";
     }
 
     protected componentDidUpdate(_oldProps: Props, newProps: Props): boolean {
@@ -52,8 +52,10 @@ export default class MessageItem extends _Block<Props> {
     }
 
     private scrollTo(props: Props) {
-        
-        if (props.scrollMessage && props.storeItem.time === props.scrollMessage?.time) {
+
+        const scrollMessage = props.scrollMessage?.[0];
+
+        if (scrollMessage && props.storeItem.time === scrollMessage.time) {
             this.getElement()?.scrollIntoView(true);
         }
     }

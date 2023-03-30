@@ -43,7 +43,7 @@ export class ChatsAPI extends _BaseAPI {
     }
 
     search(filter: string): Promise<ChatInfo[]> {
-        return this.http.get('', { data: { title: filter, limit: 100 }} );
+        return this.http.get('', { data: { title: filter, limit: 200 }} );
     }
 
     read(): Promise<ChatInfo[]> {
@@ -69,7 +69,7 @@ export class ChatsAPI extends _BaseAPI {
     }
 
     fetchChatUsers(chatId: number): Promise<User[]> {
-        return this.http.get(`${chatId}/users`, { data: { limit: 100 }} );
+        return this.http.get(`${chatId}/users`, { data: { limit: 200 }} );
     }
 
     

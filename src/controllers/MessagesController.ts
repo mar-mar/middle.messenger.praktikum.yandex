@@ -125,7 +125,7 @@ class MessagesController {
 
         store.set(`messages.${chatId}`, {
             messages: messagesToAdd,
-            scrollMessage: lastMessage
+            scrollMessage: [lastMessage]
         });
 
         store.set(`chats.${chatId}.last_message.time`, lastMessage.time);

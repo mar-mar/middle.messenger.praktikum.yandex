@@ -12,7 +12,7 @@ type Props = {
         selectedChatId: number | undefined;
         userId: number | undefined;
         messages:  Message[];
-        scrollMessage: Message | undefined;
+        scrollMessage: Message[] | undefined;
         chatUsers: Map<number, User> | undefined;
     }
 };
@@ -30,9 +30,9 @@ class ChatListBase extends _Block<Props> {
 
  
     private messageToGroup(messages: Message[]) {
-        if (!messages) return new Map();
+        if (!messages) return;
 
-        const groups = new Map();
+        const groups = new Map<string, Message[]>();
     
         messages.forEach(mess => {
 
@@ -44,13 +44,13 @@ class ChatListBase extends _Block<Props> {
 
         });
         
-        return groups;
+        return [...groups.entries()];
     }
 }
 
 const withChats = withStore(state => {
     let messages: Message[] = [];
-    let scrollMessage: Message | undefined = undefined;
+    let scrollMessage: Message[] | undefined = undefined;
 
     const selectedChatId = state.selectedChatId;   
 

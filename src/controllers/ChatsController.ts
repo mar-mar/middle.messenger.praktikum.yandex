@@ -16,6 +16,10 @@ class ChatsController {
         this.avatarApi = AvatarAPI;
     }
 
+    closeAll() {
+        MessagesController.closeAll();
+    }
+    
     // создание чата
     async create(data: CreateChatData) {
         try {            

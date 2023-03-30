@@ -6,6 +6,7 @@ import { validateMessage } from "../../../../utils/validate";
 import { SendMessageData } from "../../../../controllers/MessagesController";
 import { withStore } from "../../../../utils/Store";
 import ChatsController from "../../../../controllers/ChatsController";
+import TextArea from "../../../../components/textarea";
 
 
 type MessageInputProps = {
@@ -36,6 +37,11 @@ class MessageInputBase  extends _BlockWithForm<SendMessageData, MessageInputProp
         ChatsController.sendMessage(chatId, values.message);
 
         this.reset();
+        
+        const mess = this.getForm()?.getChildByAttacheNameOne("message");
+        if (!mess) return;
+
+        (mess as TextArea).focus();
     }
 
     private getSelectedChatId() {

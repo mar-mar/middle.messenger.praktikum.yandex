@@ -29,7 +29,7 @@ class ChatHeaderBase extends _Block<ChatHeaderProps> {
                 if (!chatUsers) return;
 
                 const users = Array.from(chatUsers.values());
-                const srts = users.slice(0, 5).map(user => user.display_name)
+                const srts = users.slice(0, 5).map(user => user.display_name || `${user.first_name} ${user.second_name}`)
 
                 return srts.join(", ");
             }

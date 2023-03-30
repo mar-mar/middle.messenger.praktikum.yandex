@@ -159,8 +159,6 @@ export class _Block<T extends Record<string, any> = any> {
 
     //render
     private onRender(): void {
-console.info("render", this, JSON.stringify(this.getProps()));
-
 
         this.toggleDomEvents(false);
         this.children = {};
@@ -194,8 +192,7 @@ console.info("render", this, JSON.stringify(this.getProps()));
 
         
         Object.keys(events).forEach(eventName => {       
-            //console.info(element, eventName);
-                 
+                   
             if (value) {
                 //keyof HTMLElementEventMap
                 element?.addEventListener(eventName, events[eventName]);
@@ -333,13 +330,13 @@ console.info("render", this, JSON.stringify(this.getProps()));
 
     public readonly show = (args?: Record<string, any>) => {
         this.toggleVisible(true, args);
-        //this.eventBus.emit(EVENTS.SHOW);
+        
         this.dispatchComponentDidMount();
     }
 
     public readonly hide = (args?: Record<string, any>) => {
         this.toggleVisible(false, args);
-        //this.eventBus.emit(EVENTS.HIDE);
+        
         this.dispatchComponentDidUnMount();
     }
 

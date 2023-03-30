@@ -22,7 +22,7 @@ interface State {
 
     messages?: Record<number, { // тут можно делать объектом, но аккуратно, для удаления чата делать - set(state, 'messages', { 33: undefined })
         messages: Message[],
-        scrollMessage: Message
+        scrollMessage: Message[] // у сообщений странные идентификаторы, использую массив, чтобы перезаписать, а не смешать свойства двух сообщений
     }>
 }
 
@@ -52,8 +52,6 @@ export class Store extends EventBus {
 
 const store = new Store();
 
-// @ts-ignore
-window.store = store;
 
 export function withStore<SP extends RecordStrAny = any>(mapStateToProps: (state: State) => SP) {
 
