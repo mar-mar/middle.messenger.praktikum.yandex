@@ -52,10 +52,11 @@ export default class FindChatDialogBody extends _BlockWithForm<SearchData, Props
     }
     
 
-    private selectChat(evt: Event) {
+    private async selectChat(evt: Event) {
         const chatId = parseFloat((evt.currentTarget as HTMLElement).dataset?.id || "");
 
         if (chatId) {
+            await ChatsController.fetchChats();
             ChatsController.selectChat(chatId);
             super.execute({ filter: this.getProps().item?.filter || "" });
         }
