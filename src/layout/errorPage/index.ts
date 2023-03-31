@@ -16,7 +16,7 @@ export default class ErrorPageLayout<T extends ErrorPageLayoutProps = any> exten
             template, 
             styles,
             goIndex: () => {
-                debugger;
+                
                 routeUse(PAGES.Messages);
                 
             }
