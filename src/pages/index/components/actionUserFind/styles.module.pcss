@@ -1,0 +1,27 @@
+.root {
+
+    &__input-cont {
+        display: flex;
+        flex-direction: row;
+    }
+
+    &__input {
+        flex-grow: 1;
+    }
+
+    &__result {
+        margin: var(--second-offset) 0;
+        height: 250px;
+        max-height: 250px;
+        overflow: auto;
+    }
+
+    &__empty-result {
+        margin: var(--second-offset) 0;
+    }
+
+    &__result-count { 
+        color: var(--grey-font-color);
+        margin-bottom: var(--mini-offset);
+    }
+}

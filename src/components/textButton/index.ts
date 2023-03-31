@@ -5,6 +5,8 @@ import * as styles from "./styles.module.pcss";
 type TextButtonProps = {
     datasetId?: string;
     type?: string;
+    name?: string;
+    value?: string;
     label?: string;
     noLabel?: 0|1;
     red?: 0|1;

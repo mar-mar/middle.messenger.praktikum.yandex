@@ -1,10 +1,10 @@
+import { User } from "../api/AuthAPI";
 import AvatarAPI, { AvatarData, AvatarUsersAPI } from "../api/AvatarAPI";
-import API, { CreateChatData, ChatsAPI, ChatInfo } from '../api/ChatsAPI';
-import { SearchUserData } from "../api/UsersAPI";
+import API, { CreateChatData, ChatsAPI, ChatInfo, SearchChatUsersData } from '../api/ChatsAPI';
 import { errorLog } from "../utils/logger";
 import store from '../utils/Store';
 import MessagesController from './MessagesController';
-import UsersController from "./UsersController";
+
 
 class ChatsController {
 
@@ -114,56 +114,46 @@ class ChatsController {
     }
 
     // добавление юзера в чат
-    async addUserToChat(chatId: number, data: SearchUserData) {
+    async addUserToChat(chatId: number, userIds: number[]) {
         
-        await this.withSearchUser(data, (userId: number) => {
-            return this.api.addUsers({ chatId, users: [userId] });
-        })
-    }
-
-    async removeUserFromChat(chatId: number, data: SearchUserData) {
-        
-        await this.withSearchUser(data, (userId: number) => {
-            return this.api.removeUsers({ chatId, users: [userId] });
-        })
-    }
-
-    async addUserToSelectedChat(data: SearchUserData) {
-        const chatId = this.getSelectedChat();
-        if (!chatId) return;
-
-        await this.addUserToChat(chatId, data);
-        this.fetchChatUsers();
-    }
-
-
-    async removeUserFromSelectedChat(data: SearchUserData) {
-        const chatId = this.getSelectedChat();
-        if (!chatId) return;
-
-        await this.removeUserFromChat(chatId, data);
-        this.fetchChatUsers();
-    }
-
-    async withSearchUser(data: SearchUserData, func: (userId: number) => Promise<any>) {
-        let users;
-
         try {
-            users = await UsersController.search({ ...data, limit: 1 });
-        }
-        catch(exp) { }
-        
-        const userId = users?.[0]?.id;
-        if (!userId) throw new Error("Не найден пользователь с таким логином");
-
-        try {
-            await func(userId);
+            await this.api.addUsers({ chatId, users: userIds });
         }
         catch (exp) {
 
             this.errorHandler(exp, true);
             return;
         }
+    }
+
+    async removeUserFromChat(chatId: number, userIds: number[]) {
+
+        try {
+            await this.api.removeUsers({ chatId, users: userIds });
+        }
+        catch (exp) {
+
+            this.errorHandler(exp, true);
+            return;
+        }
+    }
+
+    async addUserToSelectedChat(userIds: number[]) {
+        const chatId = this.getSelectedChat();
+        if (!chatId) return;
+
+        await this.addUserToChat(chatId, userIds);
+        this.fetchChatUsers();
+    }
+
+
+    async removeUserFromSelectedChat(userIds: number[]) {
+        const chatId = this.getSelectedChat();
+        if (!chatId) return;
+
+        await this.removeUserFromChat(chatId, userIds);
+        this.fetchChats(); // обновим список чатов, так как если удалим себя - чат удалится
+        this.fetchChatUsers();
     }
 
     private async getToken(chatId: number): Promise<string> {
@@ -178,23 +168,35 @@ class ChatsController {
     }
 
     async fetchChatUsers() {
-        let users;
         const chatId = this.getSelectedChat();
+        let users;
 
-        if (undefined !== chatId) {
-            try {
-                users = await this.api.fetchChatUsers(chatId);
-            }
-            catch(exp) { 
-                this.errorHandler(exp, false);
-            }
+        try {
+            users = await this.searchChatUsers();
         }
+        catch(exp) {}
 
         if (chatId === store.getState().selectedChatId) {
             store.set("selectedChatUsers", users ? new Map(users.map(u => [u.id, u] )) : undefined);
         }
     }
 
+    async searchChatUsers(filter?: SearchChatUsersData) : Promise<User[] | undefined>{
+        let users;
+        const chatId = this.getSelectedChat();
+
+        if (undefined !== chatId) {
+
+            try {
+                users = await this.api.fetchChatUsers(chatId, filter);
+            }
+            catch(exp) { 
+                this.errorHandler(exp, true);
+            }
+        }
+
+        return users;
+    }
     
     errorHandler(e: any, withThrow: boolean = false) {
         errorLog(e);

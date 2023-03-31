@@ -22,6 +22,10 @@ export class UsersController {
         return store.getState().user;
     }
 
+    getUserName(user: User) {
+        return user.display_name || `${user.first_name} ${user.second_name}`;
+    }
+
     // изменить профиль
     async profile(data: ProfileUserData) {
 

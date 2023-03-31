@@ -26,15 +26,13 @@
 {{/components_form}}
 
 {{#if withResult}}
-
-    
     
     {{#if chats}}
         <div class="{{ styles.root__result }}">
 
             <div class="{{ styles.root__result-count }}" >Найдено чатов ({{ chats.length }}) </div>
 
-            <div class="{{ styles.root__result-chats }}">
+            <div >
                 {{#with this as | parent |}}
                     {{#each chats }}
                         

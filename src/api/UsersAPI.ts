@@ -16,7 +16,6 @@ export interface PasswordData {
 }
 
 export interface SearchUserData {
-    limit?: number;
     login: string,
 }
 

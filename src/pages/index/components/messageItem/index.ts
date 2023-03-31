@@ -1,5 +1,6 @@
 import { User } from "../../../../api/AuthAPI";
 import { Message } from "../../../../controllers/MessagesController";
+import UsersController from "../../../../controllers/UsersController";
 import { timeToStr } from "../../../../utils/helpers/dateToStr";
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
@@ -38,7 +39,7 @@ export default class MessageItem extends _Block<Props> {
 
         const message = this.getProps().storeItem;
         const user = users.get(message.user_id);
-        return user ? (user.display_name || `${user.first_name} ${user.second_name}`) : "";
+        return user ? UsersController.getUserName(user) : "";
     }
 
     protected componentDidUpdate(_oldProps: Props, newProps: Props): boolean {

@@ -35,3 +35,9 @@ export function validateMessage(value: string): string {
 
     return ValidateController.validateMessage(value);
 }
+
+export function validateFilterName(value: string): string {
+
+    return ValidateController.validateFilterName(value);
+}
+

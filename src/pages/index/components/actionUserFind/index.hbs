@@ -1,0 +1,30 @@
+<div class="{{ styles.root }}">
+{{#components_form 
+    attachName=FORM_ATTACHE_NAME
+    [event:submit]=onSubmit }}
+
+    <div class="{{ styles.root__input-cont }}">
+
+        {{{components_input 
+            label=filterLabel 
+            value = filter        
+            name="filter"  
+
+            noMargin = 1
+            addedClassName=styles.root__input 
+            isValid = isValidFilter
+        }}}
+        
+        {{{components_textButton label="Найти" 
+            type="submit" 
+            iconClass="send-icon" 
+            noLabel=1 
+        }}}
+
+    </div>
+    
+    {{{components_simpleError attachName="error" error=error }}}
+    
+{{/components_form}}
+
+</div>

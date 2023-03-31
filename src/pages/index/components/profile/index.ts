@@ -1,5 +1,6 @@
 import { User } from "../../../../api/AuthAPI";
 import ResourceController from "../../../../controllers/ResourceController";
+import UsersController from "../../../../controllers/UsersController";
 import { withStore } from "../../../../utils/Store";
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
@@ -17,10 +18,16 @@ class ProfileBase extends _Block<ProfileProps> {
         return { 
             template, 
             styles,
-            getAvatar: ()=> {
+            getAvatar: () => {
 
                 return ResourceController.getResourceURL(this.getProps().storeItem.user?.avatar);
-            }
+            },
+            getUserName: () => {
+                
+                const user = this.getProps().storeItem.user;
+                return user ? UsersController.getUserName(user) : "";
+            }   
+            
         };
     }
 }

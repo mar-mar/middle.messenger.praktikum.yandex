@@ -24,7 +24,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     .use(PAGES_PATHS.Login, LoginPage)
     .use(PAGES_PATHS.Profile, ProfilePage)
     .use(PAGES_PATHS.Sign, SignPage)
-    .use(PAGES_PATHS.Index, IndexPage);
+    .use(PAGES_PATHS.Messages, IndexPage);
 
     IndexController.start();
 });

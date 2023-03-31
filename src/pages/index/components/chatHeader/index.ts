@@ -1,6 +1,7 @@
 import { User } from "../../../../api/AuthAPI";
 import { ChatInfo } from "../../../../api/ChatsAPI";
 import ResourceController from "../../../../controllers/ResourceController";
+import UsersController from "../../../../controllers/UsersController";
 import { withStore } from "../../../../utils/Store";
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
@@ -29,9 +30,9 @@ class ChatHeaderBase extends _Block<ChatHeaderProps> {
                 if (!chatUsers) return;
 
                 const users = Array.from(chatUsers.values());
-                const srts = users.slice(0, 5).map(user => user.display_name || `${user.first_name} ${user.second_name}`)
+                const srts = users.slice(0, 5).map(user => UsersController.getUserName(user))
 
-                return srts.join(", ");
+                return srts.join(", ") + (users.length > 5 ? "..." : "");
             }
         };
     }

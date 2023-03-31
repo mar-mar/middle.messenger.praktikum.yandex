@@ -28,6 +28,13 @@ export interface RemoveUserFromChatData {
     users: number[];
 }
 
+export interface SearchChatUsersData {
+    name?: string;
+    email?: string[];
+    limit?: number;
+}
+
+
 
 export class ChatsAPI extends _BaseAPI {
     constructor() {
@@ -68,8 +75,8 @@ export class ChatsAPI extends _BaseAPI {
         return response.token;
     }
 
-    fetchChatUsers(chatId: number): Promise<User[]> {
-        return this.http.get(`${chatId}/users`, { data: { limit: 200 }} );
+    fetchChatUsers(chatId: number, data?: SearchChatUsersData): Promise<User[]> {
+        return this.http.get(`${chatId}/users`, { data: { limit: 200, ...data }} );
     }
 
     

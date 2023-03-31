@@ -9,6 +9,8 @@ enum ERRORS {
     messageError = `Не должно быть пустым`,
     passwordDiffError = `Пароли должны совпадать`,
     chatNameError = `Имя чата не должно быть пустым и должно содержать не более 50 символов`,
+    filterNameError = `Фильтр может содержать только буквы, пробел и дефис`,
+    filterLoginError = `Фильтр может содержать только буквы (латиница), цифры, дефис и нижнее подчёркивание`
 }
 
 
@@ -17,6 +19,10 @@ export function validateLogin(value: string): string {
     //без пробелов, без спецсимволов (допустимы дефис и нижнее подчёркивание).
     
     return /^(?=.*[a-zA-Z-_])[\w_-]{3,20}$/.test(value) ? "" : ERRORS.loginError;
+}
+
+export function validateFilterLogin(value: string): string {
+    return /^[a-zA-Z-_\d]*$/.test(value) ? "" : ERRORS.filterLoginError;
 }
 
 
@@ -37,6 +43,10 @@ export function validateName(value: string): string {
     //латиница или кириллица, первая буква должна быть заглавной, без пробелов и без цифр, нет спецсимволов (допустим только дефис).
 
     return /^[A-ZА-ЯЁ]+[a-zA-Zа-яА-ЯёЁ-]*$/.test(value) ? "" : ERRORS.nameError;
+}
+
+export function validateFilterName(value: string): string {
+    return /^[a-zA-Zа-яА-ЯёЁ-\s]*$/.test(value) ? "" : ERRORS.filterNameError;
 }
 
 export function validateEmail(value: string): string {

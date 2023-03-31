@@ -1,0 +1,34 @@
+<div class="{{ styles.root }}">
+{{#components_form 
+    attachName=FORM_ATTACHE_NAME
+    [event:submit]=onSubmit }}
+
+{{#if withResult}}
+       
+    {{#if selectOptions}}
+    
+        <div class="{{ styles.root__result }}">
+
+            <div class="{{ styles.root__result-count }}" >Найдено пользователей ({{ selectOptions.length }}) </div>
+
+
+            {{{components_multiSelect name="userId" options=selectOptions }}}
+
+            <div class="{{ styles.root__button-cont }}">
+                {{{components_button label=buttonLabel type="submit" }}}
+            </div>
+
+            {{{components_simpleError attachName="error" error=error }}}
+
+        </div>
+
+    {{else}}
+
+        <div class="{{ styles.root__empty-result }}" >Не удалось найти пользователей</div>
+
+    {{/if}}
+
+{{/if}}
+
+{{/components_form}}
+</div>

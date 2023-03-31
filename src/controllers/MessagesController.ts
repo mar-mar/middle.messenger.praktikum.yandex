@@ -69,8 +69,8 @@ class MessagesController {
         });
     }
 
-    private clearMessage(_chatId: number) {
-       // store.set(`messages.${chatId}`, undefined);
+    private clearMessage(chatId: number) {
+        store.set(`messages.${chatId}`, undefined);
     }
 
     // страница pageNumber с сообщениями, 20 сообщений на странице
@@ -81,6 +81,7 @@ class MessagesController {
             throw new Error(`Chat ${id} is not connected`);
         }
 
+        this.clearMessage(id);
         socket.send({ type: 'get old', content: `${pageNumber}` });
     }
 

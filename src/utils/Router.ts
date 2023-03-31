@@ -6,7 +6,6 @@ export enum PAGES_PATHS {
     Login = "/",
     Profile = "/settings",
     Sign = "/sign-up",
-    Index = "/messenger",
     Messages = "/messenger"
 }
 

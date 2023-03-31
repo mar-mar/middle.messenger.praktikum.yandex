@@ -3,17 +3,19 @@ import template from "./index.hbs";
 import { ErrorCallback, _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import * as styles from "./styles.module.pcss";
 import { SearchChatUsersData } from "../../../../api/ChatsAPI";
+import { FilterData } from "../../components/actionUserFind";
+import { UserIdsData } from "../../components/actionUser";
 import { isFunction } from "../../../../utils/helpers/typeCheck";
-import ActionUserFind, { FilterData } from "../../components/actionUserFind";
-import ActionUser, { UserIdsData } from "../../components/actionUser";
+import ActionUserFind from "../../components/actionUserFind";
+import ActionUser from "../../components/actionUser";
 import ChatsController from "../../../../controllers/ChatsController";
-import { validateFilterName } from "../../../../controllers/ValidateController";
-
-
+import UsersController from "../../../../controllers/UsersController";
+import { validateFilterLogin } from "../../../../controllers/ValidateController";
 
 type Props = {
     execute: () => void;
 }
+
 
 export default class FindChatDialogBody extends _BlockWithForm<SearchChatUsersData, Props> {
 
@@ -24,7 +26,7 @@ export default class FindChatDialogBody extends _BlockWithForm<SearchChatUsersDa
             styles,
             findExecute: this.findExecute.bind(this),
             actionExecute: this.actionExecute.bind(this),
-            isValidFilter: validateFilterName
+            isValidFilter: validateFilterLogin
          };
     }
 
@@ -32,23 +34,23 @@ export default class FindChatDialogBody extends _BlockWithForm<SearchChatUsersDa
 
         let users;
         try {
-            users = await ChatsController.searchChatUsers({ name: values.filter || "", limit: 50 });
+            users = await UsersController.search({ login: values.filter || "" });
         }
         catch(exp) {
             errorCallback(String(exp));
             return;
         }
 
-        this.getRemoveBlock()?.setUsers(users);
+        this.getActionBlock()?.setUsers(users);
     }
 
     private async actionExecute(values: UserIdsData, errorCallback: ErrorCallback) {
         
-        const userIds = this.getRemoveBlock()?.toUserIds(values);
+        const userIds = this.getActionBlock()?.toUserIds(values);
         if (!userIds) return;
 
         try {
-            await ChatsController.removeUserFromSelectedChat(userIds);
+            await ChatsController.addUserToSelectedChat(userIds);
 
         }
         catch(exp) {
@@ -66,9 +68,8 @@ export default class FindChatDialogBody extends _BlockWithForm<SearchChatUsersDa
         return this.getChildByAttacheNameOne("find") as ActionUserFind;
     }
 
-    protected getRemoveBlock() {
+    protected getActionBlock() {
         return this.getChildByAttacheNameOne("action") as ActionUser;
     }
-
 
 }

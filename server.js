@@ -1,17 +1,13 @@
 // server.js
 const express = require("express");
 const fallback = require("express-history-api-fallback");
-// const pathUtils = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 const root = `${__dirname}/dist`;
-// const indexPath = pathUtils.resolve(root, "index.html");
 
-// helmet
 app.disable("x-powered-by");
-// express-history-api-fallback
 
 app.use((req, res, next) => {
     res.header("X-Frame-Options", "SAMEORIGIN");

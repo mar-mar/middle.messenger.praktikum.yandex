@@ -1,0 +1,19 @@
+<div class="{{ styles.root }}">
+
+    {{#with this as | parent |}}
+
+        {{#each options }}
+
+            <label class="{{ parent.styles.root__label }}">
+
+                <input class="{{ parent.styles.root__checkbox }}" 
+                    value="{{value}}" name="{{parent.name}}" type="checkbox"/>
+                {{label}}
+
+            </label>
+
+        {{/each}}
+
+    {{/with}}
+
+</div>
