@@ -7,12 +7,12 @@
     padding: var(--micro-offset); 
 
     &__header {
+        @mixin text-ellipsis;
+
         align-self: center; 
         flex-grow: 1;
         margin-left: var(--micro-offset);
         text-align: left;
-
-        @mixin text-ellipsis;
     }
 
 }

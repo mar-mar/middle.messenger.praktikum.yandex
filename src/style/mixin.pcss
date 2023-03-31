@@ -54,11 +54,11 @@
 @define-mixin avatar $diameter: 80px, $radius: 40px {
     background: var(--avatar-color);
     border-radius: $(radius);
-    height: $(diameter);
+    height: $(diameter);   
+    min-width: $(diameter);
     overflow: hidden;
     text-align: center;
-    width: $(diameter);   
-    min-width: $(diameter);
+    width: $(diameter);
 }
 
 
@@ -110,7 +110,7 @@
 
 
 @define-mixin text-ellipsis {
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
 }

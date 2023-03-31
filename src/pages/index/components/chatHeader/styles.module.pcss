@@ -6,10 +6,10 @@
     padding: var(--mini-offset);
 
     &__label {
+        @mixin text-ellipsis;
+
         flex-grow: 1;
         margin-left: var(--micro-offset);
-
-        @mixin text-ellipsis;
     }
 
     &__label__users { 
