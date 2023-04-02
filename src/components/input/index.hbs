@@ -1,9 +1,10 @@
 
-{{#*inline "addedClassName" ~}}
+{{#*inline "addedClassNameSum" ~}}
     {{~#unless noMargin}} {{ styles.root--margin }} {{~/unless~}}
+    {{~#if addedClassName}} {{addedClassName}}{{~/if~}} 
 {{~/inline}}
 
-<div class="{{ styles.root }} {{> addedClassName}}" >
+<div class="{{ styles.root }} {{> addedClassNameSum}}" >
 
     <div class="{{ styles.root__body}}" > 
 
@@ -12,6 +13,7 @@
             type = type
             value = value
             name = name
+            accept = accept
             parentClassName = styles.root
             [event:blur] = onBlurInput
             [event:focus] = onFocusInput

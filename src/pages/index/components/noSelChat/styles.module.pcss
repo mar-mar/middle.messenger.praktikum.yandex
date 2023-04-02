@@ -1,0 +1,19 @@
+@import url("src/style/mixin.pcss");
+
+.root {
+    @mixin center-position-wrapper;
+    @mixin absolute-strech;
+
+    background: var(--primary-back-color);
+    height: 100%;
+
+    &__text {
+        @mixin center-position;
+    }
+    
+
+    &--with-chat {
+        display: none;
+    }
+
+}

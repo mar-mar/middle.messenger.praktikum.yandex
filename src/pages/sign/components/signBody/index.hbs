@@ -1,16 +1,16 @@
 <div class="{{ styles.root }}">
-    {{#components_form item=this.item 
+    {{#components_form  
         attachName=FORM_ATTACHE_NAME
         [event:submit]=onSubmit item=item}}
 
         <div>
-            {{{components_input label="Почта" name="email" isValid=validateEmail value=item.email }}}
-            {{{components_input label="Логин" name="login" isValid=validateLogin value=item.login }}}
-            {{{components_input label="Имя" name="first_name" isValid=validateName value=item.first_name }}}
-            {{{components_input label="Фамилия" name="second_name" isValid=validateName value=item.second_name }}}
-            {{{components_input label="Телефон" isValid=validatePhone name="phone" value=item.phone }}}
-            {{{components_input label="Пароль" type="password" name ="password" isValid=validatePassword value=item.password }}}
-            {{{components_input label="Пароль (еще раз)" type="password" name="password" isValid=validatePassword value=item.password }}}
+            {{{components_input label="Почта" name="email" isValid=validateEmail }}}
+            {{{components_input label="Логин" name="login" isValid=validateLogin }}}
+            {{{components_input label="Имя" name="first_name" isValid=validateName }}}
+            {{{components_input label="Фамилия" name="second_name" isValid=validateName }}}
+            {{{components_input label="Телефон" isValid=validatePhone name="phone" }}}
+            {{{components_input label="Пароль" type="password" name ="password" isValid=validatePassword  attachName="inpPassword" }}}
+            {{{components_input label="Пароль (еще раз)" type="password" isValid=validateCopyPassword attachName="inpCopyPassword" }}}
         </div>
         
         <div class="{{ styles.root__button-cont}}">
@@ -18,6 +18,8 @@
         </div>
 
     {{/components_form}}
+    
+    {{{components_simpleError attachName="error" error=error }}}
 </div>
 
 

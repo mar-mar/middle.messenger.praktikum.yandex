@@ -2,12 +2,12 @@
 
     {{#layout_pane secBackColor=1 addeClassName=styles.[left-pane] }}
         <section class="{{ styles.root__profile }}">
-            {{{pages_index_components_profile item=item 
+            {{{pages_index_components_profile  
                 openPopupMenu=openPopupMenu }}}
         </section>
 
         <nav class="{{ styles.root__chats }}">
-            {{{pages_index_components_chatList item=item  
+            {{{pages_index_components_chatList 
                 openFindChat=openFindChat }}}
         </nav>
     {{/layout_pane }}
@@ -16,54 +16,59 @@
     <main class="{{ styles.root__chat }}">
 
         {{#layout_pane addeClassName=styles.[chat-header] }}
-            {{{pages_index_components_chatHeader item=item 
+            {{{pages_index_components_chatHeader 
                 openPopupChatMenu=openPopupChatMenu }}}
         {{/layout_pane }}
 
 
         <div class="{{ styles.root__chat__messages }}">
             <section aria-label="Беседа">
-                {{{pages_index_components_chatMessages item=item }}}
+                {{{pages_index_components_chatMessages }}}
             </section>
         </div>
 
         {{#layout_pane addeClassName=styles.[chat-input] secBackColor=1 }}
-            {{{pages_index_components_messageInput item=item 
-                openPopupAttache=openPopupAttache execute=ecexuteSendMessage }}}
+            {{{pages_index_components_messageInput 
+                openPopupAttache=openPopupAttache }}}
         {{/layout_pane }}
 
+        {{{pages_index_components_noSelChat }}}
+        
     </main>
 
-    <div class="{{ styles.root }}__url-for-check">
-        <div>{{{components_textButton label="Авторизация" [event:click]=goLogin }}}</div>
-        <div>{{{components_textButton label="Регистриция" [event:click]=goSign }}}</div>
-        <div>{{{components_textButton label="Профиль" [event:click]=goProfile }}}</div>
-        <div>{{{components_textButton label="404 ошибка" [event:click]=goError404 }}}</div>
-        <div>{{{components_textButton label="500 ошибка" [event:click]=goError500 }}}</div>
-    </div>
-
-    {{#layout_popup attachName=CHILD_NAMES.Attache }}
+    {{#layout_popup attachName=ATTACHES.Attache }}
         {{{components_menu memuItems=attachMenuItems }}}
     {{/layout_popup}}
-    {{#layout_popup attachName=CHILD_NAMES.ChatMenu }}
+    {{#layout_popup attachName=ATTACHES.ChatMenu }}
         {{{components_menu memuItems=chatMenuMenuItems }}}
     {{/layout_popup}}
-    {{#layout_popup attachName=CHILD_NAMES.Menu }}
+    {{#layout_popup attachName=ATTACHES.Menu }}
         {{{components_menu memuItems=menuMenuItems }}}
     {{/layout_popup}}
 
-    {{#layout_modalDialog attachName=CHILD_NAMES.AddUser title="Добавить пользователя"  }}
-        {{{pages_index_modules_addUserDialogBody execute=ecexuteAddUser }}}
+    {{#layout_modalDialog attachName=ATTACHES.AddUser title="Добавление пользователя"  }}
+        {{{pages_index_modules_addUserDialogBodyNew execute=ecexuteAddUser }}}
     {{/layout_modalDialog}}
-    {{#layout_modalDialog attachName=CHILD_NAMES.RemoveUser title="Удалить пользователя"  }}
+    {{#layout_modalDialog attachName=ATTACHES.RemoveUser title="Удаление пользователя"  }}
         {{{pages_index_modules_removeUserDialogBody execute=ecexuteRemoveUser }}}
     {{/layout_modalDialog}}
-    {{#layout_modalDialog attachName=CHILD_NAMES.FindChat title="Поиск чата"  }}
+    
+    {{#layout_modalDialog attachName=ATTACHES.FindChat title="Поиск чата"  }}
         {{{pages_index_modules_findChatDialogBody execute=ecexuteFindChat }}}
     {{/layout_modalDialog}}
-    {{#layout_modalDialog attachName=CHILD_NAMES.CreateChat title="Создание чата"  }}
+    {{#layout_modalDialog attachName=ATTACHES.CreateChat title="Создание чата"  }}
         {{{pages_index_modules_addChatDialogBody execute=executeCreateChat }}}
     {{/layout_modalDialog}}
+
+    {{#layout_modalDialog attachName=ATTACHES.AvatarChat title="Загрузка файла для аватара"  }}
+        {{{components_updateAvatarDialogBody 
+            execute=ecexuteUpdataAvatar }}}
+    {{/layout_modalDialog}}
+    {{#layout_modalDialog attachName=ATTACHES.DeleteChat title="Удаление чата"  }}
+        {{{components_messageDialogBody actionLabel="Да, конечно" message="Вы действительно хотите удалить чат?"
+            execute=ecexuteDelChat }}}
+    {{/layout_modalDialog}}
+
 
 </div>
 

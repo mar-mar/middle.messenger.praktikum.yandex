@@ -1,30 +1,46 @@
 import Form from "../components/form";
 import { EventBus } from "./EventBus";
-import { log } from "./logger";
-import { isEvent, isFunction } from "./typeCheck";
+import { isEvent, isFunction } from "./helpers/typeCheck";
 import { _Block } from "./_Block";
 
-export type WithFormProps = {
-    onSubmit: (value: any) => void;
-    execute?: (values?: FormValues) => void
+export type WithFormProps<T> = T & {
+    onSubmit?: (value: any) => void;
+    execute?: (values?: FormValues) => void;
+    error?: string | undefined;
 };
+
+const FORM_ATTACHE_NAME: string = "form";
 
 enum FORM_EVENTS {
     ECEXUTE = "execute"
 };
 
-const FORM_ATTACHE_NAME: string = "form";
+export type ErrorCallback = (error: string) => void;
 
-export type FormValues = Record<string, unknown> | null;
+export type FormValues = Record<string, any> | null;
 
+export class _BlockWithForm<D extends Record<string, any>, T extends RecordStrAny = any> extends _Block<WithFormProps<T>> {
+    //protected formData: Partial<D> = {};
 
-export class _BlockWithForm<T extends WithFormProps = any> extends _Block<T> {
+    /*rotected getDomEvents(): Events | undefined {
+        return {
+            ...super(),
+
+        }
+    }*/
 
     protected getCompileOptions() {
         return {
             onSubmit: this.onSubmit.bind(this),
             FORM_ATTACHE_NAME
          };
+    }
+
+    protected reset() {
+        const props: Partial<WithFormProps<T>> = {};
+        props.error = undefined;
+        this.setProps(props);
+        super.reset();
     }
 
     protected registerLifeCycleEvents(eventBus: EventBus): void {
@@ -42,9 +58,10 @@ export class _BlockWithForm<T extends WithFormProps = any> extends _Block<T> {
         form.validate();
 
         if (!form.getError()) {
-            const values = form.getValues();
-            log(form.getValues());
-            this.getEventBus().emit(FORM_EVENTS.ECEXUTE, { values });
+
+            const values = form.getValues() as D;
+           
+            this.getEventBus().emit(FORM_EVENTS.ECEXUTE, values);
         }
     }
 
@@ -58,9 +75,33 @@ export class _BlockWithForm<T extends WithFormProps = any> extends _Block<T> {
     }
     
     //
-    protected execute(_values: FormValues) { 
+    protected execute(values: D): void { 
+        if (!values) return;
+
         const execute = this.getProps().execute;
-        if (isFunction(execute)) execute();
+        
+        if (isFunction(execute)) {
+            execute(values, this.errorCallback.bind(this));
+        }
+    }
+
+    componentDidUpdate(oldProps: Partial<WithFormProps<T>>, newProps: Partial<WithFormProps<T>>) {
+
+        if (newProps.error !== oldProps.error) {
+
+            this.getErrorBlock()?.setProps({ error: newProps.error });
+            return false;
+        }
+        return true;
+    }
+
+    protected getErrorBlock(): _Block | null | undefined{
+        return null;
+    }
+
+    protected errorCallback(error: string): void {
+
+        this.getErrorBlock()?.setProps({ error });
     }
 
 }

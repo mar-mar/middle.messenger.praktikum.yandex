@@ -1,4 +1,4 @@
-import { isFunction, isString } from "./typeCheck";
+import { isFunction, isString } from "./helpers/typeCheck";
 import { _Block } from "./_Block";
 
 export type ValidatedBlockProps = {
@@ -7,16 +7,18 @@ export type ValidatedBlockProps = {
 };
 
 // базовый класс для компонентов
-export class _ValidatedBlock<T extends ValidatedBlockProps> extends _Block<T> {
+export class _ValidatedBlock<T extends Record<string, any>> extends _Block<T & ValidatedBlockProps> {
 
     protected getCompileOptions() {
         return {
+            ...super.getCompileOptions(),
             onBlurInput: this.onBlurInput.bind(this),
             onFocusInput: this.onFocusInput.bind(this)
          };
     }
 
     protected getValue(): any { return null; }
+
 
     protected onBlurInput(): void {
                 
@@ -27,6 +29,7 @@ export class _ValidatedBlock<T extends ValidatedBlockProps> extends _Block<T> {
         
         this.validate();
     }
+
 
     public validate(): void {
         const isValid = this.getProps().isValid;

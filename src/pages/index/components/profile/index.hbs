@@ -1,11 +1,11 @@
 
 <div class="{{ styles.root }}">
 
-    {{{components_avatar imageUrl=item.profile.avatar diameter='M' 
-        avatarOwner=item.profile.display_name }}}
+    {{{components_avatar imageUrl=getAvatar diameter='M' 
+        avatarOwner=storeItem.user.display_name }}}
 
     <h2 class="{{ styles.root }}__header">
-        {{item.profile.display_name}}
+        {{getUserName}}
     </h2>
 
     {{{components_textButton label="Меню" iconClass="menu-icon" noLabel=1 

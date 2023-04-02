@@ -1,0 +1,32 @@
+
+
+.root {
+    background: var(--message-back-color3);
+    border-radius: var(--pane-radius);
+    margin: var(--micro-offset);
+    max-width: 90%;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    padding: var(--mini-offset);
+    width: fit-content;
+    word-break: break-word;
+
+    &--my {
+        align-self: flex-end;
+        background: var(--message-back-color1);
+    }
+
+    &_time {
+        color: var(--grey-font-color);
+        font-size: var(--mini-font-size);
+        margin-top: var(--micro-offset);
+    }
+
+    &--my &_time {
+        text-align: right;
+    }
+
+    &_text {
+        white-space: break-spaces;
+    }
+}

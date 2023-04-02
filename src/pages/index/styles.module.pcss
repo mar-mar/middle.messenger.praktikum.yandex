@@ -1,4 +1,4 @@
-@import url("src/style/variable.pcss");
+
 @import url("src/style/mixin.pcss");
 
 .root {
@@ -6,13 +6,18 @@
     height: 100%;
 
     &__chats {
+        display: flex;
+        flex-direction: column;
         flex-grow: 1;
+        overflow: hidden;
     }
 
     &__chat {
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+        overflow: hidden;
+        position: relative;
 
         &__messages {
             flex-grow: 1;
@@ -20,15 +25,10 @@
         }
     }
 
-    &__url-for-check {
-        bottom: 10px;
-        left: 10px;
-        position: fixed;
-    }
-
     & .left-pane {
         @mixin only-border-right;
 
+        max-width: 250px;
         min-width: 250px;
         overflow: hidden;
     }

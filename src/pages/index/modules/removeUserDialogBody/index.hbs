@@ -1,15 +1,15 @@
 <div class="{{ styles.root }}">
-{{#components_form 
-    attachName=FORM_ATTACHE_NAME
-    [event:submit]=onSubmit }}
 
-    <div>
-        {{{components_input label="Логин" name="login" value=item.login}}}
-    </div>
+{{{pages_index_components_actionUserFind 
+    attachName="find"
+    filterLabel="Имя и/или Фамилия"
+    execute=findExecute 
+    isValidFilter = isValidFilter
+    }}}
 
-    <div class="{{ styles.root }}__button-cont">
-        {{{components_button label="Удалить" type="submit" }}}
-    </div>
+{{{pages_index_components_actionUser 
+    attachName="action"
+    buttonLabel="Удалить из чата"
+    execute=actionExecute }}}
 
-{{/components_form}}
 </div>

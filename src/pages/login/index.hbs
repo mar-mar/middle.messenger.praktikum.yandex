@@ -1,12 +1,13 @@
 <div class="{{styles.root}}">
     {{#layout_pageDialog
     title = "Авторизация"
+    attachName="pane"
     }}
 
         <div class="{{styles.root__body}}" >
            
-            {{{pages_login_components_loginBody item=item
-                execute=goIndex }}}
+            {{{pages_login_components_loginBody 
+                execute=executeLogin }}}
             
             {{#layout_centerPane }}
                 {{{components_textButton label="Нет профиля?" [event:click]=goSing }}}

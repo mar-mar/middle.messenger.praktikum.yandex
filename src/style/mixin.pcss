@@ -1,4 +1,3 @@
-@import url("./variable.pcss");
 
 @define-mixin empty-style {
     width: auto;
@@ -55,10 +54,11 @@
 @define-mixin avatar $diameter: 80px, $radius: 40px {
     background: var(--avatar-color);
     border-radius: $(radius);
-    height: $(diameter);
+    height: $(diameter);   
+    min-width: $(diameter);
     overflow: hidden;
     text-align: center;
-    width: $(diameter);    
+    width: $(diameter);
 }
 
 
@@ -106,4 +106,11 @@
 @define-mixin icon-xs {
     height: 16px;
     min-width: 16px;
+}
+
+
+@define-mixin text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

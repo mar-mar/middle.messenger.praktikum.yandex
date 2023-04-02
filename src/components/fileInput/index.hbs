@@ -1,4 +1,12 @@
-<label class="{{ styles.root }}">
-    <div>{{label}}<div>
-    <input type="file" class="{{ styles.root__input}}"/>
-</label>
+    <label class="{{ styles.root }}">
+        {{label}}
+        
+        {{{components_simpleInput 
+            attachName = "input"
+            type = "file"
+            name = name
+            accept = accept
+            parentClassName = styles.root
+        }}}
+
+    </label>

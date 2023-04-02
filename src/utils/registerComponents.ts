@@ -1,6 +1,6 @@
 import Handlebars from "handlebars/dist/handlebars.runtime";
 import { _Block } from "./_Block";
-import { isFunction } from "./typeCheck";
+import { isFunction } from "./helpers/typeCheck";
 
 
 // без ts-ignore не работает, ts не понимает такие импорты, это фича от parcel (@parcel/resolver-glob)

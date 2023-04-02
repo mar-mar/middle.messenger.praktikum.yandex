@@ -13,9 +13,17 @@
     <div class="{{ styles.root__list }}">
 
         <ul >
-        {{#each item.chats }} <!--item.chats-->
-            {{{pages_index_components_chatItem item=this}}}
-        {{/each}}
+            {{#with this as | parent |}}
+ 
+                {{#each storeItem.chats }} <!--item.chats-->
+
+                    {{{pages_index_components_chatItem 
+                        chatItem=this                        
+                    }}}
+
+                {{/each}}
+
+            {{/with}}
         </ul>
 
     </div>

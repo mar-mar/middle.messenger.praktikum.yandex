@@ -1,4 +1,3 @@
-
 import routeUse, { PAGES } from "../../utils/route";
 import { _Block } from '../../utils/_Block';
 import template from './index.hbs';
@@ -10,8 +9,12 @@ export default class SignPage extends _Block {
         return { 
             template,
             styles,
-            goIndex: () => routeUse(PAGES.Index),
             goLogin: () => routeUse(PAGES.Login)
         };
     }
 }
+
+// проверить после логаута очищается или нет 
+// и логин проверить на очистку
+
+

@@ -1,18 +1,19 @@
 import { EventBus } from "./EventBus";
 import { nanoid } from 'nanoid';
-import { isArray } from "./typeCheck";
+import { isArray } from "./helpers/typeCheck";
 
 export enum EVENTS {
     INIT = "init",
     FLOW_CDM = "flow:component-did-mount",
+    FLOW_CDUM = "flow:component-did-un-mount",
     FLOW_CDU = "flow:component-did-update",
-    FLOW_RENDER = "flow:render",
-    HIDE = "hide",
-    SHOW = "show"
+    FLOW_RENDER = "flow:render" //,
+   // HIDE = "hide",
+   // SHOW = "show"
 };
 
 type Children = Record<string, _Block[] | _Block>;
-type Events = Record<string, AnyFunctionNoReturn>;
+export type Events = Record<string, AnyFunctionNoReturn>;
 
 export type CompileOptions = { 
     template?: Handlebars.TemplateDelegate<any>, 
@@ -20,17 +21,20 @@ export type CompileOptions = {
     [index: string]: any 
 };
 
-export type TemplateOptions = { 
+/*export type TemplateOptions = { 
     styles?: Record<string, any>,
     addChild: (child: _Block) => void,
-    [index: string]: any 
-};
+    [index: string]: any
+};*/
 
-export type Props<P extends Record<string, unknown> = any> = { events?: Events, attachName?: string, render?: boolean; item?: any } & P;
 
+export type Props<T> = { 
+    events?: Events, 
+    attachName?: string
+} & T;
 
 // базовый класс для компонентов
-export class _Block<T extends Record<string, unknown> = any> {
+export class _Block<T extends Record<string, any> = any> {
 
     private element: HTMLElement | null = null;
     private children: Children = {};
@@ -38,11 +42,13 @@ export class _Block<T extends Record<string, unknown> = any> {
     private readonly eventBus: EventBus;
     private readonly props: Props<T>;
     private readonly id: string;
+    private isMounted: boolean;
 
     constructor(props: Props<T>) {
         this.eventBus = new EventBus();
 
         this.id = nanoid(6);
+        this.isMounted = false;
         props.attachName = props.attachName || this.id;
 
         this.props = this.makePropsProxy(props, this.eventBus);
@@ -54,27 +60,24 @@ export class _Block<T extends Record<string, unknown> = any> {
     protected init(): void { };
 
     // Может переопределять пользователь, необязательно трогать
-    protected componentDidMount(/*oldProps*/): void { };
+    // после добавления в документ
+    protected componentDidMount(): void { };
+    // после удаления из документа
+    protected componentDidUnMount(): void { };
 
     // Может переопределять пользователь, необязательно трогать
-    protected componentDidUpdate(_oldProps: Props<T>, _newProps: Props<T>): boolean { return true; };
+    protected componentDidUpdate(_oldProps: T, _newProps: T): boolean { return true; };
 
     protected getCompileOptions(): CompileOptions { return {}; };
-
-    // Может переопределять пользователь, необязательно трогать
-    //protected render(): DocumentFragment | null { return null };    
-    protected afterHide(): void {};
-    protected afterShow(): void {};
-    protected onExecute(): void {};
 
     // constructor
     protected registerLifeCycleEvents(eventBus: EventBus): void {
         eventBus.on(EVENTS.INIT, this.onInit.bind(this));
         eventBus.on(EVENTS.FLOW_CDM, this.onComponentDidMount.bind(this));
+        eventBus.on(EVENTS.FLOW_CDUM, this.onComponentDidUnMount.bind(this));
+        
         eventBus.on(EVENTS.FLOW_CDU, this.onComponentDidUpdate.bind(this));
         eventBus.on(EVENTS.FLOW_RENDER, this.onRender.bind(this));
-        eventBus.on(EVENTS.HIDE, this.afterHide.bind(this));
-        eventBus.on(EVENTS.SHOW, this.afterShow.bind(this));
     }
 
     // constructor
@@ -114,6 +117,7 @@ export class _Block<T extends Record<string, unknown> = any> {
 
     //CDM
     public dispatchComponentDidMount(): void {
+        
         this.eventBus.emit(EVENTS.FLOW_CDM);
 
         this.forEachChildren((child, _) => {
@@ -123,14 +127,34 @@ export class _Block<T extends Record<string, unknown> = any> {
 
     //CDM
     private onComponentDidMount(): void {
+        this.isMounted = true;
         this.componentDidMount();
     }
 
+    //CD-UM
+    public dispatchComponentDidUnMount(): void {
+        this.eventBus.emit(EVENTS.FLOW_CDUM);
+
+        this.forEachChildren((child, _) => {
+            child.dispatchComponentDidUnMount();
+        });
+    }
+
+    //CD-UM
+    private onComponentDidUnMount(): void {
+        this.isMounted = false;
+        this.componentDidUnMount();
+    }   
+
     //CDU
-    private onComponentDidUpdate(oldProps: Props<T>, newProps: Props<T>): void {
+    private onComponentDidUpdate(oldProps: T, newProps: T): void {
         if (this.componentDidUpdate(oldProps, newProps)) {
             this.eventBus.emit(EVENTS.FLOW_RENDER);
         }
+    }
+
+    protected reset() {
+        this.eventBus.emit(EVENTS.FLOW_RENDER);
     }
 
     //render
@@ -139,7 +163,7 @@ export class _Block<T extends Record<string, unknown> = any> {
         this.toggleDomEvents(false);
         this.children = {};
 
-        const newElement = this.compile(this.getCompileOptions());
+        const newElement = this.compile(this.getCompileOptions()); // тут заполняются children
 
         const oldElement = this.element;
         this.element = newElement;
@@ -150,24 +174,37 @@ export class _Block<T extends Record<string, unknown> = any> {
         }
 
         this.toggleDomEvents(true);
+
+        if (this.isMounted) {
+            this.forEachChildren((child, _) => {
+                child.dispatchComponentDidMount();
+            });
+        }
     }
 
     //render
     private toggleDomEvents(value: boolean): void {
         if (!this.element) return;
 
-        const events = this.props.events;
+        const events = this.getDomEvents();
         const element = this.element;
         if (!this.element || !events) return;
 
-        Object.keys(events).forEach(eventName => {            
+        
+        Object.keys(events).forEach(eventName => {       
+                   
             if (value) {
+                //keyof HTMLElementEventMap
                 element?.addEventListener(eventName, events[eventName]);
             }
             else {
                 element?.removeEventListener(eventName, events[eventName]);
             }
         });
+    }
+
+    protected getDomEvents(): Events | undefined {
+        return this.props.events;
     }
 
     protected compile({ template, styles, ...args } : CompileOptions) {
@@ -220,6 +257,7 @@ export class _Block<T extends Record<string, unknown> = any> {
     public addChild(child: _Block): void {
         const attachName = child.getProps().attachName || child.getId();
         let children = this.children[attachName];
+
         if (!children) {
             this.children[attachName] = child;
         }
@@ -254,10 +292,25 @@ export class _Block<T extends Record<string, unknown> = any> {
         return this.children[attacheName];
     }
 
-    protected getChildByAttacheNameOne(attacheName: string): _Block | null {
+    public getChildByAttacheNameOne(attacheName: string | string[]): _Block | null {
+
+        let child: _Block | null = this;
+        attacheName = isArray(attacheName) ? attacheName : [attacheName];
+
+        const isOk = attacheName.every(name => {
+            child = child?._getChildByAttacheNameOne(name) || null;
+            return child;
+        });
+        
+        return isOk ? child : null;
+    }
+
+    private _getChildByAttacheNameOne(attacheName: string): _Block | null {
+
         const children = this.getChildByAttacheName(attacheName);
         return Array.isArray(children) ? children[0] : children;
     }
+
 
     protected getEventBus(): EventBus {
         return this.eventBus;
@@ -267,7 +320,7 @@ export class _Block<T extends Record<string, unknown> = any> {
         return this.props;
     }
 
-    public setProps(nextProps: Partial<Props<T>>): void {
+    public setProps(nextProps: Partial<T>): void {
         if (!nextProps) {
             return;
         }
@@ -277,12 +330,14 @@ export class _Block<T extends Record<string, unknown> = any> {
 
     public readonly show = (args?: Record<string, any>) => {
         this.toggleVisible(true, args);
-        this.eventBus.emit(EVENTS.SHOW);
+        
+        this.dispatchComponentDidMount();
     }
 
     public readonly hide = (args?: Record<string, any>) => {
         this.toggleVisible(false, args);
-        this.eventBus.emit(EVENTS.HIDE);
+        
+        this.dispatchComponentDidUnMount();
     }
 
     protected toggleVisible(value: boolean, _args?: Record<string, any>): void { 
@@ -294,5 +349,6 @@ export class _Block<T extends Record<string, unknown> = any> {
         const dialog = this.getChildByAttacheNameOne(childName);
         visible ? dialog?.show() : dialog?.hide();
     }
+
 }
 

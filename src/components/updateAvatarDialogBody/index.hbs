@@ -1,0 +1,29 @@
+<div class="{{ styles.root }}">
+{{#components_form 
+    attachName=FORM_ATTACHE_NAME
+    [event:submit]=onSubmit }}
+
+    <div>
+        {{#layout_centerPane attachName="avatarFileNamePane" }}
+            <div class="{{ styles.root__file-name }}" >
+                {{{components_simpleText attachName="avatarFileName" text="файл не выбран" }}}
+            </div>
+        {{/layout_centerPane}}
+
+        {{#layout_centerPane }}
+            {{{components_fileInput label="Выбрать файл на комьютере" name="avatar" 
+
+                accept="image/*"
+                [event:change]=changeFile }}}
+        {{/layout_centerPane}}
+        
+    </div>
+    
+    <div class="{{ styles.root__button-cont }}">
+        {{{components_button label="Изменить" type="submit" }}}
+    </div>
+
+    {{{components_simpleError attachName="error" error=error }}}
+
+{{/components_form}}
+</div>

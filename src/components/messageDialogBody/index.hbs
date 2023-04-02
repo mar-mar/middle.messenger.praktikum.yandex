@@ -1,0 +1,19 @@
+<div class="{{ styles.root }}">
+{{#components_form 
+    attachName=FORM_ATTACHE_NAME
+    [event:submit]=onSubmit }}
+
+    <div>
+        {{#layout_centerPane attachName="avatarFileNamePane" }}
+            {{message}}
+        {{/layout_centerPane}}
+    </div>
+    
+    <div class="{{ styles.root__button-cont }}">
+        {{{components_button label=actionLabel type="submit" }}}
+    </div>
+
+    {{{components_simpleError attachName="error" error=error }}}
+
+{{/components_form}}
+</div>

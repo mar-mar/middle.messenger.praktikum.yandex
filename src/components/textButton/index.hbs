@@ -1,7 +1,13 @@
+{{#*inline "addedClassNameSum" ~}}
+    {{~#if red}}{{ styles.root }}--red{{~/if~}}
+    {{~#if addedClassName}} {{addedClassName}}{{~/if~}}   
+{{~/inline}}
 
-<div class="{{ styles.root }} {{#if red}}{{ styles.root }}--red{{/if}}">
+
+<div class="{{ styles.root }} {{> addedClassNameSum}}"  
+    {{~#if datasetId}} data-id="{{datasetId}}" {{~/if~}} >
     
-    <button class="{{ styles.root__button}}" type="{{type}}"> 
+    <button class="{{ styles.root__button}}" type="{{type}}" value="{{value}}" name="{{name}}"> 
 
         {{#if iconClass}}<div class="{{ styles.root__icon }} {{iconClass}}" ></div>{{/if}}
         {{#unless noLabel}}<div class="{{ styles.root__label }}">{{label}}</div>{{/unless}}

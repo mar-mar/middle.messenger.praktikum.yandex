@@ -1,9 +1,9 @@
 <div class="{{styles.root}}">
     {{#layout_pageDialog 
+        attachName="pane"
         title="Ваш профиль" }}
 
-        {{{pages_sign_components_signBody item=item 
-            execute = goIndex }}}
+        {{{pages_sign_components_signBody }}}
 
         {{#layout_centerPane  }}
         {{{components_textButton label="Перейти к авторизации" [event:click]=goLogin }}}

@@ -3,9 +3,60 @@
     attachName=FORM_ATTACHE_NAME
     [event:submit]=onSubmit }}
 
-    <div>
-        {{{components_input label="фильтр" name="filter"  type="text" }}}
+    <div class="{{ styles.root__input-cont }}">
+
+        {{{components_input label="Имя или часть имени чата" 
+            isValid = validateChatName
+            value = item.filter           
+            name="filter"  
+            noMargin = 1
+            addedClassName=styles.root__input 
+        }}}
+        
+        {{{components_textButton label="Найти" 
+            type="submit" 
+            iconClass="send-icon" 
+            noLabel=1 
+        }}}
+
     </div>
 
+    {{{components_simpleError attachName="error" error=error }}}
+
 {{/components_form}}
+
+{{#if withResult}}
+    
+    {{#if chats}}
+        <div class="{{ styles.root__result }}">
+
+            <div class="{{ styles.root__result-count }}" >Найдено чатов ({{ chats.length }}) </div>
+
+            <div >
+                {{#with this as | parent |}}
+                    {{#each chats }}
+                        
+                        <div>
+                            {{{components_textButton 
+                                label=title 
+                                datasetId = id
+                                [event:click]=parent.selectChat }}}
+                        </div>
+
+                    {{/each}}
+                {{/with}}
+            </div>
+
+        </div>
+
+    {{else}}
+
+        <div class="{{ styles.root__empty-result }}" >Не удалось найти чаты</div>
+
+    {{/if}}
+
+    
+
+{{/if}}
+
 </div>

@@ -7,20 +7,22 @@
 
             {{#components_form 
                 attachName=FORM_ATTACHE_NAME
-                [event:submit]=onSubmit item=item }}
+                [event:submit]=onSubmit }}
 
                 <div>
-                    {{{components_input label="Имя в чате" name="display_name" value=item.display_name }}}
-                    {{{components_input label="Логин" name="login" isValid=validateLogin value=item.login }}}
-                    {{{components_input label="Имя" name="first_name" isValid=validateName value=item.first_name }}}
-                    {{{components_input label="Фамилия" name="second_name" isValid=validateName value=item.second_name }}}
-                    {{{components_input label="Почта" name="email" isValid=validateEmail value=item.email }}}
-                    {{{components_input label="Телефон" name="phone" isValid=validatePhone value=item.phone }}}
+                    {{{components_input label="Имя в чате" name="display_name" value=user.display_name }}}
+                    {{{components_input label="Логин" name="login" isValid=validateLogin value=user.login }}}
+                    {{{components_input label="Имя" name="first_name" isValid=validateName value=user.first_name }}}
+                    {{{components_input label="Фамилия" name="second_name" isValid=validateName value=user.second_name }}}
+                    {{{components_input label="Почта" name="email" isValid=validateEmail value=user.email }}}
+                    {{{components_input label="Телефон" name="phone" isValid=validatePhone value=user.phone }}}
                 </div>
                 
                 <div class="{{ styles.root }}__setting-button-cont">
                     {{{components_button label="Сохранить изменения" type="submit" }}}
                 </div>
+
+                {{{components_simpleError attachName="error" error=error }}}
 
             {{/components_form}}
 
@@ -37,9 +39,9 @@
                 [event:click]=updateAvatar
 
                 clickLabel="Изменить аватар"
-                imageUrl=item.avatar 
+                imageUrl=getAvatar 
                 diameter='L'
-                avatarOwner=item.display_name }}}
+                avatarOwner=user.display_name }}}
         </div>
 
         <div class="{{ styles.root__pass-cont }}">
@@ -50,7 +52,7 @@
 
         <div class="{{ styles.root__logout-cont }}">
             <div>{{{components_textButton 
-                    [event:click]=logoff
+                    [event:click]=logout
 
                     label="Выйти из профиля" 
                     red=1 }}}</div>
