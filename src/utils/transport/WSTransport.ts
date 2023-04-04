@@ -72,7 +72,7 @@ export default class WSTransport extends WSTransportBase {
 
         if (!value) return;
 
-        this.pingTimeout = setTimeout(() => {
+        this.pingTimeout = window.setTimeout(() => {
 
             if (this.socket?.readyState === 1) { // закрывается не сразу можем поймать ошибки
 

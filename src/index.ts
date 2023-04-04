@@ -13,11 +13,11 @@ import RouterController from "./controllers/RouterController";
 import IndexController from "./controllers/IndexController";
 
 
-// регистрируем хелперы по компонентам
-registerComponents();
+window.addEventListener('DOMContentLoaded', () => {
 
+    // регистрируем хелперы по компонентам
+    registerComponents();
 
-window.addEventListener('DOMContentLoaded', async () => {
     RouterController
     .use(PAGES_PATHS.Error404, Error404Page)
     .use(PAGES_PATHS.Error500, Error500Page)

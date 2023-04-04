@@ -1,41 +1,44 @@
-import Handlebars from "handlebars/dist/handlebars.runtime";
+import Handlebars from "handlebars/runtime";
 import { _Block } from "./_Block";
 import { isFunction } from "./helpers/typeCheck";
 
 
-// без ts-ignore не работает, ts не понимает такие импорты, это фича от parcel (@parcel/resolver-glob)
-// @ts-ignore 
-import componentsModules from "../**/components/*/index.ts";
-// @ts-ignore
-import layoutModules from "../**/layout/*/index.ts";
-// @ts-ignore
-import modulesModules from "../**/modules/*/index.ts";
-
-
 export default function execute() {
+    // @ts-ignore 
+    const componentsModules = require.context('../', true, /.*\/components\/[a-zA-Z]+\/index.ts$/);
+    // @ts-ignore 
+    const layoutModules = require.context('../', true, /.*\/layout\/[a-zA-Z]+\/index.ts$/);
+    // @ts-ignore 
+    const modulesModules = require.context('../', true, /.*\/modules\/[a-zA-Z]+\/index.ts$/);
+
     registerComponents(componentsModules, "components", []);
     registerComponents(layoutModules, "layout", []);
     registerComponents(modulesModules, "modules", []);
 }
 
-function registerComponents(modules: Record<string, any>, type: string, path: string[]): void{
-    Object.entries(modules).forEach(([name, module]) => {
-        const currentPath = [...path];
-        currentPath.push(name);
+//@types/webpack-env
+function registerComponents(modules: any, _type: string, _path: string[]): void {
+    console.info(modules);
+
+    modules.keys().forEach((key: string) => {
+        const module = modules(key);
 
         if ((module as any).default) {
-            currentPath.splice(-1, 0, type);
+            //"./pages/index/modules/addChatDialogBody/index.ts"
+            const currentPath = key.slice(2, -3).split("/");
+            currentPath.pop();
+            console.info("*"+currentPath.join("_")+"*", (module as any).default);
             handleharRegisterHelper(currentPath.join("_"), (module as any).default);
         }
-        else {
-            
-            registerComponents(module, type, currentPath);
-        }
+       // else {
+
+            //registerComponents(module, type, currentPath);
+       // }
     });
 }
 
-function handleharRegisterHelper<T extends _Block>(name: string, 
-    constructor: new(options: any) => T): void { 
+function handleharRegisterHelper<T extends _Block>(name: string,
+    constructor: new (options: any) => T): void {
 
     Handlebars.registerHelper(name, function (this: any, options: Handlebars.HelperOptions): string {
 
@@ -60,16 +63,16 @@ function handleharRegisterHelper<T extends _Block>(name: string,
         props.render = true;
 
         const component = new constructor(props);
-        addChild(component);    
+        addChild(component);
 
         let childsStr = "";
         if (options.fn) {
 
-            childsStr = options.fn(this, { 
-                data: { 
+            childsStr = options.fn(this, {
+                data: {
                     ...data,
                     // addChilToChild чтобы сохранить вложенность детей из шаблона
-                    addChilToChild: component.addChild.bind(component) 
+                    addChilToChild: component.addChild.bind(component)
                 }
             });
         }
@@ -77,3 +80,4 @@ function handleharRegisterHelper<T extends _Block>(name: string,
         return `<div data-id='${component.getId()}'>${childsStr}</div>`;
     });
 }
+
