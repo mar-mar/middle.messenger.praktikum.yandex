@@ -1,7 +1,7 @@
 import { _Block } from "../../utils/_Block";
 import template from "./index.hbs";
 import { _BlockWithForm } from "../../utils/_BlockWithForm";
-import * as styles from "./styles.module.pcss";
+import styles from "./styles.module.pcss";
 import { AvatarData } from "../../api/AvatarAPI";
 import { isHTMLInputElement } from "../../utils/helpers/typeCheck";
 

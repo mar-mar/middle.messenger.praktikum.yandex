@@ -8,24 +8,15 @@ module.exports = {
         path: path.resolve(__dirname, "dist"),
         filename: "app-chat.bundle.js"
     },
-    plugins: [new HtmlWebpackPlugin({
-        title: "Production",
-        templateContent: `<!DOCTYPE html>
-        <html>
-          <head>
-            <meta charset="utf-8">
-            <title><%= htmlWebpackPlugin.options.title %></title>
-          </head>
-          <body>
-            <div id="app"></div>
-          </body>
-        </html>`
-    })],
+    plugins: [
+        new HtmlWebpackPlugin({
+            title: "Чат",
+            favicon: "./static/images/favicon.ico",
+            template: "./src/index.html"
+        })
+    ],
     resolve: {
-        extensions: [".ts", ".js", ".json", ".hbs", ".pcss"],
-        fallback: {
-            fs: false
-        }
+        extensions: [".ts", ".js", ".json", ".hbs", ".pcss"]
     },
     module: {
         rules: [
@@ -66,7 +57,7 @@ module.exports = {
             },
             // изображения
             {
-                test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
+                test: /\.(?:ico|gif|png|jpg|jpeg|)$/i,
                 type: "asset/resource"
             },
             // шрифты и SVG

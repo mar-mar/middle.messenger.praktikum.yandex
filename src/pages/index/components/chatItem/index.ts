@@ -5,7 +5,7 @@ import { dateToStr } from "../../../../utils/helpers/dateToStr";
 import { withStore } from "../../../../utils/Store";
 import { Props, _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
-import * as styles from "./styles.module.pcss";
+import styles from "./styles.module.pcss";
 
 type ChatItemProps = { 
     chatItem: ChatInfo,

@@ -4,7 +4,7 @@ import { fillMap } from "../../../../utils/helpers/fill";
 import { withStore } from "../../../../utils/Store";
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
-import * as styles from "./styles.module.pcss";
+import styles from "./styles.module.pcss";
 
 type Props = {
 

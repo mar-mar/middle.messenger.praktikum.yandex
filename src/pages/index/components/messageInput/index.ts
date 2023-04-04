@@ -1,7 +1,7 @@
 
 import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import template from "./index.hbs";
-import * as styles from "./styles.module.pcss";
+import styles from "./styles.module.pcss";
 import { validateMessage } from "../../../../utils/validate";
 import { SendMessageData } from "../../../../controllers/MessagesController";
 import { withStore } from "../../../../utils/Store";

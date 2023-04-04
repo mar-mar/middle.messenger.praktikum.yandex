@@ -3,14 +3,14 @@ import { _Block } from '../../utils/_Block';
 import { ValidatedBlockProps, _ValidatedBlock } from "../../utils/_ValidatedBlock";
 import SimpleInput from "../simpleInput";
 import template from './index.hbs';
-import * as styles from "./styles.module.pcss";
+import styles from "./styles.module.pcss";
 
 type FileInputProps = {
     label: string;
     value?: string;
     name?: string;
     accept?: string;
-    parentClassName?: string;
+    addedClassName?: string;
 
     events?: {
         change?: EventHandler // onchange всплывает

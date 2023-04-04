@@ -1,6 +1,6 @@
 import { _Block } from '../../utils/_Block';
 import template from './index.hbs';
-import * as styles from "./styles.module.pcss";
+import styles from "./styles.module.pcss";
 
 type AvatarProps = {
     clickLabel?: string;
@@ -16,7 +16,15 @@ type AvatarProps = {
 export default class Avatar extends _Block<AvatarProps> {
 
     protected getCompileOptions() {
-        return { template, styles };
+
+        return { 
+            template, 
+            styles,
+            getDiameterClassName: (): string => {
+                const diameter = this.getProps().diameter;
+                return styles[`root--${diameter}`];
+            }
+        };
     }
     
 }

@@ -2,7 +2,7 @@ import { _Block } from '../../../../utils/_Block';
 import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import template from './index.hbs';
 import { validateName, validateLogin, validateEmail, validatePhone, validatePassword, validateCopyPassword } from '../../../../utils/validate';
-import * as styles from "./styles.module.pcss";
+import styles from "./styles.module.pcss";
 import Input from "../../../../components/input";
 import { SignupData } from "../../../../api/AuthAPI";
 import AuthController from "../../../../controllers/AuthController";

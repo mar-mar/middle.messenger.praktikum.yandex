@@ -2,25 +2,29 @@
 @import url("src/style/clear.pcss");
 @import url("src/style/mixin.pcss");
 
-#app {
-    height: 100%;
-    width: 100%;
-}
+:global {
+    #app {
+        height: 100%;
+        width: 100%;
+    }
 
-.attache-icon {
-    @mixin icon-l;
 
-    background: url("/static/images/attache.svg");
-}
+    .attache-icon {
+        @mixin icon-l;
 
-.send-icon {
-    @mixin icon-m;
+        background: url("/static/images/attache.svg");
+    }
 
-    background: url("/static/images/send.svg");
-}
+    .send-icon {
+        @mixin icon-m;
 
-.menu-icon {
-    @mixin icon-s;
+        background: url("/static/images/send.svg");
+    }
 
-    background: url("/static/images/menu.svg");
+    .menu-icon {
+        @mixin icon-s;
+
+        background: url("/static/images/menu.svg");
+    }
+
 }

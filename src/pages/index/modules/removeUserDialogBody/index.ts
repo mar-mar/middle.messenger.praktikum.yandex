@@ -1,7 +1,7 @@
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
 import { ErrorCallback, _BlockWithForm } from "../../../../utils/_BlockWithForm";
-import * as styles from "./styles.module.pcss";
+import styles from "./styles.module.pcss";
 import { SearchChatUsersData } from "../../../../api/ChatsAPI";
 import { isFunction } from "../../../../utils/helpers/typeCheck";
 import ActionUserFind, { FilterData } from "../../components/actionUserFind";

@@ -1,7 +1,7 @@
 import { _Block } from '../../../../utils/_Block';
 import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import template from './index.hbs';
-import * as styles from "./styles.module.pcss";
+import styles from "./styles.module.pcss";
 import { validateName, validateLogin, validateEmail, validatePhone } from '../../../../utils/validate';
 import ResourceController from "../../../../controllers/ResourceController";
 import { ProfileUserData } from "../../../../api/UsersAPI";

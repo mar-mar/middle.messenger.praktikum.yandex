@@ -6,7 +6,7 @@ import LoginPage from "./pages/login";
 import ProfilePage from "./pages/profile";
 import SignPage from "./pages/sign";
 import { _Block } from "./utils/_Block";
-
+import "./style/index.pcss";
 
 import { PAGES_PATHS } from "./utils/Router";
 import RouterController from "./controllers/RouterController";

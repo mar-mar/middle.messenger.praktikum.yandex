@@ -4,7 +4,7 @@ import routeUse, { PAGES } from "../../utils/route";
 import { _Block } from "../../utils/_Block";
 import { ErrorCallback } from "../../utils/_BlockWithForm";
 import template from "./index.hbs";
-import * as styles from "./styles.module.pcss";
+import styles from "./styles.module.pcss";
 
 export default class LoginPage extends _Block {
     
