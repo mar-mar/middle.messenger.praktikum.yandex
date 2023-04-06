@@ -1,7 +1,7 @@
 import { isArray, isHTMLFormElement } from "../../utils/helpers/typeCheck";
-import { _Block } from '../../utils/_Block';
+import { _Block } from "../../utils/_Block";
 import { _ValidatedBlock } from "../../utils/_ValidatedBlock";
-import template from './index.hbs';
+import template from "./index.hbs";
 
 
 export type FormProps = {
@@ -51,7 +51,7 @@ export default class Form extends _Block<FormProps> {
         const values: Record<string, unknown> = {};
 
         formData.forEach((value, key) => {
-            let oldValue = values[key];
+            const oldValue = values[key];
             if (key in values) {
                 if (isArray(oldValue)) oldValue.push(value)
                 else values[key] = [oldValue, value];

@@ -1,7 +1,7 @@
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
 import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
-import { validateCopyPassword, validatePassword } from '../../../../utils/validate';
+import { validateCopyPassword, validatePassword } from "../../../../utils/validate";
 import { PasswordData } from "../../../../api/UsersAPI";
 import Input from "../../../../components/input";
 import UsersController from "../../../../controllers/UsersController";
@@ -19,12 +19,12 @@ export default class UpdatePasswordDialogBody extends _BlockWithForm<PasswordDat
             template,
             validatePassword: this.validatePassword.bind(this),
             validateCopyPassword: this.validateCopyPassword.bind(this)
-         };
+        };
     }
 
     protected componentDidMount(/*oldProps*/): void { 
         this.reset();
-    };
+    }
 
     async execute(values: PasswordData) {
         if (!values) return;

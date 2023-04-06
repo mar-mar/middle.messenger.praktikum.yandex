@@ -1,10 +1,11 @@
 import { eventBusWithStore } from "../Store";
 
+
 export enum WSTransportEvents {
-    CONNECTED = 'connected',
-    ERROR = 'error',
-    MESSAGE = 'message',
-    CLOSE = 'close',
+    CONNECTED = "connected",
+    ERROR = "error",
+    MESSAGE = "message",
+    CLOSE = "close"
 }
 
 type TransportStore = { sleep?: boolean };
@@ -14,7 +15,7 @@ const WSTransportBase = eventBusWithStore<TransportStore>(state => {
 });
 
 export default class WSTransport extends WSTransportBase {
-    static BASE_URL = 'wss://ya-praktikum.tech/ws';
+    static BASE_URL = "wss://ya-praktikum.tech/ws";
     static PING_INTERVAL: number = 5000;
     //`wss://ya-praktikum.tech/ws/chats/${userId}/${id}/${token}`
 
@@ -27,12 +28,12 @@ export default class WSTransport extends WSTransportBase {
         super();
 
         this.url = `${WSTransport.BASE_URL}/${path}/`;
-       // this.on(eventBusWithStoreEventName, this.onChangeTransportStore.bind(this))
+        // this.on(eventBusWithStoreEventName, this.onChangeTransportStore.bind(this))
     }
 
     public send(data: unknown) {
         if (!this.socket) {
-            throw new Error('Socket is not connected');
+            throw new Error("Socket is not connected");
         }
 
         this.socket.send(JSON.stringify(data))
@@ -76,7 +77,7 @@ export default class WSTransport extends WSTransportBase {
 
             if (this.socket?.readyState === 1) { // закрывается не сразу можем поймать ошибки
 
-                this.send({ type: 'ping' });
+                this.send({ type: "ping" });
             } 
 
             this.togglePing(true);
@@ -87,21 +88,21 @@ export default class WSTransport extends WSTransportBase {
     private subscribe(socket: WebSocket) {
         // ??? removeEventListener
 
-        socket.addEventListener('open', () => {
+        socket.addEventListener("open", () => {
             this.emit(WSTransportEvents.CONNECTED)
         });
-        socket.addEventListener('close', () => {
+        socket.addEventListener("close", () => {
             this.emit(WSTransportEvents.CLOSE)
         });
 
-        socket.addEventListener('error', (e) => {
+        socket.addEventListener("error", (e) => {
             this.emit(WSTransportEvents.ERROR, e)
         });
 
-        socket.addEventListener('message', (message) => {
+        socket.addEventListener("message", (message) => {
             const data = JSON.parse(message.data);
 
-            if (data.type && data.type === 'pong') {
+            if (data.type && data.type === "pong") {
                 return;
             }
 

@@ -13,7 +13,7 @@ const FORM_ATTACHE_NAME: string = "form";
 
 enum FORM_EVENTS {
     ECEXUTE = "execute"
-};
+}
 
 export type ErrorCallback = (error: string) => void;
 
@@ -33,7 +33,7 @@ export class _BlockWithForm<D extends Record<string, any>, T extends RecordStrAn
         return {
             onSubmit: this.onSubmit.bind(this),
             FORM_ATTACHE_NAME
-         };
+        };
     }
 
     protected reset() {
@@ -52,7 +52,7 @@ export class _BlockWithForm<D extends Record<string, any>, T extends RecordStrAn
         if (!isEvent(evt)) return;
         evt.preventDefault();
 
-        let form = this.getForm();
+        const form = this.getForm();
         if (!form) return;
 
         form.validate();

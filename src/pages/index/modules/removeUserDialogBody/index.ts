@@ -25,7 +25,7 @@ export default class FindChatDialogBody extends _BlockWithForm<SearchChatUsersDa
             findExecute: this.findExecute.bind(this),
             actionExecute: this.actionExecute.bind(this),
             isValidFilter: validateFilterName
-         };
+        };
     }
 
     private async findExecute(values: FilterData, errorCallback: ErrorCallback) {

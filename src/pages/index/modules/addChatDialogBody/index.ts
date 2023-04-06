@@ -12,12 +12,12 @@ export default class AddChatDialogBody extends _BlockWithForm<CreateChatData, { 
             ...super.getCompileOptions(),
             template,
             validateChatName
-         };
+        };
     }
 
     protected componentDidMount(/*oldProps*/): void { 
         this.setProps({ item: { title: ""} });
-    };
+    }
 
     protected getErrorBlock() {
         return this.getForm()?.getChildByAttacheNameOne("error");

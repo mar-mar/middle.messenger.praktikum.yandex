@@ -1,6 +1,6 @@
 import { ValidatedBlockProps, _ValidatedBlock } from "../../utils/_ValidatedBlock";
 import SimpleTextArea from "../simpleTextarea";
-import template from './index.hbs';
+import template from "./index.hbs";
 
 type TextAreaProps = {
     label: string;

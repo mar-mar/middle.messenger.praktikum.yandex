@@ -1,5 +1,5 @@
-import _BaseAPI from './_BaseAPI';
-import { User } from './AuthAPI';
+import _BaseAPI from "./_BaseAPI";
+import { User } from "./AuthAPI";
 
 export interface ChatInfo {
     id: number;
@@ -11,7 +11,7 @@ export interface ChatInfo {
     last_message: {
         time: string;
     }
-};
+}
 
 export interface CreateChatData {
     title: string;
@@ -38,23 +38,23 @@ export interface SearchChatUsersData {
 
 export class ChatsAPI extends _BaseAPI {
     constructor() {
-        super('chats');
+        super("chats");
     }
 
     create(data: CreateChatData) {
-        return this.http.post('', { data });
+        return this.http.post("", { data });
     }
 
     delete(id: number) {
-        return this.http.delete('', { data: { chatId: id }});
+        return this.http.delete("", { data: { chatId: id }});
     }
 
     search(filter: string): Promise<ChatInfo[]> {
-        return this.http.get('', { data: { title: filter, limit: 200 }} );
+        return this.http.get("", { data: { title: filter, limit: 200 }} );
     }
 
     read(): Promise<ChatInfo[]> {
-        return this.http.get('', { data: { limit: 200 }} );
+        return this.http.get("", { data: { limit: 200 }} );
     }
 
     getUsers(id: number): Promise<Array<User & { role: string }>> {
@@ -62,11 +62,11 @@ export class ChatsAPI extends _BaseAPI {
     }
 
     addUsers(data: AddUserToChatData): Promise<unknown> {
-        return this.http.put('users', { data });
+        return this.http.put("users", { data });
     }
 
     removeUsers(data: RemoveUserFromChatData): Promise<unknown> {
-        return this.http.delete('users', { data });
+        return this.http.delete("users", { data });
     }
 
     async getToken(chatId: number): Promise<string> {

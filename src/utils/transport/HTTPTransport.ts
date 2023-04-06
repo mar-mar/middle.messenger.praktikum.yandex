@@ -1,16 +1,16 @@
 import { isBlob, isObject } from "../helpers/typeCheck";
 
 export enum METHODS {
-    GET = 'GET',
-    POST = 'POST',
-    PUT = 'PUT',
-    DELETE = 'DELETE'
-};
+    GET = "GET",
+    POST = "POST",
+    PUT = "PUT",
+    DELETE = "DELETE"
+}
 
 export enum CONTENT_TYPE {
-    JSON = 'json',
-    FORMDATA = 'formdata'
-};
+    JSON = "json",
+    FORMDATA = "formdata"
+}
 
 type Options = {
     headers?: Record<string, string>;
@@ -21,15 +21,14 @@ type Options = {
 }
 
 export default class HTTPTransport {
-    static API_URL = 'https://ya-praktikum.tech/api/v2'; //config
+    static API_URL = "https://ya-praktikum.tech/api/v2"; //config
     private static defaultTimeout = 5000;
     private static defaultMethod = METHODS.GET;
     private static withCredentials = true;
     protected endpoint: string;
 
     constructor(endpoint: string, 
-        protected readonly contentType: CONTENT_TYPE = CONTENT_TYPE.JSON, 
-        ) {
+        protected readonly contentType: CONTENT_TYPE = CONTENT_TYPE.JSON) {
 
         this.endpoint = `${HTTPTransport.API_URL}/${endpoint}/`;
     }
@@ -64,7 +63,7 @@ export default class HTTPTransport {
     }
 
     private _request<R>(url: string, options: Options): Promise<R> {
-        let data = options.data;
+        const data = options.data;
         const headers = options.headers || {};
         const method = options.method || HTTPTransport.defaultMethod;
         const timeout = options.timeout || HTTPTransport.defaultTimeout;
@@ -88,7 +87,7 @@ export default class HTTPTransport {
             });
             xhr.timeout = timeout;
             xhr.withCredentials = HTTPTransport.withCredentials;
-            xhr.responseType = 'json';
+            xhr.responseType = "json";
 
             // обработчики
             xhr.onload = () => {
@@ -99,14 +98,14 @@ export default class HTTPTransport {
                 }
             };
 
-            xhr.onabort = () => reject({ reason: 'abort' });
-            xhr.onerror = () => reject({ reason: 'network error' });
-            xhr.ontimeout = () => reject({ reason: 'timeout' });
+            xhr.onabort = () => reject({ reason: "abort" });
+            xhr.onerror = () => reject({ reason: "network error" });
+            xhr.ontimeout = () => reject({ reason: "timeout" });
 
             // отправка
             this.send(xhr, withData ? data : null)
         })
-    };
+    }
 
     private async _requestReq<R>(
         retryNumber: number,
@@ -134,8 +133,7 @@ export default class HTTPTransport {
         let symb = "?";
         Object.entries(data).forEach(([key, value]) => {
 
-            result += `${symb}${key}=${value
-                }`;
+            result += `${symb}${key}=${value}`;
             symb = "&";
         });
         return result;
@@ -149,7 +147,7 @@ export default class HTTPTransport {
 
         if (CONTENT_TYPE.JSON === this.contentType) {
 
-            xhr.setRequestHeader('content-type', 'application/json');
+            xhr.setRequestHeader("content-type", "application/json");
             xhr.send(JSON.stringify(data));
         }
         else if (CONTENT_TYPE.FORMDATA === this.contentType) {

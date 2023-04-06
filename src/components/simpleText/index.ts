@@ -1,5 +1,5 @@
-import { _Block } from '../../utils/_Block';
-import template from './index.hbs';
+import { _Block } from "../../utils/_Block";
+import template from "./index.hbs";
 
 type SimpleTextProps = {
     text: string;

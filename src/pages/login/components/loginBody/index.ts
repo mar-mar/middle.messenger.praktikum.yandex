@@ -15,7 +15,7 @@ export default class LoginBody  extends _BlockWithForm<SigninData> {
             styles,
             validateLogin,
             validatePassword
-         };
+        };
     }
     
     protected getErrorBlock() {

@@ -13,18 +13,18 @@ import RouterController from "./controllers/RouterController";
 import IndexController from "./controllers/IndexController";
 
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener("DOMContentLoaded", () => {
 
     // регистрируем хелперы по компонентам
     registerComponents();
 
     RouterController
-    .use(PAGES_PATHS.Error404, Error404Page)
-    .use(PAGES_PATHS.Error500, Error500Page)
-    .use(PAGES_PATHS.Login, LoginPage)
-    .use(PAGES_PATHS.Profile, ProfilePage)
-    .use(PAGES_PATHS.Sign, SignPage)
-    .use(PAGES_PATHS.Messages, IndexPage);
+        .use(PAGES_PATHS.Error404, Error404Page)
+        .use(PAGES_PATHS.Error500, Error500Page)
+        .use(PAGES_PATHS.Login, LoginPage)
+        .use(PAGES_PATHS.Profile, ProfilePage)
+        .use(PAGES_PATHS.Sign, SignPage)
+        .use(PAGES_PATHS.Messages, IndexPage);
 
     IndexController.start();
 });

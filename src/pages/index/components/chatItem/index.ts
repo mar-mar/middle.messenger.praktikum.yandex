@@ -54,7 +54,7 @@ class ChatItemBase extends _Block<ChatItemProps> {
         }
         
         return true;
-    };
+    }
 
 }
 

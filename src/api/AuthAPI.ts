@@ -1,4 +1,4 @@
-import _BaseAPI from './_BaseAPI';
+import _BaseAPI from "./_BaseAPI";
 
 export interface SigninData {
     login: string;
@@ -28,27 +28,27 @@ export interface User {
 
 export class AuthAPI extends _BaseAPI {
     constructor() {
-        super('auth');
+        super("auth");
     }
 
     // вход
     signin(data: SigninData) {
-        return this.http.post('signin', { data });
+        return this.http.post("signin", { data });
     }
 
     // регистрация
     signup(data: SignupData) {
-        return this.http.post('signup', { data });
+        return this.http.post("signup", { data });
     }
 
     // данные по залогиневшемуся пользователю
     read(): Promise<User> {
-        return this.http.get<User>('user');
+        return this.http.get<User>("user");
     }
 
     // выход
     logout() {
-        return this.http.post('logout');
+        return this.http.post("logout");
     }
 
     // create = undefined;

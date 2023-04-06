@@ -1,9 +1,9 @@
 import { User } from "../api/AuthAPI";
 import AvatarAPI, { AvatarData, AvatarUsersAPI } from "../api/AvatarAPI";
-import API, { CreateChatData, ChatsAPI, ChatInfo, SearchChatUsersData } from '../api/ChatsAPI';
+import API, { CreateChatData, ChatsAPI, ChatInfo, SearchChatUsersData } from "../api/ChatsAPI";
 import { errorLog } from "../utils/logger";
-import store from '../utils/Store';
-import MessagesController from './MessagesController';
+import store from "../utils/Store";
+import MessagesController from "./MessagesController";
 
 
 class ChatsController {
@@ -97,7 +97,7 @@ class ChatsController {
             mapChats[parseInt(key)] = undefined;
         });
 
-        store.set('chats', mapChats);
+        store.set("chats", mapChats);
     }
 
     // поиск чатов

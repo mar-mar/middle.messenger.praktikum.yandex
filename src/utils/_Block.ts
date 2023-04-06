@@ -1,5 +1,5 @@
 import { EventBus } from "./EventBus";
-import { nanoid } from 'nanoid';
+import { nanoid } from "nanoid";
 import { isArray } from "./helpers/typeCheck";
 
 export enum EVENTS {
@@ -10,7 +10,7 @@ export enum EVENTS {
     FLOW_RENDER = "flow:render" //,
    // HIDE = "hide",
    // SHOW = "show"
-};
+}
 
 type Children = Record<string, _Block[] | _Block>;
 export type Events = Record<string, AnyFunctionNoReturn>;
@@ -57,18 +57,18 @@ export class _Block<T extends Record<string, any> = any> {
     }
 
     //   
-    protected init(): void { };
+    protected init(): void { }
 
     // Может переопределять пользователь, необязательно трогать
     // после добавления в документ
-    protected componentDidMount(): void { };
+    protected componentDidMount(): void { }
     // после удаления из документа
-    protected componentDidUnMount(): void { };
+    protected componentDidUnMount(): void { }
 
     // Может переопределять пользователь, необязательно трогать
-    protected componentDidUpdate(_oldProps: T, _newProps: T): boolean { return true; };
+    protected componentDidUpdate(_oldProps: T, _newProps: T): boolean { return true; }
 
-    protected getCompileOptions(): CompileOptions { return {}; };
+    protected getCompileOptions(): CompileOptions { return {}; }
 
     // constructor
     protected registerLifeCycleEvents(eventBus: EventBus): void {
@@ -98,8 +98,8 @@ export class _Block<T extends Record<string, any> = any> {
             },
 
             get(target: T, key: string): any {
-                let value = target[key];
-                return (typeof value === 'function') ? value.bind(target) : value;
+                const value = target[key];
+                return (typeof value === "function") ? value.bind(target) : value;
             },
 
             deleteProperty(/*target: Props, prop: string*/) {
@@ -209,7 +209,7 @@ export class _Block<T extends Record<string, any> = any> {
 
     protected compile({ template, styles, ...args } : CompileOptions) {
     
-        const temp = document.createElement('template');
+        const temp = document.createElement("template");
 
         if (template) {
             temp.innerHTML = template({ 
@@ -239,15 +239,17 @@ export class _Block<T extends Record<string, any> = any> {
 
         this.forEachChildren(child => {
 
-            const stub = this.element!.querySelector(`[data-id="${child.id}"]`);
+            const stub = this.element?.querySelector(`[data-id="${child.id}"]`);
             if (!stub) return; // чистить или нет childElement?
 
-            const childElement = child.getElement()!;
+            const childElement = child.getElement();
+            if (!childElement) return;
+
             stub.replaceWith(childElement); // меняем заглушку на нормальный dom
             
-           if (stub.childNodes.length > 0) { // что-то есть внутри
+            if (stub.childNodes.length > 0) { // что-то есть внутри
                 
-                const contentCont = childElement.querySelector(`[data-content]`) ?? stub;
+                const contentCont = childElement.querySelector("[data-content]") ?? stub;
                 contentCont.innerHTML = "";
                 contentCont.replaceWith(...Array.from(stub.childNodes));
             } 
@@ -256,7 +258,7 @@ export class _Block<T extends Record<string, any> = any> {
 
     public addChild(child: _Block): void {
         const attachName = child.getProps().attachName || child.getId();
-        let children = this.children[attachName];
+        const children = this.children[attachName];
 
         if (!children) {
             this.children[attachName] = child;
@@ -294,6 +296,7 @@ export class _Block<T extends Record<string, any> = any> {
 
     public getChildByAttacheNameOne(attacheName: string | string[]): _Block | null {
 
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         let child: _Block | null = this;
         attacheName = isArray(attacheName) ? attacheName : [attacheName];
 

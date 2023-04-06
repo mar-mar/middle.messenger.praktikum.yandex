@@ -1,5 +1,5 @@
 //import API, { AuthAPI, SigninData, SignupData } from '../api/AuthAPI';
-import { PAGES_PATHS } from '../utils/Router';
+import { PAGES_PATHS } from "../utils/Router";
 import API, { AuthAPI, SigninData, SignupData } from "../api/AuthAPI";
 import store from "../utils/Store";
 import { errorLog } from "../utils/logger";

@@ -15,12 +15,12 @@ export default class UpdatePasswordDialogBody extends _BlockWithForm<AvatarData>
             styles,
             changeFile: this.changeFile.bind(this),
             template
-         };
+        };
     }
 
     protected componentDidMount(/*oldProps*/): void { 
         this.reset();
-    };
+    }
 
     private changeFile(evt: Event) {
 

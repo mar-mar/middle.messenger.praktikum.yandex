@@ -26,7 +26,7 @@ class MessageInputBase  extends _BlockWithForm<SendMessageData, MessageInputProp
             template,
             styles,
             validateMessage
-         };
+        };
     }
 
     execute(values: SendMessageData) {

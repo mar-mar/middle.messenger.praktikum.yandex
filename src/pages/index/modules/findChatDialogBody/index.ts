@@ -25,12 +25,12 @@ export default class FindChatDialogBody extends _BlockWithForm<SearchData, Props
             styles,
             selectChat: this.selectChat.bind(this),
             validateChatName
-         };
+        };
     }
 
     protected componentDidMount(/*oldProps*/): void { 
         this.setProps({ item: undefined, chats: undefined, withResult: false });
-    };
+    }
 
     protected getErrorBlock() {
         return this.getForm()?.getChildByAttacheNameOne("error");

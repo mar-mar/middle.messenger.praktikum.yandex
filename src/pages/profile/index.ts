@@ -11,7 +11,7 @@ import styles from "./styles.module.pcss";
 enum ATTACHES {
     PASS_MODAL = "updatePassDialogBody",
     AVATAR_MODAL = "updateAvatarDialogBody"
-};
+}
 
 type Props = {
     storeItem: {
@@ -33,7 +33,7 @@ class ProfilePageBase extends _Block<Props> {
             updateAvatar: this.visibleChild.bind(this, true, ATTACHES.AVATAR_MODAL),
 
             ecexuteUpdataAvatar: this.ecexuteUpdataAvatar.bind(this),
-            ecexuteUpdatePassword: this.visibleChild.bind(this, false, ATTACHES.PASS_MODAL),
+            ecexuteUpdatePassword: this.visibleChild.bind(this, false, ATTACHES.PASS_MODAL)
         };
     }
 

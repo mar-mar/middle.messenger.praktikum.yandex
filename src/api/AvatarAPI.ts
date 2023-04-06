@@ -1,6 +1,6 @@
 import { CONTENT_TYPE } from "../utils/transport/HTTPTransport";
 import { User } from "./AuthAPI";
-import _BaseAPI from './_BaseAPI';
+import _BaseAPI from "./_BaseAPI";
 
 export interface AvatarData {
     avatar: File; 

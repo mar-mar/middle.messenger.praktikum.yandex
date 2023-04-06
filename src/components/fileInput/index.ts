@@ -1,8 +1,8 @@
 import { isHTMLInputElement } from "../../utils/helpers/typeCheck";
-import { _Block } from '../../utils/_Block';
+import { _Block } from "../../utils/_Block";
 import { ValidatedBlockProps, _ValidatedBlock } from "../../utils/_ValidatedBlock";
 import SimpleInput from "../simpleInput";
-import template from './index.hbs';
+import template from "./index.hbs";
 import styles from "./styles.module.pcss";
 
 type FileInputProps = {

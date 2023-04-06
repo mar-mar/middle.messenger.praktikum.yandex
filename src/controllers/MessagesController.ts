@@ -1,6 +1,6 @@
 import { get } from "../utils/helpers/merge";
 import { isArray } from "../utils/helpers/typeCheck";
-import store from '../utils/Store';
+import store from "../utils/Store";
 import WSTransport, { WSTransportEvents } from "../utils/transport/WSTransport";
 
 export interface TransportMessage {
@@ -64,8 +64,8 @@ class MessagesController {
         if (!socket) throw new Error(`Chat ${chatId} is not connected`);
 
         socket.send({
-            type: 'message',
-            content: message,
+            type: "message",
+            content: message
         });
     }
 
@@ -82,7 +82,7 @@ class MessagesController {
         }
 
         this.clearMessage(id);
-        socket.send({ type: 'get old', content: `${pageNumber}` });
+        socket.send({ type: "get old", content: `${pageNumber}` });
     }
 
     // при logoff
@@ -104,11 +104,11 @@ class MessagesController {
         if (!firstMessage) return;
         
         switch (firstMessage.type) {
-            case "message": 
-                this.onMessage(chatId, messages as Message[]);
-                 break;
-            case "user connected": 
-                break;
+        case "message": 
+            this.onMessage(chatId, messages as Message[]);
+            break;
+        case "user connected": 
+            break;
         }
 
     }

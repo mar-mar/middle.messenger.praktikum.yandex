@@ -9,9 +9,7 @@ export class IndexController {
 
         try {
             await AuthController.fetchUser();
-        } catch (e) {
-
-        }
+        } catch (e) { }
 
         RouterController.start(); // если неизвестная startPage, то куда на 404?
     }

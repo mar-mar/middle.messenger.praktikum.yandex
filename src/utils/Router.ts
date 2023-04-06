@@ -20,8 +20,9 @@ function render(query: string, block: _Block) {
         throw new Error(`root not found by selector "${query}"`);
     }
 
-    root.innerHTML = '';
-    root.appendChild(block.getElement()!);
+    root.innerHTML = "";
+    const element = block.getElement();
+    if (element) root.appendChild(element);
     return root;
 }
 
@@ -85,7 +86,7 @@ class Router {
     // go
     public go(pathname: string) {
         if (window.location.pathname !== pathname) {
-            this.history.pushState({}, '', pathname);
+            this.history.pushState({}, "", pathname);
         }
 
         this.onChangeRoute(pathname);
@@ -136,4 +137,4 @@ class Router {
     }
 }
 
-export default new Router('#app');
+export default new Router("#app");

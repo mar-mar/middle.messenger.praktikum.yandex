@@ -1,16 +1,16 @@
 //import { set } from './helpers';
-import { EventBus } from './EventBus';
-import { _Block } from './_Block';
-import { User } from '../api/AuthAPI';
+import { EventBus } from "./EventBus";
+import { _Block } from "./_Block";
+import { User } from "../api/AuthAPI";
 import { set } from "./helpers/merge";
 import isEqual from "./helpers/isEqual";
-import { ChatInfo } from '../api/ChatsAPI';
+import { ChatInfo } from "../api/ChatsAPI";
 import { Message } from "../controllers/MessagesController";
 import cloneDeep from "./helpers/cloneDeep";
 //import { Message } from '../controllers/MessagesController';
 
 export enum StoreEvents {
-    Updated = 'updated'
+    Updated = "updated"
 }
 
 interface State {
@@ -105,31 +105,31 @@ export const eventBusWithStoreEventName: string = "updateStore";
 export function eventBusWithStore<D extends Record<string, any>>(getStoreData: (state: State) => D) {
 
         // class WithStore
-        return class WithStore extends EventBus {
+    return class WithStore extends EventBus {
  
-            constructor() {
-                super();
-                this.storeInit();
-            }
+        constructor() {
+            super();
+            this.storeInit();
+        }
 
-            private storeInit(): void {
-                let activeState = cloneDeep(getStoreData(store.getState()));
+        private storeInit(): void {
+            let activeState = cloneDeep(getStoreData(store.getState()));
 
-                store.on(StoreEvents.Updated, () => {
-                    const newState = getStoreData(store.getState());
+            store.on(StoreEvents.Updated, () => {
+                const newState = getStoreData(store.getState());
 
-                    if (!isEqual(activeState, newState)) {
-                        activeState = cloneDeep(newState);
+                if (!isEqual(activeState, newState)) {
+                    activeState = cloneDeep(newState);
 
                         //this.setProps({ item: { ...newState } } as Partial<{ item: SP; } & P>);
-                        this.emit(eventBusWithStoreEventName, activeState);
-                    }
+                    this.emit(eventBusWithStoreEventName, activeState);
+                }
                     
-                    activeState = newState;
-                });
-            }
-            
+                activeState = newState;
+            });
         }
+            
+    }
 }
 
 export default store;

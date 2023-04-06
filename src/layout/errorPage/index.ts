@@ -1,6 +1,6 @@
-import routeUse, { PAGES } from '../../utils/route';
-import { _Block } from '../../utils/_Block';
-import template from './index.hbs';
+import routeUse, { PAGES } from "../../utils/route";
+import { _Block } from "../../utils/_Block";
+import template from "./index.hbs";
 import styles from "./styles.module.pcss";
 
 export type ErrorPageLayoutProps = {

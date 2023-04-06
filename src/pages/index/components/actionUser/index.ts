@@ -22,12 +22,12 @@ export default class ActionUser extends _BlockWithForm<UserIdsData, Props> {
             ...super.getCompileOptions(),
             template,
             styles
-         };
+        };
     }
 
     protected componentDidMount(/*oldProps*/): void { 
         this.setProps({ selectOptions: undefined, withResult: false });
-    };
+    }
 
     protected getErrorBlock() {
         return this.getForm()?.getChildByAttacheNameOne("error");

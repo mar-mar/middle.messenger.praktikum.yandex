@@ -14,7 +14,7 @@ export class _ValidatedBlock<T extends Record<string, any>> extends _Block<T & V
             ...super.getCompileOptions(),
             onBlurInput: this.onBlurInput.bind(this),
             onFocusInput: this.onFocusInput.bind(this)
-         };
+        };
     }
 
     protected getValue(): any { return null; }

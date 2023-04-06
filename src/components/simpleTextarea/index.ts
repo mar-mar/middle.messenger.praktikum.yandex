@@ -1,6 +1,6 @@
 import { isHTMLTextAreaElement } from "../../utils/helpers/typeCheck";
-import { Props, _Block } from '../../utils/_Block';
-import template from './index.hbs';
+import { Props, _Block } from "../../utils/_Block";
+import template from "./index.hbs";
 import styles from "./styles.module.pcss";
 
 type SimpleTextAreaProps = {
@@ -16,13 +16,14 @@ type SimpleTextAreaProps = {
 export default class SimpleTextArea extends _Block<SimpleTextAreaProps> {
 
     constructor(props: Props<SimpleTextAreaProps>) {
-        let _this: SimpleTextArea;
         props = props || {};
         props.events = props.events || {};
 
-        props.events.keydown = (evt) => { _this.onKeyDown(evt); };
+        props.events.keydown = (evt) => { _this.onKeyDown(evt); }; // todo в init?
         super(props);
-        _this = this;
+
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const _this = this;
     }
 
     protected getCompileOptions() {
@@ -34,7 +35,7 @@ export default class SimpleTextArea extends _Block<SimpleTextAreaProps> {
 
     onKeyDown(evt: KeyboardEvent) {
 
-        if (evt.key == 'Enter' && !evt.shiftKey) {
+        if (evt.key == "Enter" && !evt.shiftKey) {
 
             evt.preventDefault();
 

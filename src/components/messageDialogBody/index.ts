@@ -14,12 +14,12 @@ export default class UpdatePasswordDialogBody extends _BlockWithForm<AvatarData,
             ...super.getCompileOptions(),
             styles,
             template
-         };
+        };
     }
 
     protected componentDidMount(/*oldProps*/): void { 
         this.reset();
-    };
+    }
 
     protected getErrorBlock() {
         return this.getForm()?.getChildByAttacheNameOne("error");

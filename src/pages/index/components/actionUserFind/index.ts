@@ -19,12 +19,12 @@ export default class ActionUserFind extends _BlockWithForm<FilterData, Props> {
             ...super.getCompileOptions(),
             template,
             styles
-         };
+        };
     }
 
     protected componentDidMount(/*oldProps*/): void { 
         this.reset();
-    };
+    }
 
     protected getErrorBlock() {
         return this.getForm()?.getChildByAttacheNameOne("error");

@@ -27,3 +27,5 @@
 Стили - postcss
 
 
+npm uninstall husky && git config --unset core.hooksPath
+
