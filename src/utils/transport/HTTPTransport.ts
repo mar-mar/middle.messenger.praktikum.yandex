@@ -21,16 +21,16 @@ type Options = {
 }
 
 export default class HTTPTransport {
-    static API_URL = "https://ya-praktikum.tech/api/v2"; //config
     private static defaultTimeout = 5000;
     private static defaultMethod = METHODS.GET;
     private static withCredentials = true;
     protected endpoint: string;
 
     constructor(endpoint: string, 
-        protected readonly contentType: CONTENT_TYPE = CONTENT_TYPE.JSON) {
+        protected readonly contentType: CONTENT_TYPE = CONTENT_TYPE.JSON,
+        private readonly apiURL: string = "https://ya-praktikum.tech/api/v2") {
 
-        this.endpoint = `${HTTPTransport.API_URL}/${endpoint}/`;
+        this.endpoint = `${this.apiURL}/${endpoint}/`;
     }
 
     public getURL(childPath: string): string {

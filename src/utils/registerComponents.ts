@@ -4,11 +4,11 @@ import { isFunction } from "./helpers/typeCheck";
 
 
 export default function execute() {
-    // @ts-ignore require.context
+    
     const componentsModules = require.context("../", true, /.*\/components\/[a-zA-Z]+\/index.ts$/);
-    // @ts-ignore require.context
+    
     const layoutModules = require.context("../", true, /.*\/layout\/[a-zA-Z]+\/index.ts$/);
-    // @ts-ignore require.context
+    
     const modulesModules = require.context("../", true, /.*\/modules\/[a-zA-Z]+\/index.ts$/);
 
     registerComponents(componentsModules, "components", []);
