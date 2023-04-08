@@ -2,24 +2,32 @@ import { isObject, PlainObject } from "./typeCheck";
 
 
 
-export function merge(lhs: PlainObject, rhs: any): PlainObject {
+function merge(lhs: PlainObject, rhs: PlainObject): PlainObject {
 
-    if (isObject(lhs) && isObject(rhs)) {
+    if (!isObject(lhs) || !isObject(rhs)) throw new Error("merge. no object")
 
-        for (const p in rhs) {
-            if (!Object.prototype.hasOwnProperty.call(rhs, p)) {
-                continue;
-            }
+    return mergeUnknown(lhs, rhs);
+}
 
-            lhs[p] = merge(lhs[p], rhs[p]);
+function mergeUnknown(lhs: PlainObject, rhs: PlainObject): PlainObject {
+    
+    for (const p in rhs) {
+
+        let lhsSub = lhs[p];
+        const rhsSub = rhs[p];
+
+        if (isObject(lhsSub) && isObject(rhsSub)) {
+            lhsSub = mergeUnknown(lhsSub, rhsSub);
         }
-    }
-    else {
-        lhs = rhs;
+        else {
+            lhsSub = rhsSub
+        }
+        lhs[p] = lhsSub;
     }
 
     return lhs;
 }
+
 
 export function set(object: PlainObject | unknown, path: string, value: unknown): PlainObject | unknown {
 

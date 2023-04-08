@@ -31,9 +31,7 @@ export function isArray(value: unknown): value is Array<any> {
     return Array.isArray(value);
 }
 
-export type PlainObject<T = any> = {
-    [k in string | symbol]: T;
-}
+export type PlainObject = Record<string, unknown>;
 
 //isPlainObject
 export function isObject(value: unknown): value is PlainObject {
