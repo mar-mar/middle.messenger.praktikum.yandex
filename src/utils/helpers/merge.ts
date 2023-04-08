@@ -1,10 +1,8 @@
-import { isObject } from "./typeCheck";
+import { isObject, PlainObject } from "./typeCheck";
 
-export type Indexed<T = any> = {
-    [key in string]: T;
-};
 
-export function merge(lhs: Indexed, rhs: Indexed): Indexed {
+
+export function merge(lhs: PlainObject, rhs: any): PlainObject {
 
     if (isObject(lhs) && isObject(rhs)) {
 
@@ -23,7 +21,7 @@ export function merge(lhs: Indexed, rhs: Indexed): Indexed {
     return lhs;
 }
 
-export function set(object: Indexed | unknown, path: string, value: unknown): Indexed | unknown {
+export function set(object: PlainObject | unknown, path: string, value: unknown): PlainObject | unknown {
 
     if (!isObject(object)) {
         return object;
@@ -33,15 +31,16 @@ export function set(object: Indexed | unknown, path: string, value: unknown): In
         throw new Error("path must be string");
     }
 
-    const result = path.split(".").reduceRight<Indexed>((acc, key) => ({
+    const result = path.split(".").reduceRight<PlainObject>((acc, key) => ({
         [key]: acc
     }), value as any);
 
-    return merge(object as Indexed, result);
+    return merge(object as PlainObject, result);
 }
 
 
-export function get(object: Indexed | unknown, path: string): any {
+export function get(object: PlainObject | unknown, path: string): unknown {
+    
     if (typeof path !== "string") {
         throw new Error("path must be string");
     }

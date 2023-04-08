@@ -16,76 +16,94 @@ type Options = {
     headers?: Record<string, string>;
     timeout?: number;
     retries?: number;
-    method?: METHODS;
     data?: Record<string, any>
+}
+
+type RequiredOptions = RequireKeys<Options, "headers" | "timeout" | "retries" > & { method: METHODS; }
+
+type HTTPTransportOprions = {
+    groupPath: string;
+    contentType?: CONTENT_TYPE;
+    apiURL?: string;
 }
 
 export default class HTTPTransport {
     private static defaultTimeout = 5000;
-    private static defaultMethod = METHODS.GET;
     private static withCredentials = true;
-    protected endpoint: string;
+    private readonly groupPath: string;
+    private readonly contentType: string;
+    private readonly apiURL: string;
 
-    constructor(endpoint: string, 
-        protected readonly contentType: CONTENT_TYPE = CONTENT_TYPE.JSON,
-        private readonly apiURL: string = "https://ya-praktikum.tech/api/v2") {
+    constructor({ 
+        groupPath, 
+        contentType = CONTENT_TYPE.JSON, 
+        apiURL = "https://ya-praktikum.tech/api/v2" } : HTTPTransportOprions) {
 
-        this.endpoint = `${this.apiURL}/${endpoint}/`;
+        this.apiURL = apiURL;
+        this.groupPath = `${this.apiURL}/${groupPath}`;
+        this.contentType = contentType;
     }
 
     public getURL(childPath: string): string {
-        return this.endpoint + childPath;
+        return this.groupPath + childPath;
     }
 
-    public get<R>(url: string, options: Options = {}): Promise<R> {
+    public get<R>(path?: string, options?: Options): Promise<R> {
 
-        return this.request<R>(url, { ...options, method: METHODS.GET });
+        return this.request<R>(METHODS.GET, path, options);
     }
 
-    public put<R>(url: string, options: Options = {}): Promise<R> {
+    public put<R>(path?: string, options?: Options): Promise<R> {
 
-        return this.request<R>(url, { ...options, method: METHODS.PUT });
+        return this.request<R>(METHODS.PUT, path, options);
     }
 
-    public post<R>(url: string, options: Options = {}): Promise<R> {
+    public post<R>(path?: string, options?: Options): Promise<R> {
 
-        return this.request<R>(url, { ...options, method: METHODS.POST });
+        return this.request<R>(METHODS.POST, path, options);
     }
 
-    public delete<R>(url: string, options: Options = {}): Promise<R> {
+    public delete<R>(path?: string, options?: Options): Promise<R> {
 
-        return this.request<R>(url, { ...options, method: METHODS.DELETE });
+        return this.request<R>(METHODS.DELETE, path, options);
     }
 
 
-    private request<R>(url: string, options: Options): Promise<R> {
-        return this._requestReq<R>(1, options.retries, url, options);
+    private request<R>(method: METHODS, path: string = "", options?: Options): Promise<R> {
+        options = options ?? {};
+
+
+        return this._requestReq<R>(1, options.retries, path, {
+            headers: options.headers || {},
+            method: method || METHODS.GET,
+            timeout: options.timeout || HTTPTransport.defaultTimeout,
+            retries: options.retries || 1,
+            data: options.data
+        });
     }
 
-    private _request<R>(url: string, options: Options): Promise<R> {
+    private _request<R>(path: string, options: RequiredOptions): Promise<R> {
         const data = options.data;
-        const headers = options.headers || {};
-        const method = options.method || HTTPTransport.defaultMethod;
-        const timeout = options.timeout || HTTPTransport.defaultTimeout;
+        
 
-        url = this.endpoint + url;
+        let url = this.groupPath + (path ? "/" + path : "") ;
 
         return new Promise((resolve, reject) => {
 
             const xhr = new XMLHttpRequest();
             let withData = data && isObject(data);
 
-            if (METHODS.GET === method && withData && data) {
+            if (METHODS.GET === options.method && withData && data) {
                 url += HTTPTransport.queryStringify(data);
                 withData = false;
             }
 
-            xhr.open(method, url);
+            xhr.open(options.method, url);
 
-            Object.entries(headers).forEach(([header, value]) => {
+            Object.entries(options.headers).forEach(([header, value]) => {
                 xhr.setRequestHeader(header, value);
             });
-            xhr.timeout = timeout;
+            xhr.timeout = options.timeout;
             xhr.withCredentials = HTTPTransport.withCredentials;
             xhr.responseType = "json";
 
@@ -110,14 +128,17 @@ export default class HTTPTransport {
     private async _requestReq<R>(
         retryNumber: number,
         retries: number = 1,
-        ...args: [url: string, options: Options]): Promise<R> {
+        ...args: [url: string, options: RequiredOptions]): Promise<R> {
 
         let result;
 
         try {
+
             result = await this._request<R>(...args);
+
         }
         catch (exp) {
+
             if (retryNumber >= retries) throw exp;
 
             retryNumber += 1;
@@ -131,11 +152,13 @@ export default class HTTPTransport {
         // Можно делать трансформацию GET-параметров в отдельной функции
         let result = "";
         let symb = "?";
+
         Object.entries(data).forEach(([key, value]) => {
 
             result += `${symb}${key}=${value}`;
             symb = "&";
         });
+
         return result;
     }
 
@@ -151,18 +174,15 @@ export default class HTTPTransport {
             xhr.send(JSON.stringify(data));
         }
         else if (CONTENT_TYPE.FORMDATA === this.contentType) {
+
             const formData = new FormData();
             
             Object.entries(data).forEach(([key, value]) => {
                 
                 formData.append(key, isBlob(value) ? value : String(value));
-            })
+            });
 
             xhr.send(formData);
-
-        }
-        else {
-            xhr.send(data);
         }
     }
 }
