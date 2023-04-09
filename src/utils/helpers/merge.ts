@@ -1,4 +1,4 @@
-import { isObject, PlainObject } from "./typeCheck";
+import { isObject } from "./typeCheck";
 
 
 
@@ -41,7 +41,7 @@ export function set(object: PlainObject | unknown, path: string, value: unknown)
 
     const result = path.split(".").reduceRight<PlainObject>((acc, key) => ({
         [key]: acc
-    }), value as any);
+    }), value as PlainObject);
 
     return merge(object as PlainObject, result);
 }

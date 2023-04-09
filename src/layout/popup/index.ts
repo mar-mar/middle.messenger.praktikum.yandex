@@ -1,4 +1,4 @@
-import { _Block } from "../../utils/_Block";
+import { BlockProps, _Block } from "../../utils/_Block";
 import template from "./index.hbs";
 import styles from "./styles.module.pcss";
 
@@ -7,7 +7,7 @@ type Size = {
     height: number;
 }
 
-export default class Popup extends _Block {
+export default class Popup<T extends BlockProps = BlockProps> extends _Block<T> {
     private ident: number = 10;
 
 

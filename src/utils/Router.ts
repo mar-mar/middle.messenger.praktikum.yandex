@@ -1,4 +1,4 @@
-import { _Block } from "./_Block";
+import { _Block, BlockConstructable, BlockProps } from "./_Block";
 
 export enum PAGES_PATHS {
     Error404 = "/error404",
@@ -21,6 +21,7 @@ function render(query: string, block: _Block) {
     }
 
     root.innerHTML = "";
+    console.info("get element");
     const element = block.getElement();
     if (element) root.appendChild(element);
     return root;
@@ -31,7 +32,7 @@ class Route {
 
     constructor(
         private pathname: string,
-        private readonly blockClass: typeof _Block,
+        private readonly blockClass: BlockConstructable,
         private readonly query: string) {
     }
 
@@ -49,7 +50,7 @@ class Route {
     render() {
         if (!this.block) {
 
-            this.block = new this.blockClass({});
+            this.block = new this.blockClass({ attachName: "page" });
         }
         
         render(this.query, this.block);
@@ -57,10 +58,10 @@ class Route {
     }
 }
 
-class Router {
+export class Router {
     private static __instance: Router;
     private routes: Route[] = [];
-    private currentRoute: Route | null = null;
+    public currentRoute: Route | null = null;
     private history = window.history;
 
     // rootQuery - root domNode приложения
@@ -76,7 +77,7 @@ class Router {
 
     // добавляет информацию о "путь/класс страницы" в роутер
     // чтобы по пути показывать страницу
-    public use(pathname: string, block: typeof _Block) {
+    public use<T extends BlockProps = BlockProps>(pathname: string, block: BlockConstructable<T>) {
         const route = new Route(pathname, block, this.rootQuery);
         this.routes.push(route);
 
@@ -85,7 +86,9 @@ class Router {
 
     // go
     public go(pathname: string) {
+        
         if (window.location.pathname !== pathname) {
+            
             this.history.pushState({}, "", pathname);
         }
 
@@ -94,6 +97,7 @@ class Router {
 
     // back
     public back() {
+
         this.history.back();
     }
 
@@ -115,18 +119,24 @@ class Router {
     }
 
     private onChangeRoute(pathname: string) {
+        console.info(pathname);
         let route = this.getRoute(pathname);
 
+        
         if (!route) {
             
             route = this.getRoute(PAGES_PATHS.Error404);
             if (!route) return;
         }
 
-        if (this.currentRoute && this.currentRoute !== route) {
+        console.info("this.currentRoute", this.currentRoute);
+        if (this.currentRoute) {
+            if (this.currentRoute === route) return; // мы уже на этой странице
+
             this.currentRoute.leave();
         }
 
+        console.info(route);
         this.currentRoute = route;
 
         route.render(); // добавляем в root domNode приложения

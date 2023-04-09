@@ -1,12 +1,12 @@
 import { isArray, isDate, isFunction, isMap, isObject, isSet, isSimpleType } from "./typeCheck";
 
 
-export default function cloneDeep<T extends object = object>(obj: T) {
-    return cloneDeepAny(obj)
+export default function cloneDeep<T extends PlainObject = PlainObject>(obj: T): T {
+    return cloneDeepAny(obj) as T;
 }
 
 
-function cloneDeepAny(obj: any): any {
+function cloneDeepAny(obj: unknown): unknown {
 
     if (isSimpleType(obj) || isFunction(obj)) {
         return obj;
@@ -18,7 +18,7 @@ function cloneDeepAny(obj: any): any {
 
     if (isArray(obj)) {
         
-        const clone: any[] = [];
+        const clone: unknown[] = [];
         obj.forEach((value, i) => (clone[i] = cloneDeepAny(value)));
 
         return clone;
@@ -39,7 +39,7 @@ function cloneDeepAny(obj: any): any {
     }
 
     if (isObject(obj)) {
-        const clone: Record<string | symbol, any> = {};
+        const clone: Record<string | symbol, unknown> = {};
         //Reflect.ownKeys(obj).forEach(key => (clone[key] = cloneDeepAny(obj[key])));
         Object.entries(obj).forEach(([key, value]) => (clone[key] = cloneDeepAny(value)));
 

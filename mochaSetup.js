@@ -19,5 +19,5 @@ require.extensions[".hbs"] = function iniHBS(module, filename) {
 };
 
 require.extensions[".pcss"] = function iniPCSS() {
-    module.exports = () => ({});
+    module.exports = {};
 };

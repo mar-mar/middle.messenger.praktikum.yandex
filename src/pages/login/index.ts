@@ -1,6 +1,7 @@
 import { SigninData } from "../../api/AuthAPI";
 import AuthController from "../../controllers/AuthController";
-import routeUse, { PAGES } from "../../utils/route";
+import RouterController from "../../controllers/RouterController";
+import { PAGES_PATHS } from "../../utils/Router";
 import { _Block } from "../../utils/_Block";
 import { ErrorCallback } from "../../utils/_BlockWithForm";
 import template from "./index.hbs";
@@ -13,7 +14,7 @@ export default class LoginPage extends _Block {
             template,
             styles,
             executeLogin: this.executeLogin.bind(this),
-            goSing: () => routeUse(PAGES.Sign)
+            goSing: () => RouterController.go(PAGES_PATHS.Sign)
         };
     }
 

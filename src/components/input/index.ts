@@ -1,10 +1,10 @@
 import { _Block } from "../../utils/_Block";
 import template from "./index.hbs";
 import styles from "./styles.module.pcss";
-import { _ValidatedBlock } from "../../utils/_ValidatedBlock";
+import { ValidatedBlockProps, _ValidatedBlock } from "../../utils/_ValidatedBlock";
 import SimpleInput from "../simpleInput";
 
-type InputProps = {
+interface InputProps extends ValidatedBlockProps {
     type?: string;
     name: string;
     value: string;
@@ -14,7 +14,7 @@ type InputProps = {
     parentClassName?: string;
     noMargin?: 1 |0;
     addedClassName?: string;
-};
+}
 
 
 export default class Input extends _ValidatedBlock<InputProps> {
@@ -28,9 +28,9 @@ export default class Input extends _ValidatedBlock<InputProps> {
         };
     }
 
-    public getValue(): any {
+    public getValue(): string | undefined {
         const inputBlock = this.getChildByAttacheNameOne("input");
-        if (!inputBlock) return null;
+        if (!inputBlock) return undefined;
 
         return (inputBlock as SimpleInput).getValue();
     }

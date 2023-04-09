@@ -1,5 +1,5 @@
 
-import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
+import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import template from "./index.hbs";
 import styles from "./styles.module.pcss";
 import { validateMessage } from "../../../../utils/validate";
@@ -9,14 +9,14 @@ import ChatsController from "../../../../controllers/ChatsController";
 import TextArea from "../../../../components/textarea";
 
 
-type MessageInputProps = {
+interface MessageInputProps extends WithFormProps<SendMessageData> { 
     openPopupAttache: FunctionNoArgsNoReturn,
 
     message: string,
     storeItem: {
         selectedChatId: number | undefined;
     }
-};
+}
 
 class MessageInputBase  extends _BlockWithForm<SendMessageData, MessageInputProps> {   
     

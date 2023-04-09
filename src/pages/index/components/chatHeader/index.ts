@@ -3,21 +3,25 @@ import { ChatInfo } from "../../../../api/ChatsAPI";
 import ResourceController from "../../../../controllers/ResourceController";
 import UsersController from "../../../../controllers/UsersController";
 import { withStore } from "../../../../utils/Store";
-import { _Block } from "../../../../utils/_Block";
+import { BlockProps, _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
 import styles from "./styles.module.pcss";
 
-type ChatHeaderProps = {
+
+interface ChatHeaderProps<SP> extends BlockProps {    
     openPopupChatMenu: FunctionNoArgsNoReturn,
-    storeItem: {
-        selectedChat: ChatInfo | undefined;
-        chatUsers: Map<number, User> | undefined
-    }
+    storeItem: SP
 }
 
-class ChatHeaderBase extends _Block<ChatHeaderProps> {
+type StoreItem = {
+    selectedChat: ChatInfo | undefined;
+    chatUsers: Map<number, User> | undefined;
+}
+
+class ChatHeaderBase extends _Block<ChatHeaderProps<StoreItem>> {
     
-    protected getCompileOptions() {
+    override getCompileOptions() {
+        
         return { 
             template, 
             styles,
@@ -54,6 +58,6 @@ const withChats = withStore(state  => {
 
 });
 
-const ChatHeader = withChats<ChatHeaderProps>(ChatHeaderBase);
+const ChatHeader = withChats(ChatHeaderBase);
 
 export default ChatHeader;

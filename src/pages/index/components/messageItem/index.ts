@@ -2,16 +2,16 @@ import { User } from "../../../../api/AuthAPI";
 import { Message } from "../../../../controllers/MessagesController";
 import UsersController from "../../../../controllers/UsersController";
 import { timeToStr } from "../../../../utils/helpers/dateToStr";
-import { _Block } from "../../../../utils/_Block";
+import { BlockProps, _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
 import styles from "./styles.module.pcss";
 
-type Props = {
+interface Props extends BlockProps { 
     storeItem: Message, 
     userId: number, 
     scrollMessage?: Message[],
     chatUsers: Map<number, User>
-};
+}
 
 export default class MessageItem extends _Block<Props> {
     

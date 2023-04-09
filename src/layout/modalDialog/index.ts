@@ -1,12 +1,12 @@
-import { _Block } from "../../utils/_Block";
+import { BlockProps, _Block } from "../../utils/_Block";
 import template from "./index.hbs";
 import styles from "./styles.module.pcss";
 
-type ModalDialogProps = {
+interface ModalDialogProps extends BlockProps {
     title: string;
-};
+}
 
-export default class ModalDialog extends _Block<ModalDialogProps> {
+export default class ModalDialog<T extends ModalDialogProps = ModalDialogProps> extends _Block<T> {
 
     protected getCompileOptions() {
         return { 

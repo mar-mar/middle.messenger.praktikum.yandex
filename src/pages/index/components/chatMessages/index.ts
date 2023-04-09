@@ -2,11 +2,11 @@ import { User } from "../../../../api/AuthAPI";
 import { Message } from "../../../../controllers/MessagesController";
 import { fillMap } from "../../../../utils/helpers/fill";
 import { withStore } from "../../../../utils/Store";
-import { _Block } from "../../../../utils/_Block";
+import { BlockProps, _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
 import styles from "./styles.module.pcss";
 
-type Props = {
+interface Props extends BlockProps { 
 
     storeItem: {
         selectedChatId: number | undefined;
@@ -15,7 +15,7 @@ type Props = {
         scrollMessage: Message[] | undefined;
         chatUsers: Map<number, User> | undefined;
     }
-};
+}
 
 
 class ChatListBase extends _Block<Props> {

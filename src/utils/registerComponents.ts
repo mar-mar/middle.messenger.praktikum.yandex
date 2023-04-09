@@ -1,6 +1,7 @@
 import Handlebars from "handlebars/runtime";
 import { _Block } from "./_Block";
 import { isFunction } from "./helpers/typeCheck";
+import { BlockConstructable } from "./_Block";
 
 
 export default function execute() {
@@ -17,33 +18,29 @@ export default function execute() {
 }
 
 //@types/webpack-env
-function registerComponents(modules: any, _type: string, _path: string[]): void {
-    console.info(modules);
+function registerComponents(modules: __WebpackModuleApi.RequireContext, _type: string, _path: string[]): void {
 
     modules.keys().forEach((key: string) => {
         const module = modules(key);
 
-        if ((module as any).default) {
-            //"./pages/index/modules/addChatDialogBody/index.ts"
+        if (module.default) {
+            
             const currentPath = key.slice(2, -3).split("/");
             currentPath.pop();
-            console.info("*"+currentPath.join("_")+"*", (module as any).default);
-            handleharRegisterHelper(currentPath.join("_"), (module as any).default);
-        }
-       // else {
 
-            //registerComponents(module, type, currentPath);
-       // }
+            handleharRegisterHelper(currentPath.join("_"), module.default);
+        }
+
     });
 }
 
-function handleharRegisterHelper<T extends _Block>(name: string,
-    constructor: new (options: any) => T): void {
+function handleharRegisterHelper(name: string,
+    constructor: BlockConstructable): void {
 
-    Handlebars.registerHelper(name, function (this: any, options: Handlebars.HelperOptions): string {
+    Handlebars.registerHelper(name, function (this: unknown, options: Handlebars.HelperOptions): string {
 
-        const events: Record<string, AnyFunction> = {};
-        const props: Record<string, any> = { ...options.hash };
+        const events: Record<string, EventListener> = {};
+        const props: PlainObject = { ...options.hash };
 
         // обрабатываем ключи [event:<событие>]
         Object.entries(props).forEach(([key, value]) => {
@@ -51,7 +48,7 @@ function handleharRegisterHelper<T extends _Block>(name: string,
             if (key.startsWith("event:") && isFunction(value)) {
 
                 const handlerKey = key.replace("event:", "");
-                events[handlerKey] = value;
+                events[handlerKey] = value as EventListener;
                 delete props[key];
             }
         });
@@ -60,7 +57,6 @@ function handleharRegisterHelper<T extends _Block>(name: string,
         // addChild либо в root, либо к компоненту, который на уровень выше
         const addChild: (child: _Block) => void = data.addChilToChild ? data.addChilToChild : data.root.addChild;
         props.events = events;
-        props.render = true;
 
         const component = new constructor(props);
         addChild(component);

@@ -1,13 +1,14 @@
-import { isFunction, isString } from "./helpers/typeCheck";
-import { _Block } from "./_Block";
+import { isString } from "./helpers/typeCheck";
+import { BlockProps, _Block } from "./_Block";
+import SimpleError from "../components/simpleError";
 
-export type ValidatedBlockProps = {
-    isValid: (value: any) => string;
+export interface ValidatedBlockProps extends BlockProps {
+    isValid: (value: unknown) => string;
     error?: string;
-};
+}
 
 // базовый класс для компонентов
-export class _ValidatedBlock<T extends Record<string, any>> extends _Block<T & ValidatedBlockProps> {
+export class _ValidatedBlock<T extends ValidatedBlockProps = ValidatedBlockProps> extends _Block<T>{
 
     protected getCompileOptions() {
         return {
@@ -17,7 +18,7 @@ export class _ValidatedBlock<T extends Record<string, any>> extends _Block<T & V
         };
     }
 
-    protected getValue(): any { return null; }
+    protected getValue(): unknown { return undefined; }
 
 
     protected onBlurInput(): void {
@@ -33,16 +34,16 @@ export class _ValidatedBlock<T extends Record<string, any>> extends _Block<T & V
 
     public validate(): void {
         const isValid = this.getProps().isValid;
-        if (!isFunction(isValid)) return;
+        if (!isValid) return;
 
-        const errorBlock = this.getChildByAttacheNameOne("error");
+        const errorBlock = this.getChildByAttacheNameOne("error") as SimpleError;
         const error = isValid(this.getValue());
 
         errorBlock?.setProps({ error: isString(error) ? error : "" });
     }
 
     public getError(): string {
-        const errorBlock = this.getChildByAttacheNameOne("error");
+        const errorBlock = this.getChildByAttacheNameOne("error") as SimpleError;
         return errorBlock?.getProps().error; 
     }
 }

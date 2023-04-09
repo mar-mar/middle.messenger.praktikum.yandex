@@ -1,13 +1,15 @@
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
-import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
+import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import styles from "./styles.module.pcss";
+import SimpleError from "../../../../components/simpleError";
 
 export type FilterData = {
     filter?: string;
 }
 
-type Props = {
+
+export interface Props extends WithFormProps<FilterData> {
     filter ?: string;
     filterLabel ?: string;
 }
@@ -27,7 +29,7 @@ export default class ActionUserFind extends _BlockWithForm<FilterData, Props> {
     }
 
     protected getErrorBlock() {
-        return this.getForm()?.getChildByAttacheNameOne("error");
+        return this.getForm()?.getChildByAttacheNameOne("error") as SimpleError;
     }
 
 }

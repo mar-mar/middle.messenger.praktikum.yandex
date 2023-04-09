@@ -1,18 +1,18 @@
 import { isArray, isHTMLFormElement } from "../../utils/helpers/typeCheck";
-import { _Block } from "../../utils/_Block";
+import { BlockProps, _Block } from "../../utils/_Block";
 import { _ValidatedBlock } from "../../utils/_ValidatedBlock";
 import template from "./index.hbs";
 
 
-export type FormProps = {
+interface FormProps extends BlockProps {
     events?: {
-        submit?: EventHandler;
+        submit?: DOMEventHandler;
     }
 }
 
 export default class Form extends _Block<FormProps> {
 
-    protected getCompileOptions(): any {
+    protected getCompileOptions() {
         return { 
             template
         };

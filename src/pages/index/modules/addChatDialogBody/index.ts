@@ -1,11 +1,15 @@
-import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
-import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
+import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import { CreateChatData } from "../../../../api/ChatsAPI";
 import { validateChatName } from "../../../../controllers/ValidateController";
 import ChatsController from "../../../../controllers/ChatsController";
+import SimpleError from "../../../../components/simpleError";
 
-export default class AddChatDialogBody extends _BlockWithForm<CreateChatData, { item?: CreateChatData }> {
+interface Props extends WithFormProps<CreateChatData> { 
+    item?: CreateChatData;
+}
+
+export default class AddChatDialogBody extends _BlockWithForm<CreateChatData, Props> {
 
     protected getCompileOptions() {
         return {
@@ -20,7 +24,7 @@ export default class AddChatDialogBody extends _BlockWithForm<CreateChatData, { 
     }
 
     protected getErrorBlock() {
-        return this.getForm()?.getChildByAttacheNameOne("error");
+        return this.getForm()?.getChildByAttacheNameOne("error") as SimpleError;
     }
 
     async execute(values: CreateChatData) {

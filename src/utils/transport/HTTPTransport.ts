@@ -16,7 +16,7 @@ type Options = {
     headers?: Record<string, string>;
     timeout?: number;
     retries?: number;
-    data?: Record<string, any>
+    data?: PlainObject
 }
 
 type RequiredOptions = RequireKeys<Options, "headers" | "timeout" | "retries" > & { method: METHODS; }
@@ -121,7 +121,7 @@ export default class HTTPTransport {
             xhr.ontimeout = () => reject({ reason: "timeout" });
 
             // отправка
-            this.send(xhr, withData ? data : null)
+            this.send(xhr, withData ? data : undefined);
         })
     }
 
@@ -148,7 +148,7 @@ export default class HTTPTransport {
         return result;
     }
 
-    private static queryStringify(data: Record<string, any>) {
+    private static queryStringify(data: PlainObject) {
         // Можно делать трансформацию GET-параметров в отдельной функции
         let result = "";
         let symb = "?";
@@ -162,7 +162,7 @@ export default class HTTPTransport {
         return result;
     }
 
-    private send(xhr: XMLHttpRequest, data: any): void {
+    private send(xhr: XMLHttpRequest, data?: PlainObject): void {
         if (!data) {
             xhr.send();
             return;

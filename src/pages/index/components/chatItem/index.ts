@@ -3,16 +3,19 @@ import ChatsController from "../../../../controllers/ChatsController";
 import ResourceController from "../../../../controllers/ResourceController";
 import { dateToStr } from "../../../../utils/helpers/dateToStr";
 import { withStore } from "../../../../utils/Store";
-import { Props, _Block } from "../../../../utils/_Block";
+import { BlockProps, _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
 import styles from "./styles.module.pcss";
 
-type ChatItemProps = { 
+
+interface ChatItemProps extends BlockProps {    
     chatItem: ChatInfo,
-    storeItem: {
-        selectedChatId: number | undefined;
-    }
-};
+    storeItem: StoreItem
+}
+
+type StoreItem = {
+    selectedChatId: number | undefined;
+}
 
 class ChatItemBase extends _Block<ChatItemProps> {
     
@@ -36,7 +39,7 @@ class ChatItemBase extends _Block<ChatItemProps> {
         return time ? dateToStr(new Date(time)) : "";
     }
 
-    constructor(props: Props<ChatItemProps>) { 
+    constructor(props: ChatItemProps) { 
         props.events = props.events || {};
         const id = props.chatItem.id;
 

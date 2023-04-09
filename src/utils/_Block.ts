@@ -13,12 +13,12 @@ export enum EVENTS {
 }
 
 type Children = Record<string, _Block[] | _Block>;
-export type Events = Record<string, AnyFunctionNoReturn>;
+export type Events = Record<string, EventListener>;
 
 export type CompileOptions = { 
     template?: Handlebars.TemplateDelegate<any>, 
     styles?: Record<string, string>,
-    [index: string]: any 
+    [index: string]: unknown 
 };
 
 /*export type TemplateOptions = { 
@@ -27,28 +27,37 @@ export type CompileOptions = {
     [index: string]: any
 };*/
 
+export interface VisibleProps {
+    parent?: Element;
+}
 
-export type Props<T> = { 
-    events?: Events, 
-    attachName?: string
-} & T;
+export interface BlockConstructable<P extends BlockProps = BlockProps> {
+    new(props: P): _Block<P>;
+}
+
+export interface BlockProps {
+    events?: Events;
+    attachName?: string; 
+}
+
 
 // базовый класс для компонентов
-export class _Block<T extends Record<string, any> = any> {
+export class _Block<T extends BlockProps = BlockProps> {
 
     private element: HTMLElement | null = null;
     private children: Children = {};
 
     private readonly eventBus: EventBus;
-    private readonly props: Props<T>;
+    private readonly props: T;
     private readonly id: string;
     private isMounted: boolean;
 
-    constructor(props: Props<T>) {
+    constructor(props: T) {
         this.eventBus = new EventBus();
 
         this.id = nanoid(6);
         this.isMounted = false;
+
         props.attachName = props.attachName || this.id;
 
         this.props = this.makePropsProxy(props, this.eventBus);
@@ -85,20 +94,24 @@ export class _Block<T extends Record<string, any> = any> {
 
         props = new Proxy(props, {
 
-            set(target: T, key: string, value: any): boolean {
+            set(target: T, key: string, value: unknown): boolean {
 
                 const oldValue = target[key as keyof T];
                 if (oldValue === value) return true;
 
-                const oldTarget: any = { ...target };
-                target[key as keyof T] = value;
+                const oldTarget: T = { ...target };
+
+                const propKey: keyof T = key as keyof T;
+                target[propKey] = value as T[typeof propKey];
+
                 eventBus.emit(EVENTS.FLOW_CDU, oldTarget, target);
 
                 return true;
             },
 
-            get(target: T, key: string): any {
-                const value = target[key];
+            get(target: T, key: string): unknown {
+
+                const value = target[key as keyof T];
                 return (typeof value === "function") ? value.bind(target) : value;
             },
 
@@ -319,7 +332,7 @@ export class _Block<T extends Record<string, any> = any> {
         return this.eventBus;
     }
 
-    public getProps(): Props<T> {
+    public getProps(): T {
         return this.props;
     }
 
@@ -331,19 +344,19 @@ export class _Block<T extends Record<string, any> = any> {
         Object.assign(this.props, nextProps);
     }
 
-    public readonly show = (args?: Record<string, any>) => {
+    public readonly show = (args?: VisibleProps) => {
         this.toggleVisible(true, args);
         
         this.dispatchComponentDidMount();
     }
 
-    public readonly hide = (args?: Record<string, any>) => {
+    public readonly hide = (args?: VisibleProps) => {
         this.toggleVisible(false, args);
         
         this.dispatchComponentDidUnMount();
     }
 
-    protected toggleVisible(value: boolean, _args?: Record<string, any>): void { 
+    protected toggleVisible(value: boolean, _args?: VisibleProps): void { 
         if (this.element === null) return;
         this.element.style.display = value ? "block" : "none";
     }

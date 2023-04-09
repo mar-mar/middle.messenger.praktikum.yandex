@@ -2,14 +2,14 @@
 import { PAGES_PATHS } from "../utils/Router";
 import Router from "../utils/Router";
 import store from "../utils/Store";
-import { _Block } from "../utils/_Block";
+import { BlockConstructable, BlockProps, _Block } from "../utils/_Block";
 import ChatsController from "./ChatsController";
 //import MessagesController from './MessagesController';
 
 export class RouterController {
 
-    public use(pathname: string, block: typeof _Block): RouterController  {
-        Router.use(pathname, block);
+    public use<T extends BlockProps = BlockProps>(pathname: string, block: BlockConstructable<T>): RouterController  {
+        Router.use<T>(pathname, block);
         return this;
     }
 

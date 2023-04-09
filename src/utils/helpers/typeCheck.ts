@@ -1,5 +1,5 @@
-
-export function isFunction(value: unknown): value is AnyFunction  {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function isFunction(value: unknown): value is Function  {
     return (value instanceof Function);
 }
 
@@ -27,11 +27,9 @@ export function isNumber(value: unknown): value is number {
     return Number.isFinite(value);
 }
 
-export function isArray(value: unknown): value is Array<any> {
+export function isArray(value: unknown): value is Array<unknown> {
     return Array.isArray(value);
 }
-
-export type PlainObject = Record<string, unknown>;
 
 //isPlainObject
 export function isObject(value: unknown): value is PlainObject {

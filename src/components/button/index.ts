@@ -1,15 +1,15 @@
-import { _Block } from "../../utils/_Block";
+import { BlockProps, _Block } from "../../utils/_Block";
 import template from "./index.hbs";
 import styles from "./styles.module.pcss";
 
-type ButtonProps = {
+
+interface ButtonProps extends BlockProps {
     type?: string;
     label: string;
     events?: {
-        click?: EventHandler;
+        click?: DOMEventHandler;
     };
-};
-
+}
 
 export default class Button extends _Block<ButtonProps> {
 

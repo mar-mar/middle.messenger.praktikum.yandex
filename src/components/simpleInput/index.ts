@@ -1,8 +1,9 @@
 import { isHTMLInputElement } from "../../utils/helpers/typeCheck";
-import { _Block } from "../../utils/_Block";
+import { BlockProps, _Block } from "../../utils/_Block";
 import template from "./index.hbs";
 
-type SimpleInputProps = {
+
+interface SimpleInputProps extends BlockProps {
     type: string;
     name: string;
     value?: string;
@@ -16,7 +17,7 @@ type SimpleInputProps = {
 }
 
 
-export default class SimpleInput extends _Block<SimpleInputProps> {
+export default class SimpleInput<T extends SimpleInputProps = SimpleInputProps> extends _Block<T> {
 
     protected getCompileOptions() {
         return { 
@@ -25,9 +26,9 @@ export default class SimpleInput extends _Block<SimpleInputProps> {
         };
     }
 
-    getValue() {
+    getValue(): string | undefined {
         const element = this.getElement();
-        return isHTMLInputElement(element) ? element.value : null;
+        return isHTMLInputElement(element) ? element.value : undefined;
     }
     
 }

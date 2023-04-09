@@ -1,25 +1,28 @@
 import { User } from "../../api/AuthAPI";
 import { AvatarData } from "../../api/AvatarAPI";
 import UsersController from "../../controllers/UsersController";
-import routeUse, { PAGES } from "../../utils/route";
 import { withStore } from "../../utils/Store";
-import { _Block } from "../../utils/_Block";
+import { BlockProps, _Block } from "../../utils/_Block";
 import { ErrorCallback } from "../../utils/_BlockWithForm";
 import template from "./index.hbs";
 import styles from "./styles.module.pcss";
+import RouterController from "../../controllers/RouterController";
+import { PAGES_PATHS } from "../../utils/Router";
 
 enum ATTACHES {
     PASS_MODAL = "updatePassDialogBody",
     AVATAR_MODAL = "updateAvatarDialogBody"
 }
 
-type Props = {
-    storeItem: {
-        user: User | undefined;
-    }
+interface Props<SP> extends BlockProps {
+    storeItem: SP;
 }
 
-class ProfilePageBase extends _Block<Props> {
+type StoreItem = {
+    user: User | undefined;
+}
+
+class ProfilePageBase<T extends Props<StoreItem> = Props<StoreItem>> extends _Block<T> {
 
     protected getCompileOptions() {
         return {
@@ -27,7 +30,7 @@ class ProfilePageBase extends _Block<Props> {
             styles,
             ATTACHES,
 
-            goMess: () => routeUse(PAGES.Messages),
+            goMess: () => RouterController.go(PAGES_PATHS.Messages),
 
             updatePassword: this.visibleChild.bind(this, true, ATTACHES.PASS_MODAL),
             updateAvatar: this.visibleChild.bind(this, true, ATTACHES.AVATAR_MODAL),
@@ -52,10 +55,11 @@ class ProfilePageBase extends _Block<Props> {
 
 }
 
-const withUser = withStore((state) => {
+const withUser = withStore<StoreItem>((state) => {
     return {
         user: state.user
     }
 })
-const ProfilePage = withUser(ProfilePageBase);
+const ProfilePage = withUser<Props<StoreItem>>(ProfilePageBase);
+
 export default ProfilePage;

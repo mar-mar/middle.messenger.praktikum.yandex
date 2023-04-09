@@ -12,6 +12,11 @@ import ChatsController from "./ChatsController";
 // test-20230312-mar3 12345678D3
 // 
 //withCredentials
+
+interface APIError {
+    reason?: string;
+}
+
 export class AuthController {
     private readonly api: AuthAPI;
 
@@ -28,7 +33,7 @@ export class AuthController {
             await this.fetchUser();
 
             RouterController.go(PAGES_PATHS.Messages);
-        } catch (exp: any) {
+        } catch (exp: unknown) {
             this.errorHandler(exp, true);
         }
     }
@@ -39,7 +44,7 @@ export class AuthController {
 
             await this.api.signup(data);
             
-        } catch (exp: any) {
+        } catch (exp: unknown) {
             this.errorHandler(exp, true);
         }
 
@@ -52,7 +57,7 @@ export class AuthController {
         
         try {
             user = await this.api.read();
-        } catch (exp: any) {
+        } catch (exp: unknown) {
             this.errorHandler(exp, true);
         }
 
@@ -69,14 +74,15 @@ export class AuthController {
             store.clear();
             ChatsController.closeAll();
 
-        } catch (exp: any) {
+        } catch (exp: unknown) {
             this.errorHandler(exp);
         }
     }
 
-    errorHandler(e: any, withThrow: boolean = false) {
+    errorHandler(e: unknown, withThrow: boolean = false) {
         errorLog(e);
-        if (withThrow) throw e?.reason || "Ошибка";
+
+        if (withThrow) throw new Error((e as APIError)?.reason || "Ошибка");
     }
 }
 

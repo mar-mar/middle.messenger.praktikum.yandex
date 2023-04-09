@@ -8,6 +8,9 @@ import { isNumber } from "../utils/helpers/typeCheck";
 import { User } from "../api/AuthAPI";
 import RouterController from "./RouterController";
 
+interface APIError {
+    reason?: string;
+}
 
 export class UsersController {
     private readonly api: UsersAPI;
@@ -36,7 +39,7 @@ export class UsersController {
 
             RouterController.go(PAGES_PATHS.Messages);
 
-        } catch (exp: any) {
+        } catch (exp: unknown) {
 
             this.errorHandler(exp, true);
         }
@@ -50,7 +53,7 @@ export class UsersController {
             const user = await this.avatarApi.userAvatar(data);
             store.set("user", user);
 
-        } catch (exp: any) {
+        } catch (exp: unknown) {
 
             this.errorHandler(exp, true);
         }
@@ -63,7 +66,7 @@ export class UsersController {
 
             await this.api.password(data);
 
-        } catch (exp: any) {
+        } catch (exp: unknown) {
 
             this.errorHandler(exp, true);
         }
@@ -75,7 +78,7 @@ export class UsersController {
 
             user = await this.api.search(data);
 
-        } catch (exp: any) {
+        } catch (exp: unknown) {
 
             this.errorHandler(exp, true);
         }
@@ -83,9 +86,9 @@ export class UsersController {
         return user;
     }
 
-    errorHandler(e: any, withThrow: boolean = false) {
+    errorHandler(e: unknown, withThrow: boolean = false) {
         errorLog(e);
-        if (withThrow) throw e?.reason || "Ошибка";
+        if (withThrow) throw new Error((e as APIError)?.reason || "Ошибка");
     }
 
     isCurrentUserId(id: number) {

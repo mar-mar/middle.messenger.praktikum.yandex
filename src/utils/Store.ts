@@ -1,6 +1,6 @@
 //import { set } from './helpers';
 import { EventBus } from "./EventBus";
-import { _Block } from "./_Block";
+import { BlockProps, _Block } from "./_Block";
 import { User } from "../api/AuthAPI";
 import { set } from "./helpers/merge";
 import isEqual from "./helpers/isEqual";
@@ -53,9 +53,13 @@ export class Store extends EventBus {
 const store = new Store();
 
 
-export function withStore<SP extends RecordStrAny = any>(mapStateToProps: (state: State) => SP) {
+export interface StoreBlockProps<D> extends BlockProps {
+    storeItem: D
+}
 
-    return function<P extends RecordStrAny = any>(Component: typeof _Block<{ storeItem: SP } & P>) {
+export function withStore<SP extends PlainObject = PlainObject>(mapStateToProps: (state: State) => SP) {
+
+    return function<P extends StoreBlockProps<SP> = StoreBlockProps<SP>>(Component: typeof _Block<P>) {
 
         // class WithStore
         return class WithStore extends Component {
@@ -63,7 +67,7 @@ export function withStore<SP extends RecordStrAny = any>(mapStateToProps: (state
             private activeState: SP;
             onChangeStoreBind: (state: State) => void;
 
-            constructor(props: Omit<P, keyof SP>) {
+            constructor(props: P) {
 
                 const state = mapStateToProps(store.getState());
                 const activeState = cloneDeep(state);
@@ -102,7 +106,7 @@ export function withStore<SP extends RecordStrAny = any>(mapStateToProps: (state
 
 export const eventBusWithStoreEventName: string = "updateStore";
 
-export function eventBusWithStore<D extends Record<string, any>>(getStoreData: (state: State) => D) {
+export function eventBusWithStore<D extends PlainObject>(getStoreData: (state: State) => D) {
 
         // class WithStore
     return class WithStore extends EventBus {

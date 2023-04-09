@@ -1,41 +1,42 @@
 import { isHTMLTextAreaElement } from "../../utils/helpers/typeCheck";
-import { Props, _Block } from "../../utils/_Block";
+import { BlockProps, _Block } from "../../utils/_Block";
 import template from "./index.hbs";
 import styles from "./styles.module.pcss";
 
-type SimpleTextAreaProps = {
+interface SimpleTextAreaProps extends BlockProps { 
     label: string;
     value?: string;
     name?: string;
     events?: {
-        focus?: () => void;
-        blur?: () => void;
+        focus?: EventListener;
+        blur?: EventListener;
+        keydown?: EventListener;
     };
-};
+}
 
-export default class SimpleTextArea extends _Block<SimpleTextAreaProps> {
+export default class SimpleTextArea<T extends SimpleTextAreaProps = SimpleTextAreaProps> extends _Block<T> {
 
-    constructor(props: Props<SimpleTextAreaProps>) {
-        props = props || {};
-        props.events = props.events || {};
+    override getDomEvents() {
+        let events = super.getDomEvents();
+        events = { 
+            ...events,
+            keydown: this.onKeyDown.bind(this)
+        };
 
-        props.events.keydown = (evt) => { _this.onKeyDown(evt); }; // todo в init?
-        super(props);
-
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        const _this = this;
+        return events;
     }
 
-    protected getCompileOptions() {
+    override getCompileOptions() {
         return { 
             template,
             styles
         };
     }
 
-    onKeyDown(evt: KeyboardEvent) {
+    onKeyDown(evt: Event) {
+        const keyEvent = evt as KeyboardEvent;
 
-        if (evt.key == "Enter" && !evt.shiftKey) {
+        if (keyEvent.key == "Enter" && !keyEvent.shiftKey) {
 
             evt.preventDefault();
 
@@ -46,8 +47,8 @@ export default class SimpleTextArea extends _Block<SimpleTextAreaProps> {
         }
     }
 
-    getValue() {
+    getValue(): string | undefined {
         const element = this.getElement();
-        return isHTMLTextAreaElement(element) ? element.value : null;
+        return isHTMLTextAreaElement(element) ? element.value : undefined;
     }
 }

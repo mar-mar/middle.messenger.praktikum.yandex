@@ -1,7 +1,9 @@
 import { AvatarData } from "../../api/AvatarAPI";
 import ChatsController from "../../controllers/ChatsController";
+import RouterController from "../../controllers/RouterController";
 import Popup from "../../layout/popup";
-import routeUse, { PAGES } from "../../utils/route";
+import { PAGES_PATHS } from "../../utils/Router";
+
 import { _Block } from "../../utils/_Block";
 import { ErrorCallback } from "../../utils/_BlockWithForm";
 import template from "./index.hbs";
@@ -50,8 +52,8 @@ export default class IndexPage extends _Block {
         };
     }
 
-    private go(page: PAGES): void {
-        routeUse(page);
+    private go(page: PAGES_PATHS): void {
+        RouterController.go(page);
     }
 
     private openPopup(blockName: string, evt: Event) {
@@ -82,11 +84,11 @@ export default class IndexPage extends _Block {
     private menuMenuItems(): MenuItemTemplateProps[] {
         return [
             { label: "Создать чат", click: this.visibleChild.bind(this, true, ATTACHES.CreateChat) },
-            { label: "Открыть профиль", click: this.go.bind(this, PAGES.Profile) }
+            { label: "Открыть профиль", click: this.go.bind(this, PAGES_PATHS.Profile) }
         ];
     }
     
-    async ecexuteDelChat(_values: any, errorCallback: ErrorCallback) {
+    async ecexuteDelChat(_values: unknown, errorCallback: ErrorCallback) {
         try {
             await ChatsController.deleteSelectedChat();
         }

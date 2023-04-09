@@ -1,20 +1,22 @@
-import { _Block } from "../../../../utils/_Block";
-import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
+import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import template from "./index.hbs";
 import styles from "./styles.module.pcss";
 import { validateName, validateLogin, validateEmail, validatePhone } from "../../../../utils/validate";
 import ResourceController from "../../../../controllers/ResourceController";
-import { ProfileUserData } from "../../../../api/UsersAPI";
+import { PasswordData, ProfileUserData } from "../../../../api/UsersAPI";
 import { User } from "../../../../api/AuthAPI";
 import UsersController from "../../../../controllers/UsersController";
 import AuthController from "../../../../controllers/AuthController";
+import SimpleError from "../../../../components/simpleError";
+import { AvatarData } from "../../../../api/AvatarAPI";
 
 
-type ProfileBodyProps = {
-    updatePassword: AnyFunctionNoReturn;
-    updateAvatar: AnyFunctionNoReturn;
+interface ProfileBodyProps extends WithFormProps<ProfileUserData> { 
+
+    updatePassword: (values?: PasswordData, errorCallback?: ErrorCallback) => void;
+    updateAvatar: (values?: AvatarData, errorCallback?: ErrorCallback) => void;
     user: User | undefined
-};
+}
 
 export default class ProfileBody extends _BlockWithForm<ProfileUserData, ProfileBodyProps> {  
 
@@ -39,7 +41,7 @@ export default class ProfileBody extends _BlockWithForm<ProfileUserData, Profile
     }
 
     protected getErrorBlock() {
-        return this.getForm()?.getChildByAttacheNameOne("error");
+        return this.getForm()?.getChildByAttacheNameOne("error") as SimpleError;
     }
 
     async execute(values: ProfileUserData) {
