@@ -118,9 +118,11 @@ class MessagesController {
         let messagesToAdd: Message[] = messages.reverse();
 
         const state = store.getState();
-        const currentMessages = get(state, `messages.${chatId}.messages`) || [];
+        const currentMessages = get(state, `messages.${chatId}.messages`);
 
-        messagesToAdd = [...currentMessages, ...messagesToAdd];
+        if (isArray(currentMessages)) {
+            messagesToAdd = [...currentMessages as Message[], ...messagesToAdd];
+        }
         
         const lastMessage = messagesToAdd[messagesToAdd.length-1];
 

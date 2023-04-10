@@ -31,7 +31,7 @@ export interface VisibleProps {
     parent?: Element;
 }
 
-export interface BlockConstructable<P extends BlockProps = BlockProps> {
+export interface BlockConstructable<P extends BlockProps = any> {
     new(props: P): _Block<P>;
 }
 

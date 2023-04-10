@@ -16,7 +16,8 @@ module.exports = {
         })
     ],
     resolve: {
-        extensions: [".ts", ".js", ".json", ".hbs", ".pcss"]
+        extensions: [".ts", ".js", ".json", ".hbs", ".pcss"],
+        fallback: { crypto: false }
     },
     module: {
         rules: [

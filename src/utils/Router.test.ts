@@ -1,105 +1,170 @@
-import { Router } from "./Router"
+import Router from "./Router"
 import { expect } from "chai";
 import sinon from "sinon";
 import { BlockConstructable } from "./_Block";
 
-describe.only("Router", () => {
-
+describe.only("utils -> Router", () => {
+    const paths = ["/path1", "/path2", "/path3"];
     const path = "/";
     const rootId = "#app";
 
-    let getContentFake: sinon.SinonSpy<any[], HTMLDivElement>;
+    let getElementFake: sinon.SinonSpy<any[], HTMLDivElement>;
+    let dispatchComponentDidMountFake: sinon.SinonSpy;
+    let dispatchComponentDidUnMountFake: sinon.SinonSpy;
+
     let BlockMock: BlockConstructable;
-    let RouterIns: Router;
-
-    const resetValue = {
-        winPath: window.location.pathname,
-        back: global.window.history.back,
-        forward: global.window.history.forward
-    }
-
+    let router: Router;
+    let winMock: Window;
 
     function resetBlockMock() {
-        getContentFake = sinon.fake.returns(document.createElement("div"));
+        getElementFake = sinon.fake.returns(document.createElement("div"));
+        dispatchComponentDidMountFake = sinon.fake();
+        dispatchComponentDidUnMountFake = sinon.fake();
 
-        BlockMock = class {
-            getElement = getContentFake;
-            dispatchComponentDidMount = sinon.fake.returns(undefined);
-            dispatchComponentDidUnMount = sinon.fake.returns(undefined);
+        if (!BlockMock) {
+            BlockMock = class {
+                getElement = getElementFake;
+                dispatchComponentDidMount = dispatchComponentDidMountFake;
+                dispatchComponentDidUnMount = dispatchComponentDidUnMountFake;
+    
+            } as unknown as BlockConstructable;
 
-        } as unknown as BlockConstructable;
+        }
+    }
+
+    function resetWinMock() {
+        winMock = {
+            location: { pathname: path },
+            history: {
+                // @ts-ignore test
+                back: () => { winMock.onpopstate(); },
+                // @ts-ignore test
+                forward: () => { winMock.onpopstate(); },
+                pushState: () => {}
+            },
+            onpopstate: ()=> {}
+        } as unknown as Window;
     }
 
     beforeEach(() => {
-        
-        RouterIns = new Router(rootId);
+        resetWinMock();
+
+        router = new Router(rootId, winMock);
         resetBlockMock();
-
-        console.info("beforeEach", RouterIns.currentRoute);
     });
 
-    afterEach(() => {
-        window.location.pathname = resetValue.winPath;
+    it("use(). use должен возвращать ссылку на себя (this)", () => {
+        const result = router.use("/", BlockMock);
+
+        expect(result).to.eq(result);
     });
 
-    before(()=> {
-        global.window.history.back = () => {
-            if (typeof window.onpopstate === "function") {
-                window.onpopstate({ currentTarget: window } as unknown as PopStateEvent);
-            }
-        };
-        global.window.history.forward = () => {
-            if (typeof window.onpopstate === "function") {
-                window.onpopstate({ currentTarget: window } as unknown as PopStateEvent);
-            }
-        }
-    });
-
-    after(() => {
-        global.window.history.back = resetValue.back;
-        global.window.history.forward = resetValue.forward;
-    });
-
-    it("use(). should return Router instance", () => {
-        const result = RouterIns.use("/", BlockMock);
-
-        expect(result).to.eq(RouterIns);
-    });
-
-    it("start(). should render a page on start", () => {
-        RouterIns
+    it("start(). должен делать рендер страницы", () => {
+        router
             .use(path, BlockMock)
             .start(path);
 
-        expect(getContentFake.callCount).to.eq(1);
+        expect(getElementFake.callCount).to.eq(1);
     });
 
-    it("start(). should render a page on start", () => {
-        RouterIns
+
+
+    it("back(). back сразу после start не должен вызывать render страницы", () => {
+        router
             .use(path, BlockMock)
             .start(path);
+            
+        router.back();
 
-        expect(getContentFake.callCount).to.eq(1);
+        expect(getElementFake.callCount).to.eq(1);
+
     });
 
-    // describe("back()", () => {
-    it("should render a page on history back action", () => {
-        RouterIns
+    it("forward(). forward сразу после start не должен вызывать render страницы", () => {
+        router
             .use(path, BlockMock)
             .start(path);
+            
+        router.forward();
 
-        expect(getContentFake.callCount).to.eq(1);
+        
+        expect(getElementFake.callCount).to.eq(1);
 
-       /* console.info(getContentFake.callCount);
-        Router
-            .use(path, BlockMock)
-            .start(path);
-
-        //Router.back();
-        console.info(getContentFake.callCount);
-        expect(getContentFake.callCount).to.eq(1);*/
     });
-    // });
 
+    describe("комбинации переходов", () => {
 
+        beforeEach(()=> {
+            router.use(path, BlockMock);
+
+            paths.forEach(path => {
+                router.use(path, BlockMock);
+            })
+        });
+    
+        it("должен делать dispatchComponentDidMount страницы столько же сколько render", () => {
+            router.start(path);
+            router.go(paths[0]);
+            router.go(paths[1]);
+            
+            expect(getElementFake.callCount).to.eq(dispatchComponentDidMountFake.callCount);
+        });
+
+        it("должен делать dispatchComponentDidMount страницы столько же сколько render - 1", () => {
+            router.start(path);
+            router.go(paths[0]);
+
+            expect(getElementFake.callCount-1).to.eq(dispatchComponentDidUnMountFake.callCount);
+        });
+
+        it("go(). рендер должен быть вызван для start и каждого go (при уникальных path)", () => {
+            router.start(path);
+            router.go(paths[0]);
+            router.go(paths[1]);
+            router.go(paths[2]);
+            
+            expect(getElementFake.callCount).to.eq(4);
+        });
+
+        it("go(). для двух подряд одинаковых go рендер вызывается один раз", () => {
+            router.start(path);
+            router.go(paths[0]);
+            router.go(paths[0]);
+            
+            expect(getElementFake.callCount).to.eq(2);
+        });
+
+        it("go() + back(). рендер должен быть вызван для start, каждого go и back (при уникальных path)", () => {
+            router.start(path);
+            
+            router.go(paths[0]);
+            router.go(paths[1]);
+            router.go(paths[2]);
+            winMock.location.pathname = paths[1];
+            
+            router.back();
+            
+            expect(getElementFake.callCount).to.eq(5);
+    
+        });
+
+        it("go() + back() + forward(). рендер должен быть вызван для start, каждого go и back (при уникальных path)", () => {
+            router.start(path);
+            
+            router.go(paths[0]);
+            router.go(paths[1]);
+            router.go(paths[2]);
+
+            winMock.location.pathname = paths[1];
+            router.back();
+            
+            winMock.location.pathname = paths[2];
+            router.forward();
+
+            expect(getElementFake.callCount).to.eq(6);
+    
+        });
+
+    });
+ 
 });

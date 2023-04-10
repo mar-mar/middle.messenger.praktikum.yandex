@@ -105,8 +105,10 @@ export function withStore<SP extends PlainObject = PlainObject>(mapStateToProps:
 }
 
 export const eventBusWithStoreEventName: string = "updateStore";
-
-export function eventBusWithStore<D extends PlainObject>(getStoreData: (state: State) => D) {
+export interface StoreItem {
+    abstract?: boolean;
+}
+export function eventBusWithStore<D extends StoreItem = StoreItem>(getStoreData: (state: State) => D) {
 
         // class WithStore
     return class WithStore extends EventBus {
@@ -117,19 +119,18 @@ export function eventBusWithStore<D extends PlainObject>(getStoreData: (state: S
         }
 
         private storeInit(): void {
-            let activeState = cloneDeep(getStoreData(store.getState()));
+            let activeState = cloneDeep(getStoreData(store.getState()) as PlainObject) as D;
 
             store.on(StoreEvents.Updated, () => {
                 const newState = getStoreData(store.getState());
 
                 if (!isEqual(activeState, newState)) {
-                    activeState = cloneDeep(newState);
+                    activeState = cloneDeep(newState as PlainObject) as D;
 
-                        //this.setProps({ item: { ...newState } } as Partial<{ item: SP; } & P>);
+                    //this.setProps({ item: { ...newState } } as Partial<{ item: SP; } & P>);
                     this.emit(eventBusWithStoreEventName, activeState);
                 }
                     
-                activeState = newState;
             });
         }
             

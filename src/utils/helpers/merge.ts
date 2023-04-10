@@ -46,7 +46,6 @@ export function set(object: PlainObject | unknown, path: string, value: unknown)
     return merge(object as PlainObject, result);
 }
 
-
 export function get(object: PlainObject | unknown, path: string): unknown {
     
     if (typeof path !== "string") {

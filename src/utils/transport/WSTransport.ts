@@ -1,4 +1,4 @@
-import { eventBusWithStore } from "../Store";
+import { StoreItem, eventBusWithStore } from "../Store";
 
 
 export enum WSTransportEvents {
@@ -8,7 +8,8 @@ export enum WSTransportEvents {
     CLOSE = "close"
 }
 
-type TransportStore = { sleep?: boolean };
+interface TransportStore extends StoreItem { sleep?: boolean }
+
 
 const WSTransportBase = eventBusWithStore<TransportStore>(state => {
     return { sleep: state.sleep }

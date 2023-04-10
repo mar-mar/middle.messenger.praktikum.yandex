@@ -16,7 +16,7 @@ type Options = {
     headers?: Record<string, string>;
     timeout?: number;
     retries?: number;
-    data?: PlainObject
+    data?: unknown
 }
 
 type RequiredOptions = RequireKeys<Options, "headers" | "timeout" | "retries" > & { method: METHODS; }
@@ -48,6 +48,8 @@ export default class HTTPTransport {
         return this.groupPath + childPath;
     }
 
+    // одинаковые определения методов, чтобы оставить их методами, 
+    // если делать get: Func = ()=> {}, то уже получим свойство get с типом функция, которое уже будет не в прототипе
     public get<R>(path?: string, options?: Options): Promise<R> {
 
         return this.request<R>(METHODS.GET, path, options);
@@ -73,7 +75,7 @@ export default class HTTPTransport {
         options = options ?? {};
 
 
-        return this._requestReq<R>(1, options.retries, path, {
+        return this._request<R>(path, {
             headers: options.headers || {},
             method: method || METHODS.GET,
             timeout: options.timeout || HTTPTransport.defaultTimeout,
@@ -91,10 +93,10 @@ export default class HTTPTransport {
         return new Promise((resolve, reject) => {
 
             const xhr = new XMLHttpRequest();
-            let withData = data && isObject(data);
+            let withData = !!data;
 
-            if (METHODS.GET === options.method && withData && data) {
-                url += HTTPTransport.queryStringify(data);
+            if (METHODS.GET === options.method) {
+                if (isObject(data)) url += HTTPTransport.queryStringify(data);
                 withData = false;
             }
 
@@ -125,29 +127,6 @@ export default class HTTPTransport {
         })
     }
 
-    private async _requestReq<R>(
-        retryNumber: number,
-        retries: number = 1,
-        ...args: [url: string, options: RequiredOptions]): Promise<R> {
-
-        let result;
-
-        try {
-
-            result = await this._request<R>(...args);
-
-        }
-        catch (exp) {
-
-            if (retryNumber >= retries) throw exp;
-
-            retryNumber += 1;
-            result = await this._requestReq<R>(retryNumber, retries, ...args);
-        }
-
-        return result;
-    }
-
     private static queryStringify(data: PlainObject) {
         // Можно делать трансформацию GET-параметров в отдельной функции
         let result = "";
@@ -162,7 +141,7 @@ export default class HTTPTransport {
         return result;
     }
 
-    private send(xhr: XMLHttpRequest, data?: PlainObject): void {
+    private send(xhr: XMLHttpRequest, data?: unknown): void {
         if (!data) {
             xhr.send();
             return;
@@ -174,6 +153,7 @@ export default class HTTPTransport {
             xhr.send(JSON.stringify(data));
         }
         else if (CONTENT_TYPE.FORMDATA === this.contentType) {
+            if (!isObject(data)) throw new Error("data должна быть объектом для contentType=FORMDATA");
 
             const formData = new FormData();
             

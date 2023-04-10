@@ -2,14 +2,19 @@
 import { PAGES_PATHS } from "../utils/Router";
 import Router from "../utils/Router";
 import store from "../utils/Store";
-import { BlockConstructable, BlockProps, _Block } from "../utils/_Block";
+import { BlockConstructable } from "../utils/_Block";
 import ChatsController from "./ChatsController";
 //import MessagesController from './MessagesController';
 
 export class RouterController {
+    router: Router;
 
-    public use<T extends BlockProps = BlockProps>(pathname: string, block: BlockConstructable<T>): RouterController  {
-        Router.use<T>(pathname, block);
+    constructor() {
+        this.router = new Router("#app");
+    }
+
+    public use(pathname: string, block: BlockConstructable): RouterController  {
+        this.router.use(pathname, block);
         return this;
     }
 
@@ -17,7 +22,7 @@ export class RouterController {
         
         if (!quick) path = this.getTrueRoute(path);
 
-        Router.go(path); // если неизвестная startPage, то куда на 404?
+        this.router.go(path); // если неизвестная startPage, то куда на 404?
 
         if (path === PAGES_PATHS.Messages) {
             ChatsController.fetchChats();
@@ -27,7 +32,7 @@ export class RouterController {
     public start(): void {
         const path = this.getTrueRoute(window.location.pathname);
 
-        Router.start(path);
+        this.router.start(path);
         
         if (path === PAGES_PATHS.Messages) {
             ChatsController.fetchChats();
