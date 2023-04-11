@@ -6,8 +6,10 @@ import { AuthController } from "./AuthController";
 import { RouterController } from "./RouterController";
 import ChatsController from "./ChatsController";
 import store from "../utils/Store";
+import { Logger } from "../utils/logger";
 
-describe.only("controllers -> AuthController", () => {
+
+describe("controllers -> AuthController", () => {
     // RouterController шпионить
     // 
     const authAPIMock = {
@@ -16,7 +18,8 @@ describe.only("controllers -> AuthController", () => {
         signup: sinon.stub(),
         read: sinon.stub()
     };
-    const routeGoFake = sinon.stub();
+    const routeGoMock = sinon.stub();
+    const errorLogMock = sinon.stub();
     let contr: AuthController;
 
     const authAPI = {
@@ -27,11 +30,16 @@ describe.only("controllers -> AuthController", () => {
     } as unknown as AuthAPI;
 
     const router = {
-        go: routeGoFake
+        go: routeGoMock
     } as unknown as RouterController;
     
+    const logger = {
+        errorLog: errorLogMock
+    } as unknown as Logger;
+
+
     beforeEach(() => {
-        contr = new AuthController(authAPI, router);
+        contr = new AuthController(authAPI, router, logger);
     });
 
     afterEach(() => {
@@ -40,7 +48,8 @@ describe.only("controllers -> AuthController", () => {
         authAPIMock.signup.reset();
         authAPIMock.read.reset();
 
-        routeGoFake.reset();
+        routeGoMock.reset();
+        errorLogMock.reset;
     });
 
     it("signin должен вызывать api.signin", () => {
@@ -49,29 +58,11 @@ describe.only("controllers -> AuthController", () => {
         expect(authAPIMock.signin.callCount).to.eq(1);
     });
 
-    it("signup должен вызывать api.signup", () => {
-        contr.signup({} as any);
-
-        expect(authAPIMock.signup.callCount).to.eq(1);
-    });
-
-    it("logout должен вызывать api.logout", () => {
-        contr.logout();
-
-        expect(authAPIMock.logout.callCount).to.eq(1);
-    });
-
-    it("fetchUser должен вызывать api.get", () => {
-        contr.fetchUser();
-
-        expect(authAPIMock.read.callCount).to.eq(1);
-    });
-    
     it("signin должен вызывать RouterController.go", async () => {
 
         await contr.signin({} as any);
 
-        expect(routeGoFake.callCount).to.eq(1);
+        expect(routeGoMock.callCount).to.eq(1);
     });
 
     it("signin должен вызывать fetchUser", async () => {
@@ -82,12 +73,18 @@ describe.only("controllers -> AuthController", () => {
 
         expect(spy.calledOnce).to.eq(true);
     });
-    
+
+    it("signup должен вызывать api.signup", () => {
+        contr.signup({} as any);
+
+        expect(authAPIMock.signup.callCount).to.eq(1);
+    });
+
     it("signup должен вызывать RouterController.go", async () => {
 
         await contr.signup({} as any);
 
-        expect(routeGoFake.callCount).to.eq(1);
+        expect(routeGoMock.callCount).to.eq(1);
     });
 
     it("signup должен вызывать fetchUser", async () => {
@@ -99,11 +96,29 @@ describe.only("controllers -> AuthController", () => {
         expect(spy.calledOnce).to.eq(true);
     });
 
+    it("signin при ошибке должен вызвать logger.errorLog", async () => {
+        authAPIMock.signin.throws();
+
+        try {
+            await contr.signin({} as any);
+        }
+        catch(exp) {}
+
+        expect(errorLogMock.calledOnce).to.eq(true);
+    });
+
+
+    it("logout должен вызывать api.logout", () => {
+        contr.logout();
+
+        expect(authAPIMock.logout.callCount).to.eq(1);
+    });
+
     it("logout должен вызывать RouterController.go", async () => {
 
         await contr.logout();
 
-        expect(routeGoFake.callCount).to.eq(1);
+        expect(routeGoMock.callCount).to.eq(1);
     });
     
     it("logout должен вызывать ChatsController.closeAll", async () => {
@@ -122,4 +137,18 @@ describe.only("controllers -> AuthController", () => {
         expect(spy.calledOnce).to.eq(true);
     });
 
+    it("fetchUser должен вызывать api.get", () => {
+        contr.fetchUser();
+
+        expect(authAPIMock.read.callCount).to.eq(1);
+    });
+    
+    it("fetchUser должен вызывать api.get", async () => {
+        const spy = sinon.spy(store, "set"); 
+
+        await contr.fetchUser();
+
+        expect(spy.getCall(0).args[0]).to.eq("user");
+    });
+    
 });

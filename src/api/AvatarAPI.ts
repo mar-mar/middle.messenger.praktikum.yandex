@@ -12,7 +12,7 @@ export interface ChatAvatarData extends AvatarData {
 
 export class AvatarUsersAPI extends _BaseAPI {
     constructor() {
-        super(new HTTPTransport({ groupPath: "auth", contentType: CONTENT_TYPE.FORMDATA }))
+        super(new HTTPTransport({ groupPath: "", contentType: CONTENT_TYPE.FORMDATA }))
     }
 
     // редактирование аватара

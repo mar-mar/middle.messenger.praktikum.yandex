@@ -2,28 +2,33 @@
 import { PAGES_PATHS } from "../utils/Router";
 import API, { AuthAPI, SigninData, SignupData } from "../api/AuthAPI";
 import store from "../utils/Store";
-import { errorLog } from "../utils/logger";
+import logger, { Logger } from "../utils/logger";
 import RouterController, { RouterController as RouterControllerClass } from "./RouterController";
 import ChatsController from "./ChatsController";
 
-//import MessagesController from './MessagesController';
+
 //test-20230312-mar1@yandex.ru test-20230312-mar1 12345678D/12345678D1/12345678D2 Имя Фамилия
 //test-20230312-mar2 12345678D
 // test-20230312-mar3 12345678D3
-// 
-//withCredentials
 
 interface APIError {
     reason?: string;
+    message?: string;
 }
 
 export class AuthController {
     private readonly api: AuthAPI;
     private readonly routerController: RouterControllerClass;
+    private readonly logger: Logger;
 
-    constructor(authAPI?: AuthAPI, routerController?: RouterControllerClass) {
+    constructor(
+        authAPI?: AuthAPI, 
+        routerController?: RouterControllerClass,
+        inLogger?: Logger) {
+
         this.api = authAPI ?? API;
         this.routerController = routerController ?? RouterController;
+        this.logger = inLogger ?? logger;
     }
 
     // вход
@@ -83,9 +88,12 @@ export class AuthController {
     }
 
     private errorHandler(e: unknown, withThrow: boolean = false) {
-        errorLog(e);
+        this.logger.errorLog(e);
 
-        if (withThrow) throw new Error((e as APIError)?.reason || "Ошибка");
+        if (withThrow) {
+            const error = (e as APIError);
+            throw new Error(error?.reason ?? error?.message ?? "Ошибка");
+        }
     }
 }
 

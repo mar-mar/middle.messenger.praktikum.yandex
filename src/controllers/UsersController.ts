@@ -1,5 +1,5 @@
 import store from "../utils/Store";
-import { errorLog } from "../utils/logger";
+import logger from "../utils/logger";
 import API, { PasswordData, ProfileUserData, SearchUserData, UsersAPI } from "../api/UsersAPI";
 import AvatarAPI, { AvatarData, AvatarUsersAPI } from "../api/AvatarAPI";
 import { PAGES_PATHS } from "../utils/Router";
@@ -10,6 +10,7 @@ import RouterController from "./RouterController";
 
 interface APIError {
     reason?: string;
+    message?: string;
 }
 
 export class UsersController {
@@ -87,8 +88,11 @@ export class UsersController {
     }
 
     errorHandler(e: unknown, withThrow: boolean = false) {
-        errorLog(e);
-        if (withThrow) throw new Error((e as APIError)?.reason || "Ошибка");
+        logger.errorLog(e);
+        if (withThrow) {
+            const error = (e as APIError);
+            throw new Error(error?.reason ?? error?.message ?? "Ошибка");
+        }
     }
 
     isCurrentUserId(id: number) {

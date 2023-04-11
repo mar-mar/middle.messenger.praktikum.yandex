@@ -41,9 +41,7 @@ export class RouterController {
 
     private getTrueRoute(path: string): string {
         const state = store.getState();
-//if (type in MESSAGE_TYPE) {
 
-//}
         const noUserPage = (path === PAGES_PATHS.Login || path === PAGES_PATHS.Sign);
         const noUser = !state.user;
   
@@ -58,8 +56,6 @@ export class RouterController {
 
         return path;
     }
-
-    //ChatsController.fetchChats()
 
 }
 
