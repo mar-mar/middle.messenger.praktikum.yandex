@@ -36,6 +36,10 @@ class Route {
         private readonly query: string) {
     }
 
+    getPathname() {
+        return this.pathname;
+    }
+
     leave() {
         
         if (!this.block) return;
@@ -71,6 +75,7 @@ export default class Router {
 
         this.routes = [];
         this.history = win.history;
+        
 
         this.win.onpopstate = (_event: PopStateEvent) => {
             this.onChangeRoute(this.win.location.pathname);
@@ -84,6 +89,10 @@ export default class Router {
         this.routes.push(route);
 
         return this;
+    }
+
+    public getCurrentRoutePath() {
+        return this.currentRoute?.getPathname();
     }
 
     // go

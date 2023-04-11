@@ -22,7 +22,7 @@ export class RouterController {
 
         this.router.go(path, quick); 
 
-        if (path === PAGES_PATHS.Messages) {
+        if (this.router.getCurrentRoutePath() === PAGES_PATHS.Messages) {
             ChatsController.fetchChats();
         }
     }

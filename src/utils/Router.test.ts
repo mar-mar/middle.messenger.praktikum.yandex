@@ -67,6 +67,14 @@ describe("utils -> Router", () => {
         expect(getElementFake.callCount).to.eq(1);
     });
 
+    it("getCurrentRoutePath(). должен вернуть path от go", () => {
+        router
+            .use(paths[0], BlockMock)
+            .go(paths[0]);
+
+        expect(router.getCurrentRoutePath()).to.eq(paths[0]);
+    });
+    
     describe("комбинации переходов", () => {
 
         beforeEach(()=> {
