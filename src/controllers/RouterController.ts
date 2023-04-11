@@ -28,7 +28,7 @@ export class RouterController {
     }
     
     public start(): void {
-        this.router.go(window.location.pathname);
+        this.go(window.location.pathname);
     }
 
     private getTrueRoute(path: string): string {
