@@ -1,19 +1,20 @@
 ## Описание
 
 Тестовое задание по обучению - Чат
-Третья итерация по проекту, проект находится в работе:
-добавлены страницы - с чатами, с аторизацией, с регистрацией, с редактированеим профиля;
-добавлены модальные окона и popup-меню
-подключен бэкенд и история страниц
+Четвертая итерация по проекту
+В приложении есть страницы - с чатами, с аторизацией, с регистрацией, с редактированеим профиля;
+Использован бэкенд https://ya-praktikum.tech/api/v2/swagger/
 
 
-
-## Установка
+## Команды
 
 - `npm start` сборка и запуск
 - `npm dev` запуск версии для разработчика
 - `npm build` запуск сборки
-- `npm link` запуск stylelint
+- `npm lint:stylelint` запуск stylelint
+- `npm lint:eslint` запуск eslint
+- `npm lint:eslint-write` запуск eslint с --fix
+- `test` запуск тестов
 
 ## Ссылки
 
@@ -24,16 +25,29 @@
 - yandex cloud https://bba567sef34nnrnhaig6.containers.yandexcloud.net/
 
 ## Инструменты
-Сборщик - parcel
-Шаблонизатор - handlebars
-Стили - postcss
+- Сборщик webpack
+- Шаблонизатор - handlebars
+- Стили - postcss
+- husky для pre-commit
+- eslint 
+- stylelint
+- для тестов mocha (ts-node/register, chai, sinon)
+- docker
 
+<details>
 
-npm uninstall husky && git config --unset core.hooksPath
+удадить husky и хуки
 
+`npm uninstall husky && git config --unset core.hooksPath`
+
+docker
+```
 docker build -t chat-app:dev -f Dockerfile .
 docker run -p 3000:3000 -it chat-app:dev
 cntl-p+cntl-q
 
 docker container ps
 docker stop <CONTAINER ID>
+```
+
+</details>

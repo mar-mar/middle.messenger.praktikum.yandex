@@ -49,7 +49,7 @@ describe("controllers -> AuthController", () => {
         authAPIMock.read.reset();
 
         routeGoMock.reset();
-        errorLogMock.reset;
+        errorLogMock.reset();
     });
 
     it("signin должен вызывать api.signin", () => {
