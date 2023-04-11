@@ -37,7 +37,6 @@ export class _BlockWithForm<D = unknown,
     }
 
     protected registerLifeCycleEvents(eventBus: EventBus): void {
-        super.registerLifeCycleEvents(eventBus);
         eventBus.on(FORM_EVENTS.ECEXUTE, this.execute.bind(this));
     }
 

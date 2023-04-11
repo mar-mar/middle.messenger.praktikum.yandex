@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { set } from "./merge";
 
-describe("helpers - merge.set", () => {
+describe("utils -> helpers -> merge.set", () => {
 
     const keypath = "test";
     const value = "some value";

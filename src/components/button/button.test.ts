@@ -2,7 +2,7 @@ import Button from "./index";
 import { expect } from "chai";
 import sinon from "sinon";
 
-describe.only("component button", () => {
+describe("component -> button", () => {
     const label = "button label";
 
     it("должен выполнять рендер без ошибок", () => {

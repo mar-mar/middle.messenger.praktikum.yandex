@@ -16,14 +16,10 @@ interface SimpleTextAreaProps extends BlockProps {
 
 export default class SimpleTextArea<T extends SimpleTextAreaProps = SimpleTextAreaProps> extends _Block<T> {
 
-    override getDomEvents() {
-        let events = super.getDomEvents();
-        events = { 
-            ...events,
-            keydown: this.onKeyDown.bind(this)
-        };
-
-        return events;
+    override prepareProps(props: T) {
+        const events = props.events ?? {};
+        events.keydown = this.onKeyDown.bind(this);
+        return props;
     }
 
     override getCompileOptions() {

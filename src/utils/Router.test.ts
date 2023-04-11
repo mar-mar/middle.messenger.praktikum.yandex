@@ -3,7 +3,7 @@ import { expect } from "chai";
 import sinon from "sinon";
 import { BlockConstructable } from "./_Block";
 
-describe.only("utils -> Router", () => {
+describe("utils -> Router", () => {
     const paths = ["/path1", "/path2", "/path3"];
     const path = "/";
     const rootId = "#app";
@@ -67,6 +67,14 @@ describe.only("utils -> Router", () => {
         expect(getElementFake.callCount).to.eq(1);
     });
 
+    it("go(). go до start должен вызвать ошибку", () => {
+        
+        const func = function() {
+            router.use(path, BlockMock).go(path);
+        };
+
+        expect(func).to.throw();
+    });
 
 
     it("back(). back сразу после start не должен вызывать render страницы", () => {
@@ -106,7 +114,7 @@ describe.only("utils -> Router", () => {
             router.start(path);
             router.go(paths[0]);
             router.go(paths[1]);
-            
+
             expect(getElementFake.callCount).to.eq(dispatchComponentDidMountFake.callCount);
         });
 
@@ -148,9 +156,9 @@ describe.only("utils -> Router", () => {
     
         });
 
-        it("go() + back() + forward(). рендер должен быть вызван для start, каждого go и back (при уникальных path)", () => {
+        it("go() + back() + forward(). рендер должен быть вызван для start, каждого go, back, forward (при уникальных path)", () => {
             router.start(path);
-            
+           
             router.go(paths[0]);
             router.go(paths[1]);
             router.go(paths[2]);

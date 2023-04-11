@@ -7,9 +7,7 @@ export enum EVENTS {
     FLOW_CDM = "flow:component-did-mount",
     FLOW_CDUM = "flow:component-did-un-mount",
     FLOW_CDU = "flow:component-did-update",
-    FLOW_RENDER = "flow:render" //,
-   // HIDE = "hide",
-   // SHOW = "show"
+    FLOW_RENDER = "flow:render"
 }
 
 type Children = Record<string, _Block[] | _Block>;
@@ -20,12 +18,6 @@ export type CompileOptions = {
     styles?: Record<string, string>,
     [index: string]: unknown 
 };
-
-/*export type TemplateOptions = { 
-    styles?: Record<string, any>,
-    addChild: (child: _Block) => void,
-    [index: string]: any
-};*/
 
 export interface VisibleProps {
     parent?: Element;
@@ -58,12 +50,13 @@ export class _Block<T extends BlockProps = BlockProps> {
         this.id = nanoid(6);
         this.isMounted = false;
 
-        props.attachName = props.attachName || this.id;
+        
+        props = this.prepareProps(props);
 
         this.props = this.makePropsProxy(props, this.eventBus);
-        this.registerLifeCycleEvents(this.eventBus);
+        this.registerLifeCycleEventsBase(this.eventBus);
         this.eventBus.emit(EVENTS.INIT);
-    }
+    }   
 
     //   
     protected init(): void { }
@@ -79,14 +72,24 @@ export class _Block<T extends BlockProps = BlockProps> {
 
     protected getCompileOptions(): CompileOptions { return {}; }
 
+    protected registerLifeCycleEvents(_eventBus: EventBus) {}
+
     // constructor
-    protected registerLifeCycleEvents(eventBus: EventBus): void {
+    protected prepareProps(props: T): T {
+        props.attachName = props.attachName || this.id;
+        return props;
+    }
+
+    // constructor
+    protected registerLifeCycleEventsBase(eventBus: EventBus): void {
+
         eventBus.on(EVENTS.INIT, this.onInit.bind(this));
         eventBus.on(EVENTS.FLOW_CDM, this.onComponentDidMount.bind(this));
         eventBus.on(EVENTS.FLOW_CDUM, this.onComponentDidUnMount.bind(this));
         
         eventBus.on(EVENTS.FLOW_CDU, this.onComponentDidUpdate.bind(this));
         eventBus.on(EVENTS.FLOW_RENDER, this.onRender.bind(this));
+        this.registerLifeCycleEvents(eventBus);
     }
 
     // constructor
@@ -124,6 +127,7 @@ export class _Block<T extends BlockProps = BlockProps> {
     }
 
     private onInit(): void {
+        
         this.init();
         this.eventBus.emit(EVENTS.FLOW_RENDER);
     }
@@ -199,7 +203,7 @@ export class _Block<T extends BlockProps = BlockProps> {
     private toggleDomEvents(value: boolean): void {
         if (!this.element) return;
 
-        const events = this.getDomEvents();
+        const events = this.props.events;
         const element = this.element;
         if (!this.element || !events) return;
 
@@ -216,11 +220,7 @@ export class _Block<T extends BlockProps = BlockProps> {
         });
     }
 
-    protected getDomEvents(): Events | undefined {
-        return this.props.events;
-    }
-
-    protected compile({ template, styles, ...args } : CompileOptions) {
+    private compile({ template, styles, ...args } : CompileOptions) {
     
         const temp = document.createElement("template");
 
@@ -238,7 +238,7 @@ export class _Block<T extends BlockProps = BlockProps> {
     }
 
     //render
-    public renderDependens() {
+    private renderDependens() {
         this.renderChildren();
 
         this.forEachChildren((child, _) => {
@@ -303,7 +303,7 @@ export class _Block<T extends BlockProps = BlockProps> {
         return this.element;
     }
 
-    protected getChildByAttacheName(attacheName: string): _Block[] | _Block | null {
+    public getChildByAttacheName(attacheName: string): _Block[] | _Block | null {
         return this.children[attacheName];
     }
 

@@ -2,7 +2,7 @@ import sinon, { SinonFakeXMLHttpRequest, SinonFakeXMLHttpRequestStatic } from "s
 import HTTPTransport, { CONTENT_TYPE } from "./HTTPTransport";
 import { expect } from "chai";
 
-describe("HTTPTransport", () => {
+describe("utils -> transport -> HTTPTransport", () => {
     let xhr: SinonFakeXMLHttpRequestStatic;
     let instance: HTTPTransport;
     const requests: SinonFakeXMLHttpRequest[] = [];
@@ -36,13 +36,13 @@ describe("HTTPTransport", () => {
     });
 
 
-    describe("should send the correct method in the request", () => {
+    describe("должен отправить правильный метод в запросе", () => {
 
         beforeEach(() => {
             instance = new HTTPTransport({ groupPath });
         });
 
-        it(".get() should send GET request", () => {
+        it(".get() должен отправить метод GET", () => {
             instance.get(path);
 
             const [request] = requests;
@@ -50,7 +50,7 @@ describe("HTTPTransport", () => {
             expect(request.method).to.eq("GET");
         });
 
-        it(".put() should send PUT request", () => {
+        it(".put() должен отправить метод PUT", () => {
             instance.put(path);
 
             const [request] = requests;
@@ -58,7 +58,7 @@ describe("HTTPTransport", () => {
             expect(request.method).to.eq("PUT");
         });
 
-        it(".post() should send POST request", () => {
+        it(".post() должен отправить метод POST", () => {
             instance.post(path);
 
             const [request] = requests;
@@ -66,7 +66,7 @@ describe("HTTPTransport", () => {
             expect(request.method).to.eq("POST");
         });
 
-        it(".delete() should send DELETE request", () => {
+        it(".delete() должен отправить метод DELETE", () => {
             instance.delete(path);
 
             const [request] = requests;
@@ -75,7 +75,7 @@ describe("HTTPTransport", () => {
         });
     });
 
-    describe("should send correct url in request", () => {
+    describe("должен отправить правильный URL в запросе", () => {
 
         beforeEach(() => {
             instance = new HTTPTransport({ groupPath, apiURL });
@@ -108,7 +108,7 @@ describe("HTTPTransport", () => {
 
     });
 
-    describe("should send correct content", () => {
+    describe("должен отправить правильный корректный content", () => {
         const testData = { prop1: "123", prop2: 123 };
 
         it("json content", () => {
@@ -133,9 +133,9 @@ describe("HTTPTransport", () => {
 
     });
 
-    describe("should send correct headers", () => {
+    describe("должен отправить правильные headers", () => {
 
-        it("headers. json content", () => {
+        it("headers. contentType = json", () => {
             instance = new HTTPTransport({ groupPath, contentType: CONTENT_TYPE.JSON });
             instance.post(path, { data: {}});
 
@@ -144,7 +144,7 @@ describe("HTTPTransport", () => {
             expect(request.requestHeaders["content-type"]).to.match(/application\/json/i);
         });
 
-        it("headers. no json content", () => {
+        it("headers. contentType <> json", () => {
             instance = new HTTPTransport({ groupPath, contentType: CONTENT_TYPE.FORMDATA });
             instance.post(path, { data: {}});
 
@@ -155,9 +155,9 @@ describe("HTTPTransport", () => {
 
     });
 
-    describe("should correct props", () => {
+    describe("должны быть корректные параметры xhr", () => {
 
-        it("props. withCredentials", () => {
+        it("withCredentials true", () => {
             instance.get();
 
             const [request] = requests;
@@ -167,35 +167,30 @@ describe("HTTPTransport", () => {
 
     });
 
-    describe("should correct retries", () => {
+    describe("должен обрабатывать ответы", () => {
 
 
-        it("props. retries = 1 and status = 200", async () => {
+        it("должен обработать json ответ с кодом 200", async () => {
+            const sendResponse = { response: "response - text" };
 
             const def = instance.get(path);
 
             const [request] = requests;
-            request.respond(200, {}, "");
+            request.respond(200, {}, JSON.stringify(sendResponse));
 
-            let error;
-            try {
-                await def;
-            }
-            catch(exp) {
-                error = exp;
-            }
-
-            expect(error).to.not.throw;
+            const response: any = await def;
+            
+            expect(response.response).to.eq(sendResponse.response);
         });
 
-        it("props. retries = 1 and error", async () => {
-
+        it("должен выкинуть исключение для 401 статуса с пришедшей ошибкой", async () => {
+            const sendResponse = { response: "response - error" };
             const def = instance.get(path);
 
             const [request] = requests;
-            request.error();
+            request.respond(401, {}, JSON.stringify(sendResponse));
 
-            let error;
+            let error: any;
             try {
                 await def;
             }
@@ -203,7 +198,7 @@ describe("HTTPTransport", () => {
                 error = exp;
             }
 
-            expect(error).to.throw;
+            expect(error.response).to.eq(sendResponse.response);
         });
 
     });

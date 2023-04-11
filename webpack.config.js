@@ -19,6 +19,9 @@ module.exports = {
         extensions: [".ts", ".js", ".json", ".hbs", ".pcss"],
         fallback: { crypto: false }
     },
+    optimization: {
+        usedExports: true // <- remove unused function
+    },
     module: {
         rules: [
             {
@@ -30,8 +33,7 @@ module.exports = {
                             configFile: path.resolve(__dirname, "tsconfig.json")
                         }
                     }
-                ],
-                exclude: /(node_modules)/
+                ]
             },
             {
                 test: /\.hbs$/i,
