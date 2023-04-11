@@ -1,3 +1,4 @@
+import HTTPTransport from "../utils/transport/HTTPTransport";
 import { User } from "./AuthAPI";
 import _BaseAPI from "./_BaseAPI";
 
@@ -22,7 +23,7 @@ export interface SearchUserData {
 
 export class UsersAPI extends _BaseAPI {
     constructor() {
-        super("user");
+        super(new HTTPTransport({ groupPath: "user" }));
     }
 
     // редактирование профиля

@@ -1,4 +1,4 @@
-import { CONTENT_TYPE } from "../utils/transport/HTTPTransport";
+import HTTPTransport from "../utils/transport/HTTPTransport";
 import _BaseAPI from "./_BaseAPI";
 
 export interface AvatarData {
@@ -8,7 +8,7 @@ export interface AvatarData {
 
 export class ResourceUserAPI extends _BaseAPI {
     constructor() {
-        super("resources", CONTENT_TYPE.FORMDATA);
+        super(new HTTPTransport({ groupPath: "resources" }));
     }
 
     // редактирование аватара

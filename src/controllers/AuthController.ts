@@ -3,7 +3,7 @@ import { PAGES_PATHS } from "../utils/Router";
 import API, { AuthAPI, SigninData, SignupData } from "../api/AuthAPI";
 import store from "../utils/Store";
 import { errorLog } from "../utils/logger";
-import RouterController from "./RouterController";
+import RouterController, { RouterController as RouterControllerClass } from "./RouterController";
 import ChatsController from "./ChatsController";
 
 //import MessagesController from './MessagesController';
@@ -19,9 +19,11 @@ interface APIError {
 
 export class AuthController {
     private readonly api: AuthAPI;
+    private readonly routerController: RouterControllerClass;
 
-    constructor() {
-        this.api = API;
+    constructor(authAPI?: AuthAPI, routerController?: RouterControllerClass) {
+        this.api = authAPI ?? API;
+        this.routerController = routerController ?? RouterController;
     }
 
     // вход
@@ -29,10 +31,11 @@ export class AuthController {
 
         try {
             await this.api.signin(data);
-
+            
             await this.fetchUser();
+            
+            this.routerController.go(PAGES_PATHS.Messages);
 
-            RouterController.go(PAGES_PATHS.Messages);
         } catch (exp: unknown) {
             this.errorHandler(exp, true);
         }
@@ -49,7 +52,7 @@ export class AuthController {
         }
 
         await this.fetchUser();
-        RouterController.go(PAGES_PATHS.Messages);
+        this.routerController.go(PAGES_PATHS.Messages);
     }
 
     async fetchUser() {
@@ -69,7 +72,7 @@ export class AuthController {
 
             await this.api.logout();
             
-            RouterController.go(PAGES_PATHS.Login, true);
+            this.routerController.go(PAGES_PATHS.Login, true);
             
             store.clear();
             ChatsController.closeAll();
@@ -79,7 +82,7 @@ export class AuthController {
         }
     }
 
-    errorHandler(e: unknown, withThrow: boolean = false) {
+    private errorHandler(e: unknown, withThrow: boolean = false) {
         errorLog(e);
 
         if (withThrow) throw new Error((e as APIError)?.reason || "Ошибка");

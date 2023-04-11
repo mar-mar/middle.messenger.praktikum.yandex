@@ -1,3 +1,4 @@
+import HTTPTransport from "../utils/transport/HTTPTransport";
 import _BaseAPI from "./_BaseAPI";
 import { User } from "./AuthAPI";
 
@@ -38,7 +39,7 @@ export interface SearchChatUsersData {
 
 export class ChatsAPI extends _BaseAPI {
     constructor() {
-        super("chats");
+        super(new HTTPTransport({ groupPath: "chats" }));
     }
 
     create(data: CreateChatData) {

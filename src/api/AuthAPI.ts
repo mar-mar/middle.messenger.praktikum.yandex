@@ -1,3 +1,4 @@
+import HTTPTransport from "../utils/transport/HTTPTransport";
 import _BaseAPI from "./_BaseAPI";
 
 export interface SigninData {
@@ -27,8 +28,9 @@ export interface User {
 }
 
 export class AuthAPI extends _BaseAPI {
-    constructor() {
-        super("auth");
+    constructor(http?: HTTPTransport) {
+        http = http ?? new HTTPTransport({ groupPath: "auth" })
+        super(http);
     }
 
     // вход
@@ -50,10 +52,6 @@ export class AuthAPI extends _BaseAPI {
     logout() {
         return this.http.post("logout");
     }
-
-    // create = undefined;
-    //  update = undefined;
-    //  delete = undefined;
 }
 
 export default new AuthAPI();
