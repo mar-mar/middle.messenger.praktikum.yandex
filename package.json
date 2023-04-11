@@ -4,7 +4,7 @@
     "description": "",
     "scripts": {
         "prepare": "husky install",
-        "start": "export PORT=3000 && npm run webpack-build && node server.js",
+        "start": "export PORT=3001 && npm run build && node server.js",
         "build": "node ./node_modules/.bin/webpack ",
         "dev": "webpack serve --open",
         "lint:stylelint": "stylelint **/*.pcss --fix",

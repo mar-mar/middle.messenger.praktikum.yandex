@@ -10,7 +10,7 @@ export class RouterController {
     router: Router;
 
     constructor() {
-        this.router = new Router("#app");
+        this.router = new Router("#app", this.getTrueRoute.bind(this));
     }
 
     public use(pathname: string, block: BlockConstructable): RouterController  {
@@ -19,10 +19,8 @@ export class RouterController {
     }
 
     public go(path: string, quick?: boolean): void {
-        
-        if (!quick) path = this.getTrueRoute(path);
 
-        this.router.go(path); // если неизвестная startPage, то куда на 404?
+        this.router.go(path, quick); 
 
         if (path === PAGES_PATHS.Messages) {
             ChatsController.fetchChats();
@@ -30,13 +28,7 @@ export class RouterController {
     }
     
     public start(): void {
-        const path = this.getTrueRoute(window.location.pathname);
-
-        this.router.start(path);
-        
-        if (path === PAGES_PATHS.Messages) {
-            ChatsController.fetchChats();
-        }
+        this.router.go(window.location.pathname);
     }
 
     private getTrueRoute(path: string): string {

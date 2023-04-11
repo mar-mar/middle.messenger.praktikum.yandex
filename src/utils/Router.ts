@@ -63,14 +63,18 @@ export default class Router {
     private routes: Route[] = [];
     private currentRoute: Route | null = null;
     private history: History;
-    private initialized = false;
 
     // rootQuery - root domNode приложения
     constructor(private readonly rootQuery: string,
+        private readonly checkPath: (path: string) => string,
         private readonly win: Window = window) {
 
         this.routes = [];
         this.history = win.history;
+
+        this.win.onpopstate = (_event: PopStateEvent) => {
+            this.onChangeRoute(this.win.location.pathname);
+        }
     }
 
     // добавляет информацию о "путь/класс страницы" в роутер
@@ -83,11 +87,10 @@ export default class Router {
     }
 
     // go
-    public go(pathname: string) {
-        if (!this.initialized) throw("Не был вызван метод start для инициализации");
+    public go(pathname: string, quick?: boolean) {
 
         const oldRoute = this.currentRoute;
-        const isChange = this.onChangeRoute(pathname);
+        const isChange = this.onChangeRoute(pathname, quick);
 
         if (oldRoute && isChange) {
             this.history.pushState({}, "", pathname);
@@ -104,18 +107,9 @@ export default class Router {
         this.history.forward();
     }
  
-    // то же по сути инициализация
-    public start(pathname: string) {
-        this.initialized = true;
+    private onChangeRoute(pathname: string, quick?: boolean) {
 
-        this.win.onpopstate = (_event: PopStateEvent) => {
-            this.onChangeRoute(this.win.location.pathname);
-        }
-
-        this.go(pathname);
-    }
-
-    private onChangeRoute(pathname: string) {
+        if (!quick) pathname = this.checkPath(pathname);
 
         let route = this.getRoute(pathname);
 

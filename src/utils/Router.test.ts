@@ -49,7 +49,7 @@ describe("utils -> Router", () => {
     beforeEach(() => {
         resetWinMock();
 
-        router = new Router(rootId, winMock);
+        router = new Router(rootId, (path)=>path, winMock);
         resetBlockMock();
     });
 
@@ -59,45 +59,12 @@ describe("utils -> Router", () => {
         expect(result).to.eq(result);
     });
 
-    it("start(). должен делать рендер страницы", () => {
+    it("go(). должен делать рендер страницы", () => {
         router
             .use(path, BlockMock)
-            .start(path);
+            .go(path);
 
         expect(getElementFake.callCount).to.eq(1);
-    });
-
-    it("go(). go до start должен вызвать ошибку", () => {
-        
-        const func = function() {
-            router.use(path, BlockMock).go(path);
-        };
-
-        expect(func).to.throw();
-    });
-
-
-    it("back(). back сразу после start не должен вызывать render страницы", () => {
-        router
-            .use(path, BlockMock)
-            .start(path);
-            
-        router.back();
-
-        expect(getElementFake.callCount).to.eq(1);
-
-    });
-
-    it("forward(). forward сразу после start не должен вызывать render страницы", () => {
-        router
-            .use(path, BlockMock)
-            .start(path);
-            
-        router.forward();
-
-        
-        expect(getElementFake.callCount).to.eq(1);
-
     });
 
     describe("комбинации переходов", () => {
@@ -111,7 +78,7 @@ describe("utils -> Router", () => {
         });
     
         it("должен делать dispatchComponentDidMount страницы столько же сколько render", () => {
-            router.start(path);
+            router.go(path);
             router.go(paths[0]);
             router.go(paths[1]);
 
@@ -119,14 +86,14 @@ describe("utils -> Router", () => {
         });
 
         it("должен делать dispatchComponentDidMount страницы столько же сколько render - 1", () => {
-            router.start(path);
+            router.go(path);
             router.go(paths[0]);
 
             expect(getElementFake.callCount-1).to.eq(dispatchComponentDidUnMountFake.callCount);
         });
 
         it("go(). рендер должен быть вызван для start и каждого go (при уникальных path)", () => {
-            router.start(path);
+            router.go(path);
             router.go(paths[0]);
             router.go(paths[1]);
             router.go(paths[2]);
@@ -135,7 +102,7 @@ describe("utils -> Router", () => {
         });
 
         it("go(). для двух подряд одинаковых go рендер вызывается один раз", () => {
-            router.start(path);
+            router.go(path);
             router.go(paths[0]);
             router.go(paths[0]);
             
@@ -143,7 +110,7 @@ describe("utils -> Router", () => {
         });
 
         it("go() + back(). рендер должен быть вызван для start, каждого go и back (при уникальных path)", () => {
-            router.start(path);
+            router.go(path);
             
             router.go(paths[0]);
             router.go(paths[1]);
@@ -157,8 +124,7 @@ describe("utils -> Router", () => {
         });
 
         it("go() + back() + forward(). рендер должен быть вызван для start, каждого go, back, forward (при уникальных path)", () => {
-            router.start(path);
-           
+            router.go(path);
             router.go(paths[0]);
             router.go(paths[1]);
             router.go(paths[2]);
