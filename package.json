@@ -6,10 +6,10 @@
         "prepare": "husky install",
         "start": "export PORT=3000 && npm run webpack-build && node server.js",
         "build": "node ./node_modules/.bin/webpack ",
-        "dev": "webpack serve",
+        "dev": "webpack serve --open",
         "lint:stylelint": "stylelint **/*.pcss --fix",
         "lint:eslint": "eslint --ext .ts,.js .",
-        "lint:eslint-write": "eslint --debug src/ --ext .ts --fix",
+        "lint:eslint-write": "eslint src/ --ext .ts,.js --fix",
         "test": "mocha --require ts-node/register --require ./mochaSetup.js './src/**/*.test.ts'"
     },
     "keywords": [],
