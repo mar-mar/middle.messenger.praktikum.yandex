@@ -1,13 +1,13 @@
-import { _Block } from '../../utils/_Block';
-import template from './index.hbs';
-import * as styles from "./styles.module.pcss";
+import { BlockProps, _Block } from "../../utils/_Block";
+import template from "./index.hbs";
+import styles from "./styles.module.pcss";
 
-export type MenuItemProps = {
+interface MenuItemProps extends BlockProps {
     label: string;
     events?: {
-        click?: EventHandler
+        click?: DOMEventHandler
     }
-};
+}
 
 export default class MenuItem extends _Block<MenuItemProps> {
 

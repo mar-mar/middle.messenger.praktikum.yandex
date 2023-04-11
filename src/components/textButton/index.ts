@@ -1,8 +1,8 @@
-import { _Block } from '../../utils/_Block';
-import template from './index.hbs';
-import * as styles from "./styles.module.pcss";
+import { BlockProps, _Block } from "../../utils/_Block";
+import template from "./index.hbs";
+import styles from "./styles.module.pcss";
 
-type TextButtonProps = {
+interface TextButtonProps extends BlockProps {
     datasetId?: string;
     type?: string;
     name?: string;
@@ -14,13 +14,13 @@ type TextButtonProps = {
     addeClassName?: string;
 
     events?: {
-        click?: EventHandler
+        click?: DOMEventHandler
     }
 }
 
-export default class TextButton extends _Block<TextButtonProps> {
+export default class TextButton<T extends TextButtonProps = TextButtonProps> extends _Block<T> {
 
-    protected getCompileOptions() {
+    override getCompileOptions() {
         return { 
             template, 
             styles,

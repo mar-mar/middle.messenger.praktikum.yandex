@@ -1,6 +1,6 @@
-import { CONTENT_TYPE } from "../utils/transport/HTTPTransport";
+import HTTPTransport, { CONTENT_TYPE } from "../utils/transport/HTTPTransport";
 import { User } from "./AuthAPI";
-import _BaseAPI from './_BaseAPI';
+import _BaseAPI from "./_BaseAPI";
 
 export interface AvatarData {
     avatar: File; 
@@ -12,7 +12,7 @@ export interface ChatAvatarData extends AvatarData {
 
 export class AvatarUsersAPI extends _BaseAPI {
     constructor() {
-        super("", CONTENT_TYPE.FORMDATA);
+        super(new HTTPTransport({ groupPath: "", contentType: CONTENT_TYPE.FORMDATA }))
     }
 
     // редактирование аватара

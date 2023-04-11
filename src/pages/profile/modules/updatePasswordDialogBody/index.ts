@@ -1,15 +1,16 @@
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
-import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
-import { validateCopyPassword, validatePassword } from '../../../../utils/validate';
+import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
+import { validateCopyPassword, validatePassword } from "../../../../utils/validate";
 import { PasswordData } from "../../../../api/UsersAPI";
 import Input from "../../../../components/input";
 import UsersController from "../../../../controllers/UsersController";
+import SimpleError from "../../../../components/simpleError";
 
-type Props = {
+interface Props extends WithFormProps<PasswordData> { 
     oldPassword?: string;
     newPassword?: string;
-};
+}
 
 export default class UpdatePasswordDialogBody extends _BlockWithForm<PasswordData, Props>  {
 
@@ -19,12 +20,12 @@ export default class UpdatePasswordDialogBody extends _BlockWithForm<PasswordDat
             template,
             validatePassword: this.validatePassword.bind(this),
             validateCopyPassword: this.validateCopyPassword.bind(this)
-         };
+        };
     }
 
     protected componentDidMount(/*oldProps*/): void { 
         this.reset();
-    };
+    }
 
     async execute(values: PasswordData) {
         if (!values) return;
@@ -41,7 +42,7 @@ export default class UpdatePasswordDialogBody extends _BlockWithForm<PasswordDat
     }
 
     protected getErrorBlock() {
-        return this.getForm()?.getChildByAttacheNameOne("error");
+        return this.getForm()?.getChildByAttacheNameOne("error") as SimpleError;
     }
 
     private validatePassword(value: string): string {

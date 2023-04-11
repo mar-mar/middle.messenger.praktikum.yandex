@@ -1,14 +1,21 @@
-type AnyFunction = (...args: any) => any;
 
-type AnyFunctionNoReturn = (...args: any) => void;
+interface Func<T = void, Args = any> {
+    ([...args]: Args[]): T;
+}
 
-type EventHandler = (evt: Event) => void;
+type DOMEventHandler = (evt: Event) => void;
 
 type FunctionNoArgsNoReturn = () => void;
 
-type RecordStrAny = Record<string, any>;
 
 type MenuItemTemplateProps = {
     label: string;
-    click?: EventHandler;
+    click?: DOMEventHandler;
 }
+
+type RequireKeys<T extends object, K extends keyof T> =
+  (Required<Pick<T, K>> & Omit<T, K>) extends
+  infer O ? { [P in keyof O]: O[P] } : never;
+
+type PlainObject = Record<string, unknown>;
+

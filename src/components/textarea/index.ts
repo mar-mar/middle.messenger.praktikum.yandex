@@ -1,14 +1,15 @@
 import { ValidatedBlockProps, _ValidatedBlock } from "../../utils/_ValidatedBlock";
 import SimpleTextArea from "../simpleTextarea";
-import template from './index.hbs';
+import template from "./index.hbs";
 
-type TextAreaProps = {
+
+interface TextAreaProps extends ValidatedBlockProps { 
     label: string;
     value?: string;
     name?: string;
-} & ValidatedBlockProps;
+}
 
-export default class TextArea extends _ValidatedBlock<TextAreaProps> {
+export default class TextArea<T extends TextAreaProps = TextAreaProps> extends _ValidatedBlock<T> {
 
     protected getCompileOptions() {
         return { 
@@ -17,9 +18,9 @@ export default class TextArea extends _ValidatedBlock<TextAreaProps> {
         };
     }
 
-    protected getValue(): any {
+    protected getValue(): string | undefined{
         const inputBlock = this.getChildByAttacheNameOne("input");
-        if (!inputBlock) return null;
+        if (!inputBlock) return undefined;
 
         return (inputBlock as SimpleTextArea).getValue();
     }

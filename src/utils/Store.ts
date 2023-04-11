@@ -1,16 +1,16 @@
 //import { set } from './helpers';
-import { EventBus } from './EventBus';
-import { _Block } from './_Block';
-import { User } from '../api/AuthAPI';
+import { EventBus } from "./EventBus";
+import { BlockProps, _Block } from "./_Block";
+import { User } from "../api/AuthAPI";
 import { set } from "./helpers/merge";
 import isEqual from "./helpers/isEqual";
-import { ChatInfo } from '../api/ChatsAPI';
+import { ChatInfo } from "../api/ChatsAPI";
 import { Message } from "../controllers/MessagesController";
 import cloneDeep from "./helpers/cloneDeep";
 //import { Message } from '../controllers/MessagesController';
 
 export enum StoreEvents {
-    Updated = 'updated'
+    Updated = "updated"
 }
 
 interface State {
@@ -53,9 +53,13 @@ export class Store extends EventBus {
 const store = new Store();
 
 
-export function withStore<SP extends RecordStrAny = any>(mapStateToProps: (state: State) => SP) {
+export interface StoreBlockProps<D> extends BlockProps {
+    storeItem: D
+}
 
-    return function<P extends RecordStrAny = any>(Component: typeof _Block<{ storeItem: SP } & P>) {
+export function withStore<SP extends PlainObject = PlainObject>(mapStateToProps: (state: State) => SP) {
+
+    return function<P extends StoreBlockProps<SP> = StoreBlockProps<SP>>(Component: typeof _Block<P>) {
 
         // class WithStore
         return class WithStore extends Component {
@@ -63,7 +67,7 @@ export function withStore<SP extends RecordStrAny = any>(mapStateToProps: (state
             private activeState: SP;
             onChangeStoreBind: (state: State) => void;
 
-            constructor(props: Omit<P, keyof SP>) {
+            constructor(props: P) {
 
                 const state = mapStateToProps(store.getState());
                 const activeState = cloneDeep(state);
@@ -101,35 +105,36 @@ export function withStore<SP extends RecordStrAny = any>(mapStateToProps: (state
 }
 
 export const eventBusWithStoreEventName: string = "updateStore";
-
-export function eventBusWithStore<D extends Record<string, any>>(getStoreData: (state: State) => D) {
+export interface StoreItem {
+    abstract?: boolean;
+}
+export function eventBusWithStore<D extends StoreItem = StoreItem>(getStoreData: (state: State) => D) {
 
         // class WithStore
-        return class WithStore extends EventBus {
+    return class WithStore extends EventBus {
  
-            constructor() {
-                super();
-                this.storeInit();
-            }
-
-            private storeInit(): void {
-                let activeState = cloneDeep(getStoreData(store.getState()));
-
-                store.on(StoreEvents.Updated, () => {
-                    const newState = getStoreData(store.getState());
-
-                    if (!isEqual(activeState, newState)) {
-                        activeState = cloneDeep(newState);
-
-                        //this.setProps({ item: { ...newState } } as Partial<{ item: SP; } & P>);
-                        this.emit(eventBusWithStoreEventName, activeState);
-                    }
-                    
-                    activeState = newState;
-                });
-            }
-            
+        constructor() {
+            super();
+            this.storeInit();
         }
+
+        private storeInit(): void {
+            let activeState = cloneDeep(getStoreData(store.getState()) as PlainObject) as D;
+
+            store.on(StoreEvents.Updated, () => {
+                const newState = getStoreData(store.getState());
+
+                if (!isEqual(activeState, newState)) {
+                    activeState = cloneDeep(newState as PlainObject) as D;
+
+                    //this.setProps({ item: { ...newState } } as Partial<{ item: SP; } & P>);
+                    this.emit(eventBusWithStoreEventName, activeState);
+                }
+                    
+            });
+        }
+            
+    }
 }
 
 export default store;

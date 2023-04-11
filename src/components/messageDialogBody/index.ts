@@ -1,28 +1,32 @@
 import { _Block } from "../../utils/_Block";
 import template from "./index.hbs";
-import { _BlockWithForm } from "../../utils/_BlockWithForm";
-import * as styles from "./styles.module.pcss";
+import { WithFormProps, _BlockWithForm } from "../../utils/_BlockWithForm";
+import styles from "./styles.module.pcss";
 import { AvatarData } from "../../api/AvatarAPI";
+import SimpleError from "../simpleError";
 
+interface UpdatePasswordDialogBodyProps<D> extends WithFormProps<D> {
+    message: string;
+}
 
-export default class UpdatePasswordDialogBody extends _BlockWithForm<AvatarData, 
-    { message: string; } > {
+export default class UpdatePasswordDialogBody<D extends AvatarData = AvatarData,
+    T extends UpdatePasswordDialogBodyProps<D> = UpdatePasswordDialogBodyProps<D>> extends _BlockWithForm<D, T> {
 
-    protected getCompileOptions() {
+    override getCompileOptions() {
         
         return {
             ...super.getCompileOptions(),
             styles,
             template
-         };
+        };
     }
 
-    protected componentDidMount(/*oldProps*/): void { 
+    override componentDidMount(/*oldProps*/): void { 
         this.reset();
-    };
+    }
 
-    protected getErrorBlock() {
-        return this.getForm()?.getChildByAttacheNameOne("error");
+    override getErrorBlock() {
+        return this.getForm()?.getChildByAttacheNameOne("error") as SimpleError;
     }
 
 }

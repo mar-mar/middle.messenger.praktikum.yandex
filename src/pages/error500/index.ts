@@ -1,10 +1,10 @@
 import ErrorPageLayout, { ErrorPageLayoutProps } from "../../layout/errorPage";
-import { Props, _Block } from '../../utils/_Block';
+import { _Block } from "../../utils/_Block";
 
     
-export default class Error500Page<T extends ErrorPageLayoutProps> extends ErrorPageLayout<T> {
+export default class Error500Page extends ErrorPageLayout<ErrorPageLayoutProps> {
 
-    constructor(props: Props<T>) {
+    constructor(props: ErrorPageLayoutProps) {
         props = {
             ...props,
             errorCode: "500" ,

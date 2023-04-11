@@ -1,10 +1,77 @@
 {
-    "extends": "airbnb", // Здесь вы указываете, что наследуетесь от набора правил
-    "rules": {
-        "react": "off",
-        "comma-dangle": ["error", "never"],
-        "indent": ["error", 4],
-        "quotes": ["error", "double"],
-        "import/no-extraneous-dependencies": ["error", {"devDependencies": ["/server.js"]}]
-    }
-} 
+    "root": true,
+    "overrides": [
+        {
+            "files": ["**/*.ts"],
+            "plugins": [
+                "@typescript-eslint",
+                "import"
+            ],
+            "extends": [
+                "eslint:recommended",
+                "plugin:@typescript-eslint/recommended"
+            ],
+            "parser": "@typescript-eslint/parser",
+            "rules": {
+                "react": "off",
+                "comma-dangle": [
+                    "error",
+                    "never"
+                ],
+                "indent": [
+                    "error",
+                    4,
+                    {
+                        "ignoreComments": true
+                    }
+                ],
+                "quotes": [
+                    "error",
+                    "double"
+                ],
+                "@typescript-eslint/no-inferrable-types": "off",
+                "@typescript-eslint/no-explicit-any": "off",
+                "@typescript-eslint/ban-ts-comment": [
+                    "error",
+                    {
+                        "ts-ignore": "allow-with-description"
+                    }
+                ],
+                "@typescript-eslint/no-unused-vars": [
+                    "warn", // or "error"
+                    {
+                        "argsIgnorePattern": "^_",
+                        "varsIgnorePattern": "^_",
+                        "caughtErrorsIgnorePattern": "^_"
+                    }
+                ],
+                "@typescript-eslint/no-empty-function": "off",
+                "no-useless-escape": "off",
+                "no-empty": [
+                    "error",
+                    {
+                        "allowEmptyCatch": true
+                    }
+                ]
+            }
+        },
+        {
+            "files": ["**/*.js"],
+            "extends": ["airbnb"],
+            "settings": {
+                "react": {
+                    "version": "0.0"
+                }
+            },
+            "rules": {
+                "react": "off",
+                "comma-dangle": ["error", "never"],
+                "indent": ["error", 4],
+                "quotes": ["error", "double"],
+                "import/no-extraneous-dependencies": ["error", {"devDependencies": ["/server.js","/webpack.config.js","/mochaSetup.js"]}]
+            }            
+        }
+    ]
+}
+// typescript docs indent the case from the switch
+// https://www.typescriptlang.org/docs/handbook/release-notes/typescript-1-8.html#example-4

@@ -1,16 +1,26 @@
 {
-    "extends": "stylelint-config-standard",   
+    "extends": "stylelint-config-standard",
     "plugins": [
         "stylelint-order"
-      ],
+    ],
     "rules": {
+        "selector-pseudo-class-no-unknown": [
+            true,
+            {
+                "ignorePseudoClasses": [
+                    "global"
+                ]
+            }
+        ],
         "at-rule-no-unknown": [
             true,
             {
-                "ignoreAtRules": ["mixin", "define-mixin"]
+                "ignoreAtRules": [
+                    "mixin",
+                    "define-mixin"
+                ]
             }
         ],
-
         "order/order": [
             [
                 "custom-properties",
@@ -20,7 +30,7 @@
                 },
                 "at-rules",
                 "declarations",
-                "at-variables",           
+                "at-variables",
                 "dollar-variables",
                 "rules"
             ],
@@ -28,8 +38,12 @@
                 "unspecified": "bottom"
             }
         ],
-        "order/properties-order": [[], {"unspecified": "bottom"}],
+        "order/properties-order": [
+            [],
+            {
+                "unspecified": "bottom"
+            }
+        ],
         "order/properties-alphabetical-order": true
     }
-
 }

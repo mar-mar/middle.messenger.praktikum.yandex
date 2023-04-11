@@ -1,18 +1,18 @@
 import { isArray, isHTMLFormElement } from "../../utils/helpers/typeCheck";
-import { _Block } from '../../utils/_Block';
+import { BlockProps, _Block } from "../../utils/_Block";
 import { _ValidatedBlock } from "../../utils/_ValidatedBlock";
-import template from './index.hbs';
+import template from "./index.hbs";
 
 
-export type FormProps = {
+interface FormProps extends BlockProps {
     events?: {
-        submit?: EventHandler;
+        submit?: DOMEventHandler;
     }
 }
 
 export default class Form extends _Block<FormProps> {
 
-    protected getCompileOptions(): any {
+    protected getCompileOptions() {
         return { 
             template
         };
@@ -51,7 +51,7 @@ export default class Form extends _Block<FormProps> {
         const values: Record<string, unknown> = {};
 
         formData.forEach((value, key) => {
-            let oldValue = values[key];
+            const oldValue = values[key];
             if (key in values) {
                 if (isArray(oldValue)) oldValue.push(value)
                 else values[key] = [oldValue, value];

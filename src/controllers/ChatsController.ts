@@ -1,10 +1,14 @@
 import { User } from "../api/AuthAPI";
 import AvatarAPI, { AvatarData, AvatarUsersAPI } from "../api/AvatarAPI";
-import API, { CreateChatData, ChatsAPI, ChatInfo, SearchChatUsersData } from '../api/ChatsAPI';
-import { errorLog } from "../utils/logger";
-import store from '../utils/Store';
-import MessagesController from './MessagesController';
+import API, { CreateChatData, ChatsAPI, ChatInfo, SearchChatUsersData } from "../api/ChatsAPI";
+import logger from "../utils/logger";
+import store from "../utils/Store";
+import MessagesController from "./MessagesController";
 
+interface APIError {
+    reason?: string;
+    message?: string;
+}
 
 class ChatsController {
 
@@ -44,7 +48,7 @@ class ChatsController {
             const chat = await this.avatarApi.chatAvatar({ ...data, chatId });
             store.set(`chats.${chatId}`, chat);
 
-        } catch (exp: any) {
+        } catch (exp: unknown) {
 
             this.errorHandler(exp, true);
         }
@@ -79,7 +83,7 @@ class ChatsController {
     // запрашиваем чаты и коннектимся к ним
     async fetchChats() {
         const chats = await this.api.read();
-        const mapChats: Record<number, any> = {};
+        const mapChats: Record<number, ChatInfo | undefined> = {};
 
         const oldKeys = new Set(Object.keys(store.getState().chats || {}));
  
@@ -97,7 +101,13 @@ class ChatsController {
             mapChats[parseInt(key)] = undefined;
         });
 
-        store.set('chats', mapChats);
+        const chatId = this.getSelectedChat();
+
+        if (chatId && !mapChats[chatId]) {
+            this.selectChat(undefined);
+        }
+
+        store.set("chats", mapChats);
     }
 
     // поиск чатов
@@ -143,7 +153,7 @@ class ChatsController {
         if (!chatId) return;
 
         await this.addUserToChat(chatId, userIds);
-        this.fetchChatUsers();
+        await this.fetchChatUsers();
     }
 
 
@@ -152,8 +162,8 @@ class ChatsController {
         if (!chatId) return;
 
         await this.removeUserFromChat(chatId, userIds);
-        this.fetchChats(); // обновим список чатов, так как если удалим себя - чат удалится
-        this.fetchChatUsers();
+        await this.fetchChats(); // обновим список чатов, так как если удалим себя - чат удалится
+        await this.fetchChatUsers();
     }
 
     private async getToken(chatId: number): Promise<string> {
@@ -198,9 +208,12 @@ class ChatsController {
         return users;
     }
     
-    errorHandler(e: any, withThrow: boolean = false) {
-        errorLog(e);
-        if (withThrow) throw new Error(e?.reason || "Ошибка");
+    errorHandler(e: unknown, withThrow: boolean = false) {
+        logger.errorLog(e);
+        if (withThrow) {
+            const error = (e as APIError);
+            throw new Error(error?.reason ?? error?.message ?? "Ошибка");
+        }
     }
 
     getSelectedChat(): number | undefined {

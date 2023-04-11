@@ -1,18 +1,16 @@
-import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
-import { ErrorCallback, _BlockWithForm } from "../../../../utils/_BlockWithForm";
-import * as styles from "./styles.module.pcss";
+import { ErrorCallback, WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
+import styles from "./styles.module.pcss";
 import { SearchChatUsersData } from "../../../../api/ChatsAPI";
 import { FilterData } from "../../components/actionUserFind";
 import { UserIdsData } from "../../components/actionUser";
-import { isFunction } from "../../../../utils/helpers/typeCheck";
 import ActionUserFind from "../../components/actionUserFind";
 import ActionUser from "../../components/actionUser";
 import ChatsController from "../../../../controllers/ChatsController";
 import UsersController from "../../../../controllers/UsersController";
 import { validateFilterLogin } from "../../../../controllers/ValidateController";
 
-type Props = {
+interface Props extends WithFormProps<SearchChatUsersData> { 
     execute: () => void;
 }
 
@@ -27,7 +25,7 @@ export default class FindChatDialogBody extends _BlockWithForm<SearchChatUsersDa
             findExecute: this.findExecute.bind(this),
             actionExecute: this.actionExecute.bind(this),
             isValidFilter: validateFilterLogin
-         };
+        };
     }
 
     private async findExecute(values: FilterData, errorCallback: ErrorCallback) {
@@ -59,7 +57,7 @@ export default class FindChatDialogBody extends _BlockWithForm<SearchChatUsersDa
         }
 
         const execute = this.getProps().execute;
-        if (isFunction(execute)) {
+        if (execute) {
             execute();
         }
     }

@@ -1,15 +1,11 @@
 import { isArray, isMap, isObject } from "./typeCheck";
 
-type Indexed<T = unknown> = {
-    [key in string]: T;
-};
 
-
-function isEqual(a: Indexed, b: Indexed): boolean {
+function isEqual(a: unknown, b: unknown): boolean {
     return isEqualAny(a, b);
 }
 
-function isEqualObj(lhs: Indexed, rhs: Indexed): boolean {
+function isEqualObj(lhs: PlainObject, rhs: PlainObject): boolean {
     const keysl = Object.keys(rhs);
     const keys2 = Object.keys(rhs);
     if (!isEqualStringArray(keysl, keys2)) return false;
@@ -20,12 +16,12 @@ function isEqualObj(lhs: Indexed, rhs: Indexed): boolean {
 }
 
 
-function isEqualAny(lhs: any, rhs: any): any {
+function isEqualAny(lhs: unknown, rhs: unknown): boolean {
     const isObjL = isObject(lhs);
     const isObjR = isObject(rhs);
 
     if (isObjL !== isObjR)  return false;
-    if (isObjL) {
+    if (isObjL && isObjR) {
         return isEqualObj(lhs, rhs);
     }
 
@@ -40,7 +36,7 @@ function isEqualAny(lhs: any, rhs: any): any {
     return lhs === rhs;  
 }
 
-function isEqualArray(lArr: any[], rArr: any[]): boolean {
+function isEqualArray(lArr: unknown[], rArr: unknown[]): boolean {
     if (lArr.length !== rArr.length) return false;
 
     return lArr.every((value, key) => {
@@ -67,7 +63,7 @@ function isEqualPrimitiveSet(ls: Set<string>, rs: Set<string>): boolean {
     return true;
 }
 
-function isEqualMap(lhs: Map<any, any>, rhs: Map<any, any>): boolean {
+function isEqualMap(lhs: Map<unknown, unknown>, rhs: Map<unknown, unknown>): boolean {
 
     if (lhs.size !== rhs.size) return false;
 

@@ -1,16 +1,16 @@
-import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
-import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
-import * as styles from "./styles.module.pcss";
+import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
+import styles from "./styles.module.pcss";
 import ChatsController from "../../../../controllers/ChatsController";
 import { ChatInfo } from "../../../../api/ChatsAPI";
 import { validateChatName } from "../../../../controllers/ValidateController";
+import SimpleError from "../../../../components/simpleError";
 
 type SearchData = {
     filter: string;
 };
 
-type Props = {
+interface Props extends WithFormProps<SearchData> { 
     chats?: ChatInfo[];
     item?: SearchData;
     withResult?: boolean;
@@ -25,15 +25,15 @@ export default class FindChatDialogBody extends _BlockWithForm<SearchData, Props
             styles,
             selectChat: this.selectChat.bind(this),
             validateChatName
-         };
+        };
     }
 
     protected componentDidMount(/*oldProps*/): void { 
         this.setProps({ item: undefined, chats: undefined, withResult: false });
-    };
+    }
 
     protected getErrorBlock() {
-        return this.getForm()?.getChildByAttacheNameOne("error");
+        return this.getForm()?.getChildByAttacheNameOne("error") as SimpleError;
     }
 
     async execute(values: SearchData) {

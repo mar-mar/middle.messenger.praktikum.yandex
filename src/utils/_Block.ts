@@ -1,5 +1,5 @@
 import { EventBus } from "./EventBus";
-import { nanoid } from 'nanoid';
+import { nanoid } from "nanoid";
 import { isArray } from "./helpers/typeCheck";
 
 export enum EVENTS {
@@ -7,77 +7,89 @@ export enum EVENTS {
     FLOW_CDM = "flow:component-did-mount",
     FLOW_CDUM = "flow:component-did-un-mount",
     FLOW_CDU = "flow:component-did-update",
-    FLOW_RENDER = "flow:render" //,
-   // HIDE = "hide",
-   // SHOW = "show"
-};
+    FLOW_RENDER = "flow:render"
+}
 
 type Children = Record<string, _Block[] | _Block>;
-export type Events = Record<string, AnyFunctionNoReturn>;
+export type Events = Record<string, EventListener>;
 
 export type CompileOptions = { 
     template?: Handlebars.TemplateDelegate<any>, 
     styles?: Record<string, string>,
-    [index: string]: any 
+    [index: string]: unknown 
 };
 
-/*export type TemplateOptions = { 
-    styles?: Record<string, any>,
-    addChild: (child: _Block) => void,
-    [index: string]: any
-};*/
+export interface VisibleProps {
+    parent?: Element;
+}
 
+export interface BlockConstructable<P extends BlockProps = any> {
+    new(props: P): _Block<P>;
+}
 
-export type Props<T> = { 
-    events?: Events, 
-    attachName?: string
-} & T;
+export interface BlockProps {
+    events?: Events;
+    attachName?: string; 
+}
+
 
 // базовый класс для компонентов
-export class _Block<T extends Record<string, any> = any> {
+export class _Block<T extends BlockProps = BlockProps> {
 
     private element: HTMLElement | null = null;
     private children: Children = {};
 
     private readonly eventBus: EventBus;
-    private readonly props: Props<T>;
+    private readonly props: T;
     private readonly id: string;
     private isMounted: boolean;
 
-    constructor(props: Props<T>) {
+    constructor(props: T) {
         this.eventBus = new EventBus();
 
         this.id = nanoid(6);
         this.isMounted = false;
-        props.attachName = props.attachName || this.id;
+
+        
+        props = this.prepareProps(props);
 
         this.props = this.makePropsProxy(props, this.eventBus);
-        this.registerLifeCycleEvents(this.eventBus);
+        this.registerLifeCycleEventsBase(this.eventBus);
         this.eventBus.emit(EVENTS.INIT);
-    }
+    }   
 
     //   
-    protected init(): void { };
+    protected init(): void { }
 
     // Может переопределять пользователь, необязательно трогать
     // после добавления в документ
-    protected componentDidMount(): void { };
+    protected componentDidMount(): void { }
     // после удаления из документа
-    protected componentDidUnMount(): void { };
+    protected componentDidUnMount(): void { }
 
     // Может переопределять пользователь, необязательно трогать
-    protected componentDidUpdate(_oldProps: T, _newProps: T): boolean { return true; };
+    protected componentDidUpdate(_oldProps: T, _newProps: T): boolean { return true; }
 
-    protected getCompileOptions(): CompileOptions { return {}; };
+    protected getCompileOptions(): CompileOptions { return {}; }
+
+    protected registerLifeCycleEvents(_eventBus: EventBus) {}
 
     // constructor
-    protected registerLifeCycleEvents(eventBus: EventBus): void {
+    protected prepareProps(props: T): T {
+        props.attachName = props.attachName || this.id;
+        return props;
+    }
+
+    // constructor
+    protected registerLifeCycleEventsBase(eventBus: EventBus): void {
+
         eventBus.on(EVENTS.INIT, this.onInit.bind(this));
         eventBus.on(EVENTS.FLOW_CDM, this.onComponentDidMount.bind(this));
         eventBus.on(EVENTS.FLOW_CDUM, this.onComponentDidUnMount.bind(this));
         
         eventBus.on(EVENTS.FLOW_CDU, this.onComponentDidUpdate.bind(this));
         eventBus.on(EVENTS.FLOW_RENDER, this.onRender.bind(this));
+        this.registerLifeCycleEvents(eventBus);
     }
 
     // constructor
@@ -85,21 +97,25 @@ export class _Block<T extends Record<string, any> = any> {
 
         props = new Proxy(props, {
 
-            set(target: T, key: string, value: any): boolean {
+            set(target: T, key: string, value: unknown): boolean {
 
                 const oldValue = target[key as keyof T];
                 if (oldValue === value) return true;
 
-                const oldTarget: any = { ...target };
-                target[key as keyof T] = value;
+                const oldTarget: T = { ...target };
+
+                const propKey: keyof T = key as keyof T;
+                target[propKey] = value as T[typeof propKey];
+
                 eventBus.emit(EVENTS.FLOW_CDU, oldTarget, target);
 
                 return true;
             },
 
-            get(target: T, key: string): any {
-                let value = target[key];
-                return (typeof value === 'function') ? value.bind(target) : value;
+            get(target: T, key: string): unknown {
+
+                const value = target[key as keyof T];
+                return (typeof value === "function") ? value.bind(target) : value;
             },
 
             deleteProperty(/*target: Props, prop: string*/) {
@@ -111,6 +127,7 @@ export class _Block<T extends Record<string, any> = any> {
     }
 
     private onInit(): void {
+        
         this.init();
         this.eventBus.emit(EVENTS.FLOW_RENDER);
     }
@@ -186,7 +203,7 @@ export class _Block<T extends Record<string, any> = any> {
     private toggleDomEvents(value: boolean): void {
         if (!this.element) return;
 
-        const events = this.getDomEvents();
+        const events = this.props.events;
         const element = this.element;
         if (!this.element || !events) return;
 
@@ -203,13 +220,9 @@ export class _Block<T extends Record<string, any> = any> {
         });
     }
 
-    protected getDomEvents(): Events | undefined {
-        return this.props.events;
-    }
-
-    protected compile({ template, styles, ...args } : CompileOptions) {
+    private compile({ template, styles, ...args } : CompileOptions) {
     
-        const temp = document.createElement('template');
+        const temp = document.createElement("template");
 
         if (template) {
             temp.innerHTML = template({ 
@@ -225,7 +238,7 @@ export class _Block<T extends Record<string, any> = any> {
     }
 
     //render
-    public renderDependens() {
+    private renderDependens() {
         this.renderChildren();
 
         this.forEachChildren((child, _) => {
@@ -239,15 +252,17 @@ export class _Block<T extends Record<string, any> = any> {
 
         this.forEachChildren(child => {
 
-            const stub = this.element!.querySelector(`[data-id="${child.id}"]`);
+            const stub = this.element?.querySelector(`[data-id="${child.id}"]`);
             if (!stub) return; // чистить или нет childElement?
 
-            const childElement = child.getElement()!;
+            const childElement = child.getElement();
+            if (!childElement) return;
+
             stub.replaceWith(childElement); // меняем заглушку на нормальный dom
             
-           if (stub.childNodes.length > 0) { // что-то есть внутри
+            if (stub.childNodes.length > 0) { // что-то есть внутри
                 
-                const contentCont = childElement.querySelector(`[data-content]`) ?? stub;
+                const contentCont = childElement.querySelector("[data-content]") ?? stub;
                 contentCont.innerHTML = "";
                 contentCont.replaceWith(...Array.from(stub.childNodes));
             } 
@@ -256,7 +271,7 @@ export class _Block<T extends Record<string, any> = any> {
 
     public addChild(child: _Block): void {
         const attachName = child.getProps().attachName || child.getId();
-        let children = this.children[attachName];
+        const children = this.children[attachName];
 
         if (!children) {
             this.children[attachName] = child;
@@ -288,12 +303,13 @@ export class _Block<T extends Record<string, any> = any> {
         return this.element;
     }
 
-    protected getChildByAttacheName(attacheName: string): _Block[] | _Block | null {
+    public getChildByAttacheName(attacheName: string): _Block[] | _Block | null {
         return this.children[attacheName];
     }
 
     public getChildByAttacheNameOne(attacheName: string | string[]): _Block | null {
 
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         let child: _Block | null = this;
         attacheName = isArray(attacheName) ? attacheName : [attacheName];
 
@@ -316,7 +332,7 @@ export class _Block<T extends Record<string, any> = any> {
         return this.eventBus;
     }
 
-    public getProps(): Props<T> {
+    public getProps(): T {
         return this.props;
     }
 
@@ -328,19 +344,19 @@ export class _Block<T extends Record<string, any> = any> {
         Object.assign(this.props, nextProps);
     }
 
-    public readonly show = (args?: Record<string, any>) => {
+    public readonly show = (args?: VisibleProps) => {
         this.toggleVisible(true, args);
         
         this.dispatchComponentDidMount();
     }
 
-    public readonly hide = (args?: Record<string, any>) => {
+    public readonly hide = (args?: VisibleProps) => {
         this.toggleVisible(false, args);
         
         this.dispatchComponentDidUnMount();
     }
 
-    protected toggleVisible(value: boolean, _args?: Record<string, any>): void { 
+    protected toggleVisible(value: boolean, _args?: VisibleProps): void { 
         if (this.element === null) return;
         this.element.style.display = value ? "block" : "none";
     }

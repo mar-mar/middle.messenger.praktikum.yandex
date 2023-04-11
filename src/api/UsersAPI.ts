@@ -1,5 +1,6 @@
+import HTTPTransport from "../utils/transport/HTTPTransport";
 import { User } from "./AuthAPI";
-import _BaseAPI from './_BaseAPI';
+import _BaseAPI from "./_BaseAPI";
 
 export interface ProfileUserData {
     first_name: string,
@@ -22,21 +23,21 @@ export interface SearchUserData {
 
 export class UsersAPI extends _BaseAPI {
     constructor() {
-        super('user');
+        super(new HTTPTransport({ groupPath: "user" }));
     }
 
     // редактирование профиля
     profile(data: ProfileUserData): Promise<User> {
-        return this.http.put<User>('profile', { data });
+        return this.http.put<User>("profile", { data });
     }
 
     // редактирование пароля
     password(data: PasswordData) {
-        return this.http.put<User>('password', { data });
+        return this.http.put<User>("password", { data });
     }
 
     search(data: SearchUserData) {
-        return this.http.post<User[]>('search', { data });
+        return this.http.post<User[]>("search", { data });
     }
 
 }

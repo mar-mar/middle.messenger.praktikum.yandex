@@ -1,21 +1,22 @@
 import { isHTMLInputElement } from "../../utils/helpers/typeCheck";
-import { _Block } from '../../utils/_Block';
+import { _Block } from "../../utils/_Block";
 import { ValidatedBlockProps, _ValidatedBlock } from "../../utils/_ValidatedBlock";
 import SimpleInput from "../simpleInput";
-import template from './index.hbs';
-import * as styles from "./styles.module.pcss";
+import template from "./index.hbs";
+import styles from "./styles.module.pcss";
 
-type FileInputProps = {
+
+interface FileInputProps extends ValidatedBlockProps {
     label: string;
     value?: string;
     name?: string;
     accept?: string;
-    parentClassName?: string;
+    addedClassName?: string;
 
     events?: {
-        change?: EventHandler // onchange всплывает
+        change?: DOMEventHandler // onchange всплывает
     }
-} & ValidatedBlockProps
+}
 
 export default class FileInput extends _ValidatedBlock<FileInputProps> {
 
@@ -27,15 +28,15 @@ export default class FileInput extends _ValidatedBlock<FileInputProps> {
         };
     }
 
-    public getValue(): any {
+    public getValue(): File | undefined {
         const inputBlock = this.getChildByAttacheNameOne("input");
-        if (!inputBlock) return null;
+        if (!inputBlock) return undefined;
 
         const input = (inputBlock as SimpleInput).getElement();
         if (isHTMLInputElement(input)) {
             return input.files?.[0];
         }
-        
-        return null;
+
+        return undefined;
     }
 }

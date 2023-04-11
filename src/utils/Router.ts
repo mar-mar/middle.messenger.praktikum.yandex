@@ -1,4 +1,4 @@
-import { _Block } from "./_Block";
+import { _Block, BlockConstructable } from "./_Block";
 
 export enum PAGES_PATHS {
     Error404 = "/error404",
@@ -20,8 +20,10 @@ function render(query: string, block: _Block) {
         throw new Error(`root not found by selector "${query}"`);
     }
 
-    root.innerHTML = '';
-    root.appendChild(block.getElement()!);
+    root.innerHTML = "";
+    const element = block.getElement();
+
+    if (element) root.appendChild(element);
     return root;
 }
 
@@ -30,11 +32,16 @@ class Route {
 
     constructor(
         private pathname: string,
-        private readonly blockClass: typeof _Block,
+        private readonly blockClass: BlockConstructable,
         private readonly query: string) {
     }
 
+    getPathname() {
+        return this.pathname;
+    }
+
     leave() {
+        
         if (!this.block) return;
 
         this.block.dispatchComponentDidUnMount();
@@ -48,7 +55,7 @@ class Route {
     render() {
         if (!this.block) {
 
-            this.block = new this.blockClass({});
+            this.block = new this.blockClass({ attachName: "page" });
         }
         
         render(this.query, this.block);
@@ -56,39 +63,47 @@ class Route {
     }
 }
 
-class Router {
-    private static __instance: Router;
+export default class Router {
     private routes: Route[] = [];
     private currentRoute: Route | null = null;
-    private history = window.history;
+    private history: History;
 
     // rootQuery - root domNode приложения
-    constructor(private readonly rootQuery: string) {
-        if (Router.__instance) {
-            return Router.__instance;
-        }
+    constructor(private readonly rootQuery: string,
+        private readonly checkPath: (path: string) => string,
+        private readonly win: Window = window) {
 
         this.routes = [];
+        this.history = win.history;
+        
 
-        Router.__instance = this;
+        this.win.onpopstate = (_event: PopStateEvent) => {
+            this.onChangeRoute(this.win.location.pathname);
+        }
     }
 
     // добавляет информацию о "путь/класс страницы" в роутер
     // чтобы по пути показывать страницу
-    public use(pathname: string, block: typeof _Block) {
+    public use(pathname: string, block: BlockConstructable) {
         const route = new Route(pathname, block, this.rootQuery);
         this.routes.push(route);
 
         return this;
     }
 
-    // go
-    public go(pathname: string) {
-        if (window.location.pathname !== pathname) {
-            this.history.pushState({}, '', pathname);
-        }
+    public getCurrentRoutePath() {
+        return this.currentRoute?.getPathname();
+    }
 
-        this.onChangeRoute(pathname);
+    // go
+    public go(pathname: string, quick?: boolean) {
+
+        const oldRoute = this.currentRoute;
+        const isChange = this.onChangeRoute(pathname, quick);
+
+        if (oldRoute && isChange) {
+            this.history.pushState({}, "", pathname);
+        }
     }
 
     // back
@@ -101,39 +116,31 @@ class Router {
         this.history.forward();
     }
  
-    // то же по сути инициализация
-    public start(pathname: string) {
+    private onChangeRoute(pathname: string, quick?: boolean) {
 
-        window.onpopstate = (event: PopStateEvent) => {
-            const target = event.currentTarget as Window;
+        if (!quick) pathname = this.checkPath(pathname);
 
-            this.onChangeRoute(target.location.pathname);
-        }
-
-        this.go(pathname);
-    }
-
-    private onChangeRoute(pathname: string) {
         let route = this.getRoute(pathname);
 
         if (!route) {
             
             route = this.getRoute(PAGES_PATHS.Error404);
-            if (!route) return;
+            if (!route) return false;
         }
 
-        if (this.currentRoute && this.currentRoute !== route) {
+        if (this.currentRoute) {
+            if (this.currentRoute === route) return false; // мы уже на этой странице
+
             this.currentRoute.leave();
         }
 
         this.currentRoute = route;
 
         route.render(); // добавляем в root domNode приложения
+        return true;
     }
 
     private getRoute(pathname: string) {
         return this.routes.find(route => route.match(pathname));
     }
 }
-
-export default new Router('#app');

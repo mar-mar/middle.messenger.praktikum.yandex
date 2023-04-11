@@ -1,22 +1,34 @@
 //import API, { AuthAPI, SigninData, SignupData } from '../api/AuthAPI';
-import { PAGES_PATHS } from '../utils/Router';
+import { PAGES_PATHS } from "../utils/Router";
 import API, { AuthAPI, SigninData, SignupData } from "../api/AuthAPI";
 import store from "../utils/Store";
-import { errorLog } from "../utils/logger";
-import RouterController from "./RouterController";
+import logger, { Logger } from "../utils/logger";
+import RouterController, { RouterController as RouterControllerClass } from "./RouterController";
 import ChatsController from "./ChatsController";
 
-//import MessagesController from './MessagesController';
+
 //test-20230312-mar1@yandex.ru test-20230312-mar1 12345678D/12345678D1/12345678D2 Имя Фамилия
 //test-20230312-mar2 12345678D
 // test-20230312-mar3 12345678D3
-// 
-//withCredentials
+
+interface APIError {
+    reason?: string;
+    message?: string;
+}
+
 export class AuthController {
     private readonly api: AuthAPI;
+    private readonly routerController: RouterControllerClass;
+    private readonly logger: Logger;
 
-    constructor() {
-        this.api = API;
+    constructor(
+        authAPI?: AuthAPI, 
+        routerController?: RouterControllerClass,
+        inLogger?: Logger) {
+
+        this.api = authAPI ?? API;
+        this.routerController = routerController ?? RouterController;
+        this.logger = inLogger ?? logger;
     }
 
     // вход
@@ -24,11 +36,12 @@ export class AuthController {
 
         try {
             await this.api.signin(data);
-
+            
             await this.fetchUser();
+            
+            this.routerController.go(PAGES_PATHS.Messages);
 
-            RouterController.go(PAGES_PATHS.Messages);
-        } catch (exp: any) {
+        } catch (exp: unknown) {
             this.errorHandler(exp, true);
         }
     }
@@ -39,12 +52,12 @@ export class AuthController {
 
             await this.api.signup(data);
             
-        } catch (exp: any) {
+        } catch (exp: unknown) {
             this.errorHandler(exp, true);
         }
 
         await this.fetchUser();
-        RouterController.go(PAGES_PATHS.Messages);
+        this.routerController.go(PAGES_PATHS.Messages);
     }
 
     async fetchUser() {
@@ -52,7 +65,7 @@ export class AuthController {
         
         try {
             user = await this.api.read();
-        } catch (exp: any) {
+        } catch (exp: unknown) {
             this.errorHandler(exp, true);
         }
 
@@ -64,19 +77,23 @@ export class AuthController {
 
             await this.api.logout();
             
-            RouterController.go(PAGES_PATHS.Login, true);
+            this.routerController.go(PAGES_PATHS.Login, true);
             
             store.clear();
             ChatsController.closeAll();
 
-        } catch (exp: any) {
+        } catch (exp: unknown) {
             this.errorHandler(exp);
         }
     }
 
-    errorHandler(e: any, withThrow: boolean = false) {
-        errorLog(e);
-        if (withThrow) throw e?.reason || "Ошибка";
+    private errorHandler(e: unknown, withThrow: boolean = false) {
+        this.logger.errorLog(e);
+
+        if (withThrow) {
+            const error = (e as APIError);
+            throw new Error(error?.reason ?? error?.message ?? "Ошибка");
+        }
     }
 }
 

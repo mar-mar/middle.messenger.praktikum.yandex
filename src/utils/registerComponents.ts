@@ -1,46 +1,46 @@
-import Handlebars from "handlebars/dist/handlebars.runtime";
+import Handlebars from "handlebars/runtime";
 import { _Block } from "./_Block";
 import { isFunction } from "./helpers/typeCheck";
-
-
-// без ts-ignore не работает, ts не понимает такие импорты, это фича от parcel (@parcel/resolver-glob)
-// @ts-ignore 
-import componentsModules from "../**/components/*/index.ts";
-// @ts-ignore
-import layoutModules from "../**/layout/*/index.ts";
-// @ts-ignore
-import modulesModules from "../**/modules/*/index.ts";
+import { BlockConstructable } from "./_Block";
 
 
 export default function execute() {
+    
+    const componentsModules = require.context("../", true, /.*\/components\/[a-zA-Z]+\/index.ts$/);
+    
+    const layoutModules = require.context("../", true, /.*\/layout\/[a-zA-Z]+\/index.ts$/);
+    
+    const modulesModules = require.context("../", true, /.*\/modules\/[a-zA-Z]+\/index.ts$/);
+
     registerComponents(componentsModules, "components", []);
     registerComponents(layoutModules, "layout", []);
     registerComponents(modulesModules, "modules", []);
 }
 
-function registerComponents(modules: Record<string, any>, type: string, path: string[]): void{
-    Object.entries(modules).forEach(([name, module]) => {
-        const currentPath = [...path];
-        currentPath.push(name);
+//@types/webpack-env
+function registerComponents(modules: __WebpackModuleApi.RequireContext, _type: string, _path: string[]): void {
 
-        if ((module as any).default) {
-            currentPath.splice(-1, 0, type);
-            handleharRegisterHelper(currentPath.join("_"), (module as any).default);
-        }
-        else {
+    modules.keys().forEach((key: string) => {
+        const module = modules(key);
+
+        if (module.default) {
             
-            registerComponents(module, type, currentPath);
+            const currentPath = key.slice(2, -3).split("/");
+            currentPath.pop();
+
+            handleharRegisterHelper(currentPath.join("_"), module.default);
         }
+
     });
 }
 
-function handleharRegisterHelper<T extends _Block>(name: string, 
-    constructor: new(options: any) => T): void { 
+function handleharRegisterHelper(name: string,
+    constructor: BlockConstructable): void {
 
-    Handlebars.registerHelper(name, function (this: any, options: Handlebars.HelperOptions): string {
+    Handlebars.registerHelper(name, function (this: unknown, options: Handlebars.HelperOptions): string {
 
-        const events: Record<string, AnyFunction> = {};
-        const props: Record<string, any> = { ...options.hash };
+        const events: Record<string, EventListener> = {};
+        const props: PlainObject = { ...options.hash };
 
         // обрабатываем ключи [event:<событие>]
         Object.entries(props).forEach(([key, value]) => {
@@ -48,7 +48,7 @@ function handleharRegisterHelper<T extends _Block>(name: string,
             if (key.startsWith("event:") && isFunction(value)) {
 
                 const handlerKey = key.replace("event:", "");
-                events[handlerKey] = value;
+                events[handlerKey] = value as EventListener;
                 delete props[key];
             }
         });
@@ -57,19 +57,18 @@ function handleharRegisterHelper<T extends _Block>(name: string,
         // addChild либо в root, либо к компоненту, который на уровень выше
         const addChild: (child: _Block) => void = data.addChilToChild ? data.addChilToChild : data.root.addChild;
         props.events = events;
-        props.render = true;
 
         const component = new constructor(props);
-        addChild(component);    
+        addChild(component);
 
         let childsStr = "";
         if (options.fn) {
 
-            childsStr = options.fn(this, { 
-                data: { 
+            childsStr = options.fn(this, {
+                data: {
                     ...data,
                     // addChilToChild чтобы сохранить вложенность детей из шаблона
-                    addChilToChild: component.addChild.bind(component) 
+                    addChilToChild: component.addChild.bind(component)
                 }
             });
         }
@@ -77,3 +76,4 @@ function handleharRegisterHelper<T extends _Block>(name: string,
         return `<div data-id='${component.getId()}'>${childsStr}</div>`;
     });
 }
+

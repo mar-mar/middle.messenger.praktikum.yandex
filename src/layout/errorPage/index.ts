@@ -1,15 +1,16 @@
-import routeUse, { PAGES } from '../../utils/route';
-import { _Block } from '../../utils/_Block';
-import template from './index.hbs';
-import * as styles from "./styles.module.pcss";
+import { BlockProps, _Block } from "../../utils/_Block";
+import template from "./index.hbs";
+import styles from "./styles.module.pcss";
+import RouterController from "../../controllers/RouterController";
+import { PAGES_PATHS } from "../../utils/Router";
 
-export type ErrorPageLayoutProps = {
+export interface ErrorPageLayoutProps extends BlockProps {
     errorCode?: string,
     message?: string
-};
+}
 
 
-export default class ErrorPageLayout<T extends ErrorPageLayoutProps = any> extends _Block<T> {
+export default class ErrorPageLayout<T extends ErrorPageLayoutProps = ErrorPageLayoutProps> extends _Block<T> {
 
     protected getCompileOptions() {
         return { 
@@ -17,7 +18,7 @@ export default class ErrorPageLayout<T extends ErrorPageLayoutProps = any> exten
             styles,
             goIndex: () => {
                 
-                routeUse(PAGES.Messages);
+                RouterController.go(PAGES_PATHS.Messages);
                 
             }
         };

@@ -1,44 +1,39 @@
 //import API, { AuthAPI, SigninData, SignupData } from '../api/AuthAPI';
-import { PAGES_PATHS } from '../utils/Router';
+import { PAGES_PATHS } from "../utils/Router";
 import Router from "../utils/Router";
 import store from "../utils/Store";
-import { _Block } from "../utils/_Block";
+import { BlockConstructable } from "../utils/_Block";
 import ChatsController from "./ChatsController";
 //import MessagesController from './MessagesController';
 
 export class RouterController {
+    router: Router;
 
-    public use(pathname: string, block: typeof _Block): RouterController  {
-        Router.use(pathname, block);
+    constructor() {
+        this.router = new Router("#app", this.getTrueRoute.bind(this));
+    }
+
+    public use(pathname: string, block: BlockConstructable): RouterController  {
+        this.router.use(pathname, block);
         return this;
     }
 
     public go(path: string, quick?: boolean): void {
-        
-        if (!quick) path = this.getTrueRoute(path);
 
-        Router.go(path); // если неизвестная startPage, то куда на 404?
+        this.router.go(path, quick); 
 
-        if (path === PAGES_PATHS.Messages) {
+        if (this.router.getCurrentRoutePath() === PAGES_PATHS.Messages) {
             ChatsController.fetchChats();
         }
     }
     
     public start(): void {
-        const path = this.getTrueRoute(window.location.pathname);
-
-        Router.start(path);
-        
-        if (path === PAGES_PATHS.Messages) {
-            ChatsController.fetchChats();
-        }
+        this.go(window.location.pathname);
     }
 
     private getTrueRoute(path: string): string {
         const state = store.getState();
-//if (type in MESSAGE_TYPE) {
 
-//}
         const noUserPage = (path === PAGES_PATHS.Login || path === PAGES_PATHS.Sign);
         const noUser = !state.user;
   
@@ -53,8 +48,6 @@ export class RouterController {
 
         return path;
     }
-
-    //ChatsController.fetchChats()
 
 }
 

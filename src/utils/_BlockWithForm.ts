@@ -1,50 +1,42 @@
 import Form from "../components/form";
 import { EventBus } from "./EventBus";
-import { isEvent, isFunction } from "./helpers/typeCheck";
-import { _Block } from "./_Block";
+import { isEvent } from "./helpers/typeCheck";
+import { BlockProps, _Block } from "./_Block";
+import SimpleError from "../components/simpleError";
 
-export type WithFormProps<T> = T & {
-    onSubmit?: (value: any) => void;
-    execute?: (values?: FormValues) => void;
+export interface WithFormProps<D> extends BlockProps {
+    onSubmit?: EventListener;
+    execute?: (values?: D, errorCallback?: ErrorCallback) => void;
     error?: string | undefined;
-};
+}
 
 const FORM_ATTACHE_NAME: string = "form";
 
 enum FORM_EVENTS {
     ECEXUTE = "execute"
-};
+}
 
 export type ErrorCallback = (error: string) => void;
 
-export type FormValues = Record<string, any> | null;
-
-export class _BlockWithForm<D extends Record<string, any>, T extends RecordStrAny = any> extends _Block<WithFormProps<T>> {
-    //protected formData: Partial<D> = {};
-
-    /*rotected getDomEvents(): Events | undefined {
-        return {
-            ...super(),
-
-        }
-    }*/
+export class _BlockWithForm<D = unknown, 
+    T extends WithFormProps<D> = WithFormProps<D>> extends _Block<T> {
 
     protected getCompileOptions() {
         return {
             onSubmit: this.onSubmit.bind(this),
             FORM_ATTACHE_NAME
-         };
+        };
     }
 
     protected reset() {
-        const props: Partial<WithFormProps<T>> = {};
+        
+        const props: Partial<T> = {};
         props.error = undefined;
         this.setProps(props);
         super.reset();
     }
 
     protected registerLifeCycleEvents(eventBus: EventBus): void {
-        super.registerLifeCycleEvents(eventBus);
         eventBus.on(FORM_EVENTS.ECEXUTE, this.execute.bind(this));
     }
 
@@ -52,7 +44,7 @@ export class _BlockWithForm<D extends Record<string, any>, T extends RecordStrAn
         if (!isEvent(evt)) return;
         evt.preventDefault();
 
-        let form = this.getForm();
+        const form = this.getForm();
         if (!form) return;
 
         form.validate();
@@ -80,12 +72,12 @@ export class _BlockWithForm<D extends Record<string, any>, T extends RecordStrAn
 
         const execute = this.getProps().execute;
         
-        if (isFunction(execute)) {
+        if (execute) {
             execute(values, this.errorCallback.bind(this));
         }
     }
 
-    componentDidUpdate(oldProps: Partial<WithFormProps<T>>, newProps: Partial<WithFormProps<T>>) {
+    componentDidUpdate(oldProps: Partial<T>, newProps: Partial<T>) {
 
         if (newProps.error !== oldProps.error) {
 
@@ -95,7 +87,7 @@ export class _BlockWithForm<D extends Record<string, any>, T extends RecordStrAn
         return true;
     }
 
-    protected getErrorBlock(): _Block | null | undefined{
+    protected getErrorBlock(): SimpleError | null | undefined{
         return null;
     }
 

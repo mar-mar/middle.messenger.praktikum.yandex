@@ -6,25 +6,25 @@ import LoginPage from "./pages/login";
 import ProfilePage from "./pages/profile";
 import SignPage from "./pages/sign";
 import { _Block } from "./utils/_Block";
-
+import "./style/index.pcss";
 
 import { PAGES_PATHS } from "./utils/Router";
 import RouterController from "./controllers/RouterController";
 import IndexController from "./controllers/IndexController";
 
 
-// регистрируем хелперы по компонентам
-registerComponents();
+window.addEventListener("DOMContentLoaded", () => {
 
+    // регистрируем хелперы по компонентам
+    registerComponents();
 
-window.addEventListener('DOMContentLoaded', async () => {
     RouterController
-    .use(PAGES_PATHS.Error404, Error404Page)
-    .use(PAGES_PATHS.Error500, Error500Page)
-    .use(PAGES_PATHS.Login, LoginPage)
-    .use(PAGES_PATHS.Profile, ProfilePage)
-    .use(PAGES_PATHS.Sign, SignPage)
-    .use(PAGES_PATHS.Messages, IndexPage);
+        .use(PAGES_PATHS.Error404, Error404Page)
+        .use(PAGES_PATHS.Error500, Error500Page)
+        .use(PAGES_PATHS.Login, LoginPage)
+        .use(PAGES_PATHS.Profile, ProfilePage)
+        .use(PAGES_PATHS.Sign, SignPage)
+        .use(PAGES_PATHS.Messages, IndexPage);
 
     IndexController.start();
 });

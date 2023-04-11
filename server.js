@@ -11,7 +11,7 @@ app.disable("x-powered-by");
 
 app.use((req, res, next) => {
     res.header("X-Frame-Options", "SAMEORIGIN");
-    res.header("Content-Security-Policy", "default-src 'self'; connect-src https://ya-praktikum.tech wss://ya-praktikum.tech; img-src *; object-src 'none'");
+    res.header("Content-Security-Policy", "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'unsafe-inline'; connect-src https://ya-praktikum.tech wss://ya-praktikum.tech; img-src * data:; object-src 'none'");
     res.header("X-XSS-Protection", "1; mode=block");
     // X-Content-Type-Options: nosniff
 

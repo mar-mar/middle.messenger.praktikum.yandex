@@ -1,13 +1,15 @@
-import { _Block } from '../../utils/_Block';
-import template from './index.hbs';
-import * as styles from "./styles.module.pcss";
+import { BlockProps, _Block } from "../../utils/_Block";
+import template from "./index.hbs";
+import styles from "./styles.module.pcss";
 
-type MultiSelectProps = {
+
+interface MultiSelectProps extends BlockProps {
     options?: { value: number, label: string }[];
     name?: string;
 }
 
-export default class MultiSelect extends _Block<MultiSelectProps> {
+
+export default class MultiSelect<T extends MultiSelectProps = MultiSelectProps> extends _Block<T> {
 
     protected getCompileOptions() {
         return { 

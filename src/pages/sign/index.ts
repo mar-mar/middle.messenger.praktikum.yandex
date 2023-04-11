@@ -1,7 +1,8 @@
-import routeUse, { PAGES } from "../../utils/route";
-import { _Block } from '../../utils/_Block';
-import template from './index.hbs';
-import * as styles from "./styles.module.pcss";
+import { _Block } from "../../utils/_Block";
+import template from "./index.hbs";
+import styles from "./styles.module.pcss";
+import RouterController from "../../controllers/RouterController";
+import { PAGES_PATHS } from "../../utils/Router";
 
 export default class SignPage extends _Block {
 
@@ -9,12 +10,8 @@ export default class SignPage extends _Block {
         return { 
             template,
             styles,
-            goLogin: () => routeUse(PAGES.Login)
+            goLogin: () => RouterController.go(PAGES_PATHS.Login)
         };
     }
 }
-
-// проверить после логаута очищается или нет 
-// и логин проверить на очистку
-
 

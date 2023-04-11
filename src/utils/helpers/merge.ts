@@ -1,78 +1,60 @@
 import { isObject } from "./typeCheck";
 
-export type Indexed<T = any> = {
-    [key in string]: T;
-};
 
-export function merge(lhs: Indexed, rhs: Indexed): Indexed {
 
-    if (isObject(lhs) && isObject(rhs)) {
+function merge(lhs: PlainObject, rhs: PlainObject): PlainObject {
 
-        for (let p in rhs) {
-            if (!rhs.hasOwnProperty(p)) {
-                continue;
-            }
+    if (!isObject(lhs) || !isObject(rhs)) throw new Error("merge. no object")
+
+    return mergeUnknown(lhs, rhs);
+}
+
+function mergeUnknown(lhs: PlainObject, rhs: PlainObject): PlainObject {
     
-            lhs[p] = merge(lhs[p], rhs[p]);
+    for (const p in rhs) {
+
+        let lhsSub = lhs[p];
+        const rhsSub = rhs[p];
+
+        if (isObject(lhsSub) && isObject(rhsSub)) {
+            lhsSub = mergeUnknown(lhsSub, rhsSub);
         }
-    }
-    else {
-        lhs = rhs;
-    }  
-
-    return lhs;
-}
-
-export function mergeObj(lhs: Indexed, rhs: Indexed): Indexed {
-    if (isObject(rhs) && isObject(rhs)) {
-
-    }
-
-    for (let p in rhs) {
-        if (!rhs.hasOwnProperty(p)) {
-            continue;
+        else {
+            lhsSub = rhsSub
         }
-
-        if (isObject(rhs[p]) && isObject(lhs[p])) {
-
-            merge(lhs[p] as Indexed, rhs[p] as Indexed);
-            continue;
-        }
-
-        lhs[p] = rhs[p];
+        lhs[p] = lhsSub;
     }
 
     return lhs;
 }
 
 
-export function set(object: Indexed | unknown, path: string, value: unknown): Indexed | unknown {
+export function set(object: PlainObject | unknown, path: string, value: unknown): PlainObject | unknown {
 
     if (!isObject(object)) {
         return object;
     }
 
-    if (typeof path !== 'string') {
-        throw new Error('path must be string');
+    if (typeof path !== "string") {
+        throw new Error("path must be string");
     }
 
-    const result = path.split('.').reduceRight<Indexed>((acc, key) => ({
-       
-        [key]: acc,
-    }), value as any);
+    const result = path.split(".").reduceRight<PlainObject>((acc, key) => ({
+        [key]: acc
+    }), value as PlainObject);
 
-    return merge(object as Indexed, result);
+    return merge(object as PlainObject, result);
 }
 
-
-export function get(object: Indexed | unknown, path: string): any {
-    if (typeof path !== 'string') {
-        throw new Error('path must be string');
+export function get(object: PlainObject | unknown, path: string): unknown {
+    
+    if (typeof path !== "string") {
+        throw new Error("path must be string");
     }
 
     if (!isObject(object)) return undefined;
 
-    const isOk = path.split('.').every(key => {
+    const isOk = path.split(".").every(key => {
 
         if (!isObject(object)) return false;
         object = object[key];

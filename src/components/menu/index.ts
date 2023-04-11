@@ -1,8 +1,9 @@
-import { _Block } from '../../utils/_Block';
-import template from './index.hbs';
-import * as styles from "./styles.module.pcss";
+import { BlockProps, _Block } from "../../utils/_Block";
+import template from "./index.hbs";
+import styles from "./styles.module.pcss";
 
-type MenuProps = {
+
+interface MenuProps extends BlockProps {
     menuItems?: MenuItemTemplateProps
 }
 

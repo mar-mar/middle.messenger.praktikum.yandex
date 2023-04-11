@@ -1,12 +1,12 @@
-import { _Block } from '../../utils/_Block';
-import template from './index.hbs';
-import * as styles from "./styles.module.pcss";
+import { BlockProps, _Block } from "../../utils/_Block";
+import template from "./index.hbs";
+import styles from "./styles.module.pcss";
 
-type SimpleErrorProps = {
+interface SimpleErrorProps extends BlockProps {
     error: string;
 }
 
-export default class SimpleError extends _Block<SimpleErrorProps> {
+export default class SimpleError<T extends SimpleErrorProps = SimpleErrorProps> extends _Block<T> {
 
     protected getCompileOptions() {
         return { 

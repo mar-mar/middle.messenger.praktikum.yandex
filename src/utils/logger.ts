@@ -1,9 +1,15 @@
 
-export function log(value: any): void {
-    console.log(value);
+export class Logger {
+
+    log(value: unknown): void {
+        console.log(value);
+    }
+    
+    
+    errorLog(value: unknown): void {
+        console.warn(value);
+    }
+
 }
 
-
-export function errorLog(value: any): void {
-    console.warn(value);
-}
+export default new Logger();

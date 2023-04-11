@@ -1,7 +1,7 @@
 
-import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
+import { WithFormProps, _BlockWithForm } from "../../../../utils/_BlockWithForm";
 import template from "./index.hbs";
-import * as styles from "./styles.module.pcss";
+import styles from "./styles.module.pcss";
 import { validateMessage } from "../../../../utils/validate";
 import { SendMessageData } from "../../../../controllers/MessagesController";
 import { withStore } from "../../../../utils/Store";
@@ -9,14 +9,14 @@ import ChatsController from "../../../../controllers/ChatsController";
 import TextArea from "../../../../components/textarea";
 
 
-type MessageInputProps = {
+interface MessageInputProps extends WithFormProps<SendMessageData> { 
     openPopupAttache: FunctionNoArgsNoReturn,
 
     message: string,
     storeItem: {
         selectedChatId: number | undefined;
     }
-};
+}
 
 class MessageInputBase  extends _BlockWithForm<SendMessageData, MessageInputProps> {   
     
@@ -26,7 +26,7 @@ class MessageInputBase  extends _BlockWithForm<SendMessageData, MessageInputProp
             template,
             styles,
             validateMessage
-         };
+        };
     }
 
     execute(values: SendMessageData) {

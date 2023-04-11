@@ -1,11 +1,11 @@
-import { _Block } from '../../../../utils/_Block';
 import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
-import template from './index.hbs';
-import { validateName, validateLogin, validateEmail, validatePhone, validatePassword, validateCopyPassword } from '../../../../utils/validate';
-import * as styles from "./styles.module.pcss";
+import template from "./index.hbs";
+import { validateName, validateLogin, validateEmail, validatePhone, validatePassword, validateCopyPassword } from "../../../../utils/validate";
+import styles from "./styles.module.pcss";
 import Input from "../../../../components/input";
 import { SignupData } from "../../../../api/AuthAPI";
 import AuthController from "../../../../controllers/AuthController";
+import SimpleError from "../../../../components/simpleError";
 
 
 export default class SignBody extends _BlockWithForm<SignupData> {
@@ -35,7 +35,7 @@ export default class SignBody extends _BlockWithForm<SignupData> {
             error = exp;
         }
 
-        const errorBlock = this.getChildByAttacheNameOne("error");
+        const errorBlock = this.getChildByAttacheNameOne("error") as SimpleError;
         errorBlock?.setProps({ error: String(error) });
     }
 

@@ -1,13 +1,13 @@
-import { _Block } from '../../utils/_Block';
-import template from './index.hbs';
-import * as styles from "./styles.module.pcss";
+import { BlockProps, _Block } from "../../utils/_Block";
+import template from "./index.hbs";
+import styles from "./styles.module.pcss";
 
 type Size = {
     width: number;
     height: number;
 }
 
-export default class Popup extends _Block {
+export default class Popup<T extends BlockProps = BlockProps> extends _Block<T> {
     private ident: number = 10;
 
 
@@ -61,7 +61,7 @@ export default class Popup extends _Block {
         const size = this.getSize(element);
         const ident = this.ident;
 
-        let position = { top: parentRect.top + parentRect.width / 2, left: parentRect.left };
+        const position = { top: parentRect.top + parentRect.width / 2, left: parentRect.left };
 
         position.top = this.getPositionByAxis(bodyRect, parentRect, ident, size, true);
         position.left = this.getPositionByAxis(bodyRect, parentRect, 0, size, false);

@@ -1,12 +1,14 @@
 import { _Block } from "../../../../utils/_Block";
 import template from "./index.hbs";
 import { _BlockWithForm } from "../../../../utils/_BlockWithForm";
-import * as styles from "./styles.module.pcss";
+import styles from "./styles.module.pcss";
 import { User } from "../../../../api/AuthAPI";
 import { isArray } from "../../../../utils/helpers/typeCheck";
+import SimpleError from "../../../../components/simpleError";
+import { WithFormProps } from "../../../../utils/_BlockWithForm";
 
 
-type Props = {
+export interface Props extends WithFormProps<UserIdsData> {
     selectOptions?: { value: number, label: string }[];
     withResult?: boolean;
 }
@@ -22,15 +24,15 @@ export default class ActionUser extends _BlockWithForm<UserIdsData, Props> {
             ...super.getCompileOptions(),
             template,
             styles
-         };
+        };
     }
 
     protected componentDidMount(/*oldProps*/): void { 
         this.setProps({ selectOptions: undefined, withResult: false });
-    };
+    }
 
     protected getErrorBlock() {
-        return this.getForm()?.getChildByAttacheNameOne("error");
+        return this.getForm()?.getChildByAttacheNameOne("error") as SimpleError;
     }
     
     setUsers(users?: User[]) {
